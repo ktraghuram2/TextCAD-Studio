@@ -69,7 +69,12 @@ export const useCADStore = create<CADStore>((set) => ({
   apiKey: typeof window !== 'undefined' ? localStorage.getItem(LOCAL_STORAGE_KEY) || localStorage.getItem('textcad_gemini_api_key') || '' : '',
   setApiKey: (key: string) => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem(LOCAL_STORAGE_KEY, key);
+      if (key) {
+        localStorage.setItem(LOCAL_STORAGE_KEY, key);
+      } else {
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
+        localStorage.removeItem('textcad_gemini_api_key');
+      }
     }
     set({ apiKey: key });
   },

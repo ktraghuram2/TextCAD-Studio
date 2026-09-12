@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Key, Check, AlertCircle, ExternalLink, X, Eye, EyeOff, Loader, Cpu, Globe, Sparkles } from 'lucide-react';
+import { Key, Check, AlertCircle, ExternalLink, X, Eye, EyeOff, Loader, Cpu, Globe, Sparkles, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCADStore } from '../store/cadStore';
 import { testAIConnection } from '../services/aiProvider';
@@ -43,6 +43,12 @@ const ApiKeyModal: React.FC = () => {
     setProvider(selectedProvider);
     setCustomBaseUrl(inputBaseUrl.trim());
     setIsApiKeyModalOpen(false);
+  };
+
+  const handleClearKey = () => {
+    setInputKey('');
+    setApiKey('');
+    setTestResult({ status: 'idle' });
   };
 
   const handleTest = async () => {
@@ -256,15 +262,29 @@ const ApiKeyModal: React.FC = () => {
 
           {/* Footer */}
           <div className="p-4 bg-slate-950/70 border-t border-slate-800 flex items-center justify-between gap-3">
-            <button
-              type="button"
-              onClick={handleTest}
-              disabled={testing || (!inputKey.trim() && selectedProvider !== 'custom')}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-750 disabled:opacity-50 text-slate-300 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1.5 border border-slate-700"
-            >
-              {testing ? <Loader className="w-3.5 h-3.5 animate-spin" /> : null}
-              {testing ? 'Testing...' : 'Test Connection'}
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleTest}
+                disabled={testing || (!inputKey.trim() && selectedProvider !== 'custom')}
+                className="px-4 py-2 bg-slate-800 hover:bg-slate-750 disabled:opacity-50 text-slate-300 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1.5 border border-slate-700"
+              >
+                {testing ? <Loader className="w-3.5 h-3.5 animate-spin" /> : null}
+                {testing ? 'Testing...' : 'Test Connection'}
+              </button>
+
+              {(inputKey || apiKey) && (
+                <button
+                  type="button"
+                  onClick={handleClearKey}
+                  className="px-3 py-2 text-xs font-medium text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-xl transition-colors flex items-center gap-1.5 border border-rose-500/20"
+                  title="Remove API key from this browser"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Remove Key</span>
+                </button>
+              )}
+            </div>
             <div className="flex items-center gap-2">
               <button
                 type="button"
