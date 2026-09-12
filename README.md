@@ -2,6 +2,16 @@
 
 An AI-powered **Text-to-CAD generation platform** that converts natural language descriptions into precise 3D CAD models. Features a real-time chat interface with live 3D visualization.
 
+---
+
+### 🌐 Live CAD Studio & 3D Renderer URLs
+> **Access the CAD Studio & Renderer directly in your browser:**
+> - **Published Cloud Web App (GitHub Pages):** [https://ktraghuram2.github.io/TextCAD-Studio/](https://ktraghuram2.github.io/TextCAD-Studio/)
+> - **Direct Live Demo Endpoint:** [https://ktraghuram2.github.io/TextCAD-Studio/demo/live.html](https://ktraghuram2.github.io/TextCAD-Studio/demo/live.html)
+> - **Localhost Dev URL (When running locally):** [http://localhost:3000](http://localhost:3000) (or `http://127.0.0.1:3000`)
+
+---
+
 ## 🚀 Features
 
 - **Natural Language Processing**: Describe your CAD model in plain English
@@ -83,6 +93,12 @@ npm start
 ```
 
 Open http://localhost:3000
+
+> **🚀 Live Web App (No installation required):**  
+> You can also run the published CAD renderer directly in your browser:  
+> - **Published Studio:** [https://ktraghuram2.github.io/TextCAD-Studio/](https://ktraghuram2.github.io/TextCAD-Studio/)  
+> - **Direct Live URL:** [https://ktraghuram2.github.io/TextCAD-Studio/demo/live.html](https://ktraghuram2.github.io/TextCAD-Studio/demo/live.html)
+
 
 ## 💬 Usage Examples
 

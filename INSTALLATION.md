@@ -50,6 +50,10 @@ npm run dev
 
 Frontend runs at `http://localhost:3000`
 
+> **🌐 Alternatively, access the online CAD renderer:**
+> - **Live Web App:** [https://ktraghuram2.github.io/TextCAD-Studio/](https://ktraghuram2.github.io/TextCAD-Studio/)
+> - **Direct Live Demo:** [https://ktraghuram2.github.io/TextCAD-Studio/demo/live.html](https://ktraghuram2.github.io/TextCAD-Studio/demo/live.html)
+
 ## Docker Setup (Optional)
 
 ### Using Docker Compose

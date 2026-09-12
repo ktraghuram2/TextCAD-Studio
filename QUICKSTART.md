@@ -67,6 +67,10 @@ npm run dev
 http://localhost:3000
 ```
 
+> **🌐 Published Cloud Version (No local setup required):**
+> - **Live Web Studio:** [https://ktraghuram2.github.io/TextCAD-Studio/](https://ktraghuram2.github.io/TextCAD-Studio/)
+> - **Direct Demo Link:** [https://ktraghuram2.github.io/TextCAD-Studio/demo/live.html](https://ktraghuram2.github.io/TextCAD-Studio/demo/live.html)
+
 ✅ **Done!** You're ready to create CAD models.
 
 ## Quick Examples
