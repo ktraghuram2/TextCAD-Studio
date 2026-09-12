@@ -107,12 +107,7 @@ Open http://localhost:3000
 "Create a 10mm cube"
 ```
 
-### Example 2: Complex Part
-```
-"Design a cylindrical container with 50mm diameter, 100mm height, 2mm wall thickness, and a hexagonal pattern of 5mm holes arranged in a circle on the bottom"
-```
-
-### Example 3: Iterative Design
+### Example 2: Iterative Design
 ```
 User: "Create a gear with 20 teeth"
 AI: [Generates gear model]
