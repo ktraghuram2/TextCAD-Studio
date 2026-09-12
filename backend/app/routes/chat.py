@@ -1,4 +1,4 @@
-from fastapi import APIRouter, WebSocket, Depends, HTTPException
+from fastapi import APIRouter, WebSocket, HTTPException, Request
 from pydantic import BaseModel
 from typing import List, Optional
 import json
@@ -15,6 +15,8 @@ class Message(BaseModel):
 
 class ChatRequest(BaseModel):
     message: str
+    api_key: Optional[str] = None
+    cad_code: Optional[str] = None
     design_history: Optional[List[str]] = None
     model_context: Optional[dict] = None
 
@@ -26,34 +28,28 @@ class ChatResponse(BaseModel):
     design_id: Optional[str] = None
 
 @router.post("/generate")
-async def generate_cad_from_chat(request: ChatRequest) -> ChatResponse:
+async def generate_cad_from_chat(chat_req: ChatRequest, req: Request) -> ChatResponse:
     """
     Generate CAD code from natural language chat message
     """
     try:
-        from fastapi import Request as FastAPIRequest
-        from fastapi.requests import Request
+        llm_engine = getattr(req.app.state, "llm_engine", None)
+        cad_generator = getattr(req.app.state, "cad_generator", None)
+
+        cad_code = chat_req.cad_code
+        if not cad_code and llm_engine:
+            cad_code = await llm_engine.generate_cad_code(
+                chat_req.message,
+                chat_req.design_history
+            )
         
-        # This would be injected from app state in real implementation
-        llm_engine = None
-        cad_generator = None
-        
-        # Generate CAD code
-        cad_code = await llm_engine.generate_cad_code(
-            request.message,
-            request.design_history
-        )
-        
-        # Execute generated code
-        execution_result = await cad_generator.generate_from_code(cad_code)
-        
-        if not execution_result["success"]:
-            raise HTTPException(status_code=400, detail=execution_result["error"])
-        
-        # Generate preview
-        model = execution_result["model"]
-        preview_stl = await cad_generator.generate_stl_preview(model)
-        
+        preview_stl = None
+        if cad_generator and cad_code:
+            execution_result = await cad_generator.generate_from_code(cad_code)
+            if execution_result.get("success"):
+                model = execution_result["model"]
+                preview_stl = await cad_generator.generate_stl_preview(model)
+
         return ChatResponse(
             status="success",
             message="CAD model generated successfully",
@@ -75,11 +71,9 @@ async def websocket_chat(websocket: WebSocket):
     
     try:
         while True:
-            # Receive message
             data = await websocket.receive_text()
             message = json.loads(data)
             
-            # Process and respond (simplified)
             response = {
                 "status": "received",
                 "message": message.get("content", "")

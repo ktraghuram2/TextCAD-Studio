@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, UploadFile, File
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 from typing import Optional
 import logging
@@ -16,18 +16,19 @@ class CADResponse(BaseModel):
     info: dict
 
 @router.post("/generate-from-code")
-async def generate_from_code(request: CADRequest) -> CADResponse:
+async def generate_from_code(cad_req: CADRequest, req: Request) -> CADResponse:
     """
     Generate CAD model directly from Python code
     """
     try:
-        # Would get from app.state in real implementation
-        cad_generator = None
+        cad_generator = getattr(req.app.state, "cad_generator", None)
+        if not cad_generator:
+            raise HTTPException(status_code=503, detail="CAD Generator service not available")
         
-        result = await cad_generator.generate_from_code(request.code)
+        result = await cad_generator.generate_from_code(cad_req.code)
         
-        if not result["success"]:
-            raise HTTPException(status_code=400, detail=result["error"])
+        if not result.get("success"):
+            raise HTTPException(status_code=400, detail=result.get("error", "CAD execution failed"))
         
         preview = await cad_generator.generate_stl_preview(result["model"])
         
@@ -37,6 +38,8 @@ async def generate_from_code(request: CADRequest) -> CADResponse:
             info=result.get("info", {})
         )
     
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"CAD generation error: {e}")
         raise HTTPException(status_code=500, detail=str(e))

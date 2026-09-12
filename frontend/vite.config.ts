@@ -3,6 +3,10 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
+  appType: 'spa',
+  define: {
+    'process.env': {},
+  },
   plugins: [react()],
   server: {
     port: 3000,

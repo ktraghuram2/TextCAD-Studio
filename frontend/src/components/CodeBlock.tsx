@@ -1,7 +1,6 @@
 import React from 'react';
 import { Copy, Check } from 'lucide-react';
 import { useState } from 'react';
-import SyntaxHighlighter from 'prism-react-renderer';
 
 interface CodeBlockProps {
   code: string;
