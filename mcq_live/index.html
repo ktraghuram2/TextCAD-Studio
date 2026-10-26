@@ -1,0 +1,2156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Cloud Dashboard (50/Page) — Global & All-India MCQs & PYQs</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --green: #22c55e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 18px;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    header {
+      max-width: 1280px;
+      margin: 0 auto 16px auto;
+      padding: 18px 22px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+    h1 { margin: 0 0 6px 0; font-size: 1.35rem; color: #fff; display:flex; align-items:center; gap:10px; }
+    .live-dot {
+      width: 10px; height: 10px; border-radius: 50%; background: #22c55e;
+      box-shadow: 0 0 8px #22c55e; display: inline-block;
+    }
+    .sub-bar { color: var(--muted); font-size: 0.86rem; margin-bottom: 10px; }
+    .log-box {
+      background: #090d16;
+      border: 1px solid #1e3a5f;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 0.78rem;
+      color: #7dd3fc;
+      white-space: pre-wrap;
+      margin-bottom: 12px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .stat-box {
+      background: #0b1220;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+    .stat-box.active-db { border-color: var(--accent); }
+    .stat-val { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+    .stat-lbl { font-size: 0.78rem; color: var(--muted); }
+    .controls, .pager {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 10px;
+    }
+    input, select, button {
+      background: #0b1220;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 8px 13px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+    }
+    button { cursor: pointer; font-weight: 600; }
+    button.primary { background: #0284c7; border-color: #0ea5e9; color: #fff; }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
+    main { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+    .q-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+    }
+    .q-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+    .badge {
+      font-size: 0.74rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #0b1220;
+      border: 1px solid var(--border);
+    }
+    .b-db { color: #38bdf8; border-color: #0284c7; }
+    .b-pyq-db { color: #f59e0b; border-color: #d97706; }
+    .b-loc { color: #c084fc; border-color: #9333ea; }
+    .b-pyq { color: #fde047; border-color: #ca8a04; }
+    .b-subj { color: #a7f3d0; border-color: #059669; }
+    .b-diff.easy { color: #4ade80; }
+    .b-diff.medium { color: #60a5fa; }
+    .b-diff.hard { color: #fb923c; }
+    .b-diff.extra-hard { color: #f87171; }
+    .q-meta { font-size: 0.8rem; color: var(--muted); margin-bottom: 10px; }
+    .q-stem { font-size: 1rem; margin-bottom: 10px; color: #fff; }
+    .opts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .opt-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: #0b1220;
+      border: 1px solid var(--border);
+    }
+    .opt-item.correct-opt {
+      border-color: var(--green);
+      background: rgba(34, 197, 94, 0.12);
+    }
+    .opt-letter { font-weight: 700; color: var(--accent); min-width: 20px; }
+    .corr-tag { margin-left: auto; font-size: 0.74rem; font-weight: 700; color: var(--green); }
+    details.expl-box {
+      background: #0b1220;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+    }
+    summary { cursor: pointer; font-weight: 600; color: var(--accent); font-size: 0.88rem; }
+    .expl-body { margin-top: 8px; font-size: 0.9rem; color: #e2e8f0; }
+    .hash-row {
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top: 1px dashed var(--border);
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><span class="live-dot"></span> Live Cloud Dashboard (Showing <strong>50 Questions per Page</strong>)</h1>
+    <div class="sub-bar">Live Sync: <strong id="liveTs">2026-10-26 15:56:57 · 🟢 LIVE FROM GITHUB CLOUD</strong> · Lightweight Mode (Only 50 questions rendered on screen at a time)</div>
+    <div class="log-box" id="liveLogBox">[2026-10-26 15:55:43] [DIRECT-OPEN-HARVESTER] [openlifescienceai/medmcqa offset=20800] Ingested +0 DB1 MCQs &amp; +0 DB2 PYQs | Totals -&gt; DB1: 45963 | DB2 PYQ: 20346 | Master: 67295
+[2026-10-26 15:55:49] [DIRECT-OPEN-HARVESTER] [openlifescienceai/medmcqa:default offset=13200] Ingested +0 DB1 MCQs &amp; +0 DB2 PYQs | Totals -&gt; DB1: 45963 | DB2 PYQ: 20346 | Master: 67295
+[2026-10-26 15:55:57] [DIRECT-OPEN-HARVESTER] [deepmind/aqua_rat offset=20900] Ingested +95 DB1 MCQs &amp; +0 DB2 PYQs | Totals -&gt; DB1: 46055 | DB2 PYQ: 20346 | Master: 67387
+[2026-10-26 15:55:58] [DIRECT-OPEN-HARVESTER] [openlifescienceai/medmcqa:default offset=17300] Ingested +0 DB1 MCQs &amp; +0 DB2 PYQs | Totals -&gt; DB1: 46055 | DB2 PYQ: 20346 | Master: 67387</div>
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-val" style="color:#c084fc;">19,060</div>
+        <div class="stat-lbl">Worldwide Competitive Exams (31 Countries)</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="cntSeeds" style="color:#4ade80;">4449</div>
+        <div class="stat-lbl">Stage 1: Scraped Sub-Topic Packages</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="cntRawFp" style="color:#a78bfa;">74299</div>
+        <div class="stat-lbl">Stage 2: Pre-AI Deduplicated Queue</div>
+      </div>
+      <div class="stat-box active-db" onclick="switchDb('DB1_SCRAPED_MODIFIED')">
+        <div class="stat-val" id="cntDb1">46055</div>
+        <div class="stat-lbl">DB 1: Worldwide Scraped MCQs (Click to Filter)</div>
+      </div>
+      <div class="stat-box" onclick="switchDb('DB2_PYQ')">
+        <div class="stat-val" id="cntDb2" style="color:#f59e0b;">20346</div>
+        <div class="stat-lbl">DB 2: Official PYQs (Click to Filter)</div>
+      </div>
+    </div>
+    <div class="controls">
+      <input type="text" id="qSearch" placeholder="Search question, subject, topic, or exam..." onkeydown="if(event.key==='Enter') loadPage(1)" style="flex:1; min-width:220px;" />
+      <select id="dbFilter" onchange="loadPage(1)">
+        <option value="">DB 1 + DB 2 (All Scraped & PYQs)</option>
+        <option value="DB1_SCRAPED_MODIFIED">Only DB 1 (Scraped MCQs)</option>
+        <option value="DB2_PYQ">Only DB 2 (Official PYQs)</option>
+      </select>
+      <button class="primary" onclick="loadPage(1)">↻ Load Latest 50</button>
+    </div>
+    <div class="pager">
+      <button id="btnFirst" onclick="loadPage(1)">« First</button>
+      <button id="btnPrev" onclick="loadPage(curPage - 1)">‹ Prev 50</button>
+      <span id="pageInfo" style="font-size:0.9rem; color:#cbd5e1; font-weight:600;">
+        Page 1 of 1329 (Showing latest 50 of 66401 questions)
+      </span>
+      <button id="btnNext" onclick="loadPage(curPage + 1)">Next 50 ›</button>
+      <button id="btnLast" onclick="loadPage(totalPages)">Last »</button>
+    </div>
+  </header>
+  <main id="cardsContainer">
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66401 · SUBAPTQUAN_Q063625</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>If x &lt; 0 and 0 &lt; y &lt; 1, which of the following has the greatest value Q?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">x^2</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">(xy)^2</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">(x/y)^2</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">x^2/y</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option C)</summary>
+        <div class="expl-body">
+          <p>Given, x &lt; 0 and 0 &lt; y &lt; 1
+Let, x = -2 and y = 1/2
+A. x^2 = (-2)^2 =4
+B. (xy)^2 = (-2*1/2)^2 =1
+C. (x/y)^2 = {-2/(1/2)}^2 = (-4)^2 =16
+D. x^2/y = (-2)^2 / (1/2) = 4*2 =8
+E. x^2*y = (-2)^2*(1/2) =2
+Answer: option C</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>a9a696e09f0cacaba40f...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66400 · SUBAPTQUAN_Q063624</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>Two trains, each 100 m long, moving in opposite directions, cross other in 8 sec. If one is moving twice as fast the other, then the speed of the faster train is?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">11</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">60</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">77</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">55</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option C)</summary>
+        <div class="expl-body">
+          <p>Let the speed of the slower train be x m/sec.
+Then, speed of the train = 2x m/sec.
+Relative speed = ( x + 2x) = 3x m/sec.
+(100 + 100)/8 = 3x =&gt; x = 25/3.
+So, speed of the faster train = 50/3 = 50/3 * 18/5 = 60 km/hr.
+Answer: C</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>4fd2f573801c1a0c824f...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66399 · SUBAPTQUAN_Q063623</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>Two tailors X and Y are paid a total of Rs. 550 per week by their employer. If X is paid 120 percent of the sum paid to Y, how much is Y paid per week?</p></div>
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">250</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">300</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">350</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">400</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>Explanation :
+Here&#x27;s the solution :
+Let the sum paid to Y per week be Rs. z.
+Then, z + 120% of z = 550.
+=&gt; z + (120/100) * z = 550
+=&gt; (11 / 5) * z = 550
+=&gt; z = 550 * 5 / 11
+=&gt; z = 250
+Hence (A) is the correct answer.
+Answer : A</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>6737f70ce4bf66b739e0...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66398 · SUBAPTQUAN_Q063622</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>An insect leaps 42 centimeters in 1.2 seconds. What is its speed?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">3.5 meters per second</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">0.35 meters per second</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">5 centimeters per second</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">0.5 meters per second</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option B)</summary>
+        <div class="expl-body">
+          <p>42 / 1.2 = 35 cm/s = 0.35 m/s
+The answer is B.</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>329d7f2040aa7b5ea0e9...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66397 · SUBAPTQUAN_Q063621</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>Find the cost of fencing around a circular field of diameter 28 m at the rate of Rs.1.50 a meter?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">281</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">132</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">882</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">279</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option B)</summary>
+        <div class="expl-body">
+          <p>2 * 22/7 * 14 = 88
+88 * 1 1/2
+= Rs.132
+Answer: B</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>82f4bd45c03dff3e4d7c...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66396 · SUBAPTQUAN_Q063620</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>A data set with a mean of 60 has a standard deviation of 3.5. Which of the following is the smallest number that falls within one standard deviation of the mean?.</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">58</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">59</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">64</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">68</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option B)</summary>
+        <div class="expl-body">
+          <p>[(59-60)^2]^1/2 = 1
+So 59 satisfies that criteria
+answer is B</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>77d85247c47e2e320cef...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66395 · SUBAPTQUAN_Q063619</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>After 38 liters of petrol were poured into the tank, it was still 5% empty. How much petrol must be poured into the tank in order to fill it?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">7 liters</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">9 liters</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">4 liters</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">2 liters</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>95% ----------- 38
+5% ------------ ? =&gt; 2 liters
+Answer:D</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>6a3598bf5d6a42e3a676...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66394 · SUBAPTQUAN_Q063618</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>The total of the ages of Jai, Prajan and Sarath is 93 years. Ten years ago, the ratio of their ages was 2 : 3 : 4. What is the present age of Sarath?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">24 years</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">32 years</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">38 years</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">42 years</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option C)</summary>
+        <div class="expl-body">
+          <p>Sol.
+Let the ages of Jai, Prajan and Sarath 10 years ago be 2x, 3x and 4x years respectively.
+Then, (2x + 10) + (3x + 10) + (4x + 10) = 93
+⇔ 9x = 63
+⇔ x = 7.
+∴ Sarath&#x27;s present age = (4x +10) = 38 years.
+Answer C</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>810d77210d93e2574277...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66393 · SUBAPTQUAN_Q063617</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff hard">Hard</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>A new tower has just been built at the Verbico military hospital; the number of beds available for patients at the hospital is now 6 times the number available before the new tower was built. Currently, 1/3 of the hospital&#x27;s original beds, as well as 1/5 of the beds in the new tower, are occupied. For the purposes of renovating the hospital&#x27;s original wing, all of the patients in the hospital&#x27;s original beds must be transferred to beds in the new tower. If patients are neither admitted nor discharged during the transfer, what fraction of the beds in the new tower will be unoccupied once the transfer is complete?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">11/30</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">29/60</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">17/30</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">11/15</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>I think E - 11/15 is the correct answer.
+Here goes:
+Lets assume originally the number of beds = x
+After the new tower, the total combined no of beds = 6x
+So old = x, New = 5x
+Now 1/3 of x are occupied and 1/5 of 5x are occupied which simplifies to (5/5)x
+We are shifting 1/3 of x to the new ward so there will now be:
+1/3 of x plus 5/5 of x occupied in the new ward. Add them up to get 4/3 of x
+There are 5x beds in New Tower so ratio is:
+(4/3)x / 5x = 4/15 of x
+Subtract that from 15/15 of x and you get the number of un-occupied beds to total capacity of New Tower =11/15.
+E</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>bd3372f4b2c4e8195d18...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66392 · SUBAPTQUAN_Q063616</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>5% people of a village in Sri Lanka died by bombardment, 15% of the remainder left the village on account of fear. If now the population is reduced to 3294, how much was it in the beginning?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">2988</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">2776</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">4079</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">2871</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option C)</summary>
+        <div class="expl-body">
+          <p>X * (95/100) * (85/100) = 3294
+X = 4079
+Answer:C</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>52a547b5ece242893ea9...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66391 · SUBAPTQUAN_Q063615</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>At what rate percent on simple interest will Rs.750 amount to Rs.900 in 5 years?</p></div>
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">4</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">5</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">2</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">1</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>150 = (750*5*R)/100
+R = 4%
+ANSWER A</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>754ee1d80c206653fb72...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66390 · SUBAPTQUAN_Q063614</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>A chemical supply company has 60 liters of a 20% HNO3 solution. How many liters of pure undiluted HNO3 must the chemists add so that the resultant solution is a 50% solution?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">12</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">15</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">20</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">36</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>60 liters of a 20% HNO3 solution means HNO3 = 12 liters in 60 liters of the solution.
+Now, let x be the pure HNO3 added.
+As per question,
+12 + x = 50% of (60 + x)
+or x =36. Hence, E</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>f4f7c4b6a241e81b04c4...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66389 · SUBAPTQUAN_Q063613</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>Pipe A can fill a tank in 16 minutes and pipe B cam empty it in 24 minutes. If both the pipes are opened together after how many minutes should pipe B be closed, so that the tank is filled in 30 minutes?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">20</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">24</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">23</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">None of these</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>Explanation:
+Let the pipe B be closed after x minutes.
+30/16 - x/24 = 1 =&gt; x/24 = 30/16 - 1 = 14/16
+=&gt; x = 14/16 * 24 = 21.
+ANSWER IS E</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>a4545dae1e85aefdcf04...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66388 · SUBAPTQUAN_Q063612</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>A car travelling with 5/7 of its actual speed covers 42km in 1hr 40 min 48 sec find the actual speedof the car?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">52km/hr</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">25km/min</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">35km/hr</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">125km/hr</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option C)</summary>
+        <div class="expl-body">
+          <p>Time taken=1hr 40 min 48sec
+=1hr 404/5 min=1 51/75hrs =126/75hrs.
+let the actual speed be xkm/hr.
+then x 5/7*126/75=42
+x=(42*7*75/5*126)=35km/hr
+Answer(C)</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>d34eb39ffc5f24dba460...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66387 · SUBAPTQUAN_Q063611</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>What is 2 2/3 - 1 1/4 divided by 1/2 - 1/4 ?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">17/36</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">36/17</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">17/6</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">17/3</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>2 2/3 - 1 1/4 = 8/3 - 5/4 = (32 - 15 )/12 = 17/12
+1/2 - 1/4 = (2-1)/4 = 1/4
+So 17/12/1/4 = 17/12 *4 = 17/3
+Answer - D</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>b194e474e1f06bb1bdcb...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66386 · SUBAPTQUAN_Q063610</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>the probability that I will sit next to Ann is 1/12.
+the probability that I won&#x27;t sit next to Alice is 11/12.
+What is the probability that I will sit next to Ann and Alice?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">1/6</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">11/12</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">11/144</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">1/144</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>the probability that I will sit next to Ann is 1/12.
+the probability that I will sit next to Alice is 1-11/12 = 1/12.
+Therefore the probability that I will sit next to Ann and Alice is 1/12*1/12=1/144
+Answer:E</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>3182e97ff5b2e8748fd9...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66385 · SUBAPTQUAN_Q063609</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>If the product 4864 x 9 P 2 is divisible by 12, then the value of P is:</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">2</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">5</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">6</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">None Of These</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>Clearly, 4864 is divisible by 4.
+So, 9P2 must be divisible by 3. So, (9 + P + 2) must be divisible by 3.
+P = 1.
+Answer :E</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>94994d9d7d55741f25e6...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66384 · SUBAPTQUAN_Q063608</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>Two horses begin running on an oval course at the same time. One runs each lap in 9 minutes; the other takes 12 minutes to run each lap. How Many minutes after the start will the faster horse have a one lap lead?</p></div>
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">36</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">12</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">9</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">4</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>The rate of the faster horse is 1/9 lap/minute;
+The rate of the slower horse is 1/12 lap/minute;
+Their relative rate is 1/9-1/12=1/36 lap/minute;
+The faster horse to gain one full lap will need time=distance/rate=1/(1/36)=36 minutes.
+Answer: A.</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>fbf56eec07860ad20483...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66383 · SUBAPTQUAN_Q063607</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>What percent of selling price would be 34% of cost price if gross profit is 26% of the selling price?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">17.16</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">74.0</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">25.16</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">88.4</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option C)</summary>
+        <div class="expl-body">
+          <p>Let the selling price of the article be 100.
+∴ Profit = 26
+∴ Cost price of the article = 100 – 26 = 74
+∴ Reqd.% = 34×74/100=25.16%
+Answer C</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>2adaf5fe1002a5667362...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66382 · SUBAPTQUAN_Q063606</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff hard">Hard</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>During a certain two-week period, 80 percent of the movies rented from a video store were comedies, and of the remaining movies rented, there were 4 times as many dramas as action movies. If no other movies were rented during that two-week period and there were A action movies rented, then how many comedies, in terms of A, were rented during that two-week period?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">5 A</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">15 A</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">20 A</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">1/25 A</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option C)</summary>
+        <div class="expl-body">
+          <p>Movies: 80 % comedies. 20 % remaining genre.
+Now in this 20 %, there are only 2 categories. Action movies and Drama Movies.
+If Action = x; Drama movies = 4x. Total 5x.
+5x = 20; x = 4
+Action movies: 4 %
+Drama movies: 16 %
+we can say that out of 100z,:
+comedies: 80z
+action: 4z
+drama: 16 z
+Now action movies wereA
+This means:
+A = 4z.
+z = (A/4)
+Comedies: 80z = 80 * (A/4)
+20 A
+C is the answer.</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>cc98d092e92f89af99b6...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66381 · SUBAPTQUAN_Q063605</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff hard">Hard</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>In a clothing store, there are six different colored neckties (red, orange, yellow, green, blue, and indigo) and seven different colored shirts (red, orange, yellow, green, blue, and indigo) that must be packed into boxes for gifts. If each box can only fit one necktie and one shirt, what is the probability that all of the boxes will contain a necktie and a shirt of the same color?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">719/720</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">1/120</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">2/233</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">1/5040</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>7 ties and 7 shirts...
+red tie can take any of 7 shirts..
+orange can take any of the remaining 6 shirts
+yellow any of remaining 5..
+and so on till last indigo chooses the 1 remaining..
+Total ways= 7*6*5*4*3*2*1= 5040
+out of this 5040, ONLY 1 way will have same colour tie and shirt..
+prob = 1/5040
+E</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>69e1393f45b7f0add9ea...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66380 · SUBAPTQUAN_Q063604</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff hard">Hard</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>The two lines y = x and x = -5 intersect on the coordinate plane. If z represents the area of the figure formed by the intersecting lines and the x-axis, what is the side length of a cube whose surface area is equal to 6z?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">16</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">5/√2</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">8</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">2√2</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option B)</summary>
+        <div class="expl-body">
+          <p>800score Official Solution:
+The first step to solving this problem is to actually graph the two lines. The lines intersect at the point (-5, -5) and form a right triangle whose base length and height are both equal to 4. As you know, the area of a triangle is equal to one half the product of its base length and height: A = (1/2)bh = (1/2)(4 × 4) = 25/2; so z = 25/2.
+The next step requires us to find the length of a side of a cube that has a face area equal to 25/2. As you know the 6 faces of a cube are squares. So, we can reduce the problem to finding the length of the side of a square that has an area of 25/2. Since the area of a square is equal to s², where s is the length of one of its side, we can write and solve the equation s² = 25/2. Clearly s = √25/2 = 5/√2 , oranswer choice (B).</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>4616035c724090c5f4df...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66379 · SUBAPTQUAN_Q063603</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>In how many ways can a four-letter password be chosen, using the letters A, B, C, D, and/or E, such that at least one letter is repeated within the password?</p></div>
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">505</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">864</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">900</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">936</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>Total number of four letter passwords = 5*5*5*5= 625 ------(1)
+Total number of passwords in which no letter repeats = 5C4*4!= 5*24=120------(2)
+therefore required value = (1)-(2)= 625-120=505
+A</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>a3695db34cedceddce52...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66378 · SUBAPTQUAN_Q063602</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>A photo-mat shop charges <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>0.6 for the first photo inside a film, and 40% cents less for each additional photo. How many photos can we develop with </mi></mrow></math>36 if each film contains 36 photos?</p></div>
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">2 films and 26 photos</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">5 films and 6 photos</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">5 films and 14 photos</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">6 films and 4 photos</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>1st photo = 0.60
+Subsequent = 0.60*0.6=0.36
+Price of 1 full film=0.6+0.36*35=13.2
+Price of 4 full film = 13.2*2=26.4
+36-26.4=9.6
+9.6=0.6+0.36x
+x=25
+36---&gt;2 full films and 1+25=26 photos
+Answer: A</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>33ff52f61fe5a91ad662...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66377 · SUBAPTQUAN_Q063601</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff hard">Hard</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>A three digit non-zero number &#x27;abc&#x27; in base 5, when converted to base 7, becomes &#x27;cba&#x27;. Which of the following is necessarily true?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">a must be 2</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">c must be 2</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">b must be 0</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">None</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option C)</summary>
+        <div class="expl-body">
+          <p>Sol:
+Given (abc)5=(cba)7(abc)5=(cba)7
+or 25a + 5b + c = 49c + 7b + a
+or 24a = 2b + 48c
+or 12a = b + 24c
+as abc is a 3 digit number in base 5, the possible values for a, b and c are 0, 1, 2, 3, 4 only
+The possible solutions of the above equation are:
+(a, b, c) = (2, 0, 1) and (4, 0, 2) only
+a can take value = 2 or 4
+b can take value = 0 only
+c can take value = 1 or 2 only.
+So correct option c.
+Answer C</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>e42a81e1bca1276218c2...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66376 · SUBAPTQUAN_Q063600</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>Sarah&#x27;s seafood restaurant gets a delivery of fresh seafood every day, 6 days per week, and her delivery company charges her dollars per delivery plus cents per item delivered. If lst week Sarah&#x27;s seafood restaurant had an average of x items per day delivered, then which of the following is the total cost, in dollars, of last week&#x27;s deliveries ?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">6cdx/100</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">d + 6cx/100</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">6d + xc/100</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">6d + 6xc/100</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>Answer will be D. Straightforward question.</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>963e87759929bc653716...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66375 · SUBAPTQUAN_Q063599</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff hard">Hard</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>A dishonest person wants to make a profit on the selling of milk. He would like to mix water (costing nothing) with milk costing 33 <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi> per litre so as to make a profit of 30% on cost when he sells the resulting milk and water mixture for 36</mi></mrow></math>. In what ratio should he mix the water and milk?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">1:20</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">1:10</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">1:120</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">23:120</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>First of all, let&#x27;s consider 1 liter of the stuff he is going to sell --- naive customers think it&#x27;s pure milk, but we know it&#x27;s some milk-water mixture. He is going to sell this liter of milk-water for <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>36.
+This </mi></mrow></math>36 should be a 30% increase over cost. Here, we need to think about percentage increases as multipliers.
+Using multipliers
+(cost)*1.30 = <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>36
+cost = 36/1.3 = 360/12 = </mi></mrow></math>27.69
+If he wants a 30% increase over cost on the sale of one liter of his milk-water, the cost has to be <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>27.69.
+Well, a liter of milk costs </mi></mrow></math>33, so if he is going to use just USD 30 of milk in his mixture, that&#x27;s 27.69/33 = 120/143 of a liter. If milk is 120/143 of the liter, then water is 23/143 of the liter, and the ratio of water to milk is 23:120. Answer choice(E)</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>6a2eadcf44789a0f9f1b...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66374 · SUBAPTQUAN_Q063598</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>3x^2-6x+3 = 0
+Find the above equation find the value of x</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">0</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">X=1</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">2</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">4</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option B)</summary>
+        <div class="expl-body">
+          <p>a = 3, b = -6, c = 3
+x1,2 = (6 ± √ ( (-6)2 - 4×3×3)) / (2×3) = (6 ± √(36-36)) / 6 = (6 ± 0) / 6
+x1 = x2 = 1
+B</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>838d5b19a5ac2f61becb...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66373 · SUBAPTQUAN_Q063597</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>Two trains of lengths 150m and 180m respectively are running in opposite directions with a speed of 30 km/hr and 24 km/hr respectively. How much time will they take to cross each ther?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">21 secs.</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">23 secs.</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">24 secs.</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">22 secs.</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>Relative speed = (30+24) km/hr =15m/s. Time taken by the trains to cross each other =sum of lengths of two trains /Relative speed. (150+180)/15sec. =330/15 = sec22s. Answer : D</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>c0e80ffccd5610766a5e...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66372 · SUBAPTQUAN_Q063596</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>Let the polynomials be:
+P1(x)=3x2−7x+8,
+P2(x)=−5x2−4x+2,
+P1(x)+P2(x)=</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">2x2 + 11x - 7</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">-2x2 - 11x + 10</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">-2x2 - 11x + 6</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">2x2 - 9x + 7</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option B)</summary>
+        <div class="expl-body">
+          <p>Solution:
+P1(x)+P2(x)=(3x2−7x+8)+(−5x2−4x+2)=P1(x)+P2(x)=(3x2−7x+8)+(−5x2−4x+2)=
+3x2−7x+8−5x2−4x+2=3x2−7x+8−5x2−4x+2=
+−2x2−11x+10
+Answer B</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>7fe116cfb39924c4d267...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66371 · SUBAPTQUAN_Q063595</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>Two trains running in opposite directions cross a man standing on the platform in 27 seconds and 17 seconds respectively . If they cross each other in 23 seconds, what is the ratio of their speeds?</p></div>
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">3/2</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">1/2</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">4/3</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">3/4</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>Let the speed of the trains be x and y respectively
+length of train1 = 27x
+length of train2 = 17y
+Relative speed= x+ y
+Time taken to cross each other = 23 s
+=&gt; (27x + 17 y)/(x+y) = 23
+=&gt; (27x + 17 y)/ = 23(x+y)
+=&gt; 4x = 6y
+=&gt; x/y = 6/4 = 3/2
+Answer is A.</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>f72754d9b64755379615...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66370 · SUBAPTQUAN_Q063594</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>In what time will a railway train 90 m long moving at the rate of 44 kmph pass a telegraph post on its way?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">3</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">5</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">4.3</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">7.4</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>T = 90/44* 18/5 = 7.4 sec
+Answer:E</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>57e38fe32c4d081e9c88...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66369 · SUBAPTQUAN_Q063593</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>In a shower, 8 cm of rain falls. The volume of water that falls on 1.5 hectares of ground is:</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">75 cu. m</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">1200 cu. m</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">7500 cu. m</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">75000 cu. m</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option B)</summary>
+        <div class="expl-body">
+          <p>1 hectare = 10000 sq mtr
+The volume of water that falls on 1.5 hectares of ground = 0.08*1.5*10000 = 1200 cub mtr .
+ANSWER:B</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>94ae48eb1cf6bbad94c3...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66368 · SUBAPTQUAN_Q063592</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>From a point P on a level ground, the angle of elevation of the top tower is 30°. If the tower is 100 m high, the distance of point P from the foot of the tower is:</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">149 m</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">156 m</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">173 m</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">200 m</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option C)</summary>
+        <div class="expl-body">
+          <p>Solution
+Let AB be the tower.
+Then, &lt;APB =30° and AB= 100 m
+AB/AP= tan30°
+= 1 / √3
+AB = (AB x √3)= 100√3 m.
+= (100 x 1.73) m = 173 m.
+Answer C</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>441d5782be3eacb178ee...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66367 · SUBAPTQUAN_Q063591</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>A total of 3000 chocolates were distributed among 120 boys and girls such that each boy received 2 chocolates and each girl received 3 chocolates. Find the respective number of boys and girls?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">22</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">60</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">77</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">26</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option B)</summary>
+        <div class="expl-body">
+          <p>Let the number of boys be x.
+Number of girls is 120 - x.
+Total number of chocolates received by boys and girls = 2x + 3(120 - x) = 300
+=&gt; 360 - x = 300 =&gt; x = 60.
+So, the number of boys or girls is 60.
+Answer: B</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>59ed376c1e59ead609d2...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66366 · SUBAPTQUAN_Q063590</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff hard">Hard</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>A fair coin is tossed 15 times. What is the probability of getting more heads than tails in 15 tosses?</p></div>
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">1/2</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">63/128</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">4/7</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">61/256</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>On each toss, the probability of getting a head is 1/2 and the probability of getting a tail is 1/2.
+There is no way to get the same number of heads and tails on an odd number of tosses.
+There will either be more heads or more tails.
+Then there must be more heads on half of the possible outcomes and more tails on half of the possible outcomes.
+P(more heads) = 1/2
+The answer is A.</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>807aa55647b3c844fd36...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66365 · SUBAPTQUAN_Q063589</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff hard">Hard</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>In current of a stream runs at 2 km/hr. A motor boat goes 30 km upstream and back again to the starting point in 20 hours. The speed of the moter boat in still water is:</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">5 km/hr</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">8 km/hr</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">2 km/hr</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">4 km/hr</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>Explanation:
+Let the speed ofboat in still water be x km/hr.
+Speed down stream = (x + 2) km/hr
+Speed up stream = (x - 2) km/hr
+30/(x+2) + 30/(x-2) = 20 hours
+(30x-60+30x+60)/(x2-4) = 20
+60x = 20x2 - 80
+3x = x2 - 4
+x2-3x-4=0
+x2-4x+x-4=0
+x(x-4)+1(x-4)=0
+x=4, x=-1
+Speed of moter boat is 4 km/hr
+Answer: Option D</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>5a440bf32eec5fbd09ef...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66364 · SUBAPTQUAN_Q063588</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>A certain university will select 1 of 9 candidates eligible to fill a position in the mathematics department and 2 of 15 candidates eligible to fill 2 identical positions in the computer science department. If none of the candidates is eligible for a position in both departments, how many different sets of 3 candidates are there to fill the 3 positions?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">351</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">425</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">748</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">945</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>1C9*2C15 = 9*105 = 945
+the answer is (E)</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>f8b8fefae4c11319b013...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66363 · SUBAPTQUAN_Q063587</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>A train 250 m long running at 72 kmph crosses a platform in 20 sec. What is the length of the platform?</p></div>
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">150m</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">200m</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">250m</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">270m</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>D = 72 * 5/18 = 20 = 400 â€“ 250 = 150m
+ANSWER:A</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>52f29f4d4e245b467d89...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66362 · SUBAPTQUAN_Q063586</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>The perimeter of a semi circle is 180 cm then the radius is?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">22</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">28</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">35</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">37</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option C)</summary>
+        <div class="expl-body">
+          <p>36/7 r = 180
+=&gt; r
+= 35
+Answer: C</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>28f5d8d365955825600a...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66361 · SUBAPTQUAN_Q063585</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>In what ratio must tea at Rs.62 per Kg be mixed with tea at Rs.72 per Kg so that the mixture must be worth Rs.64.50 per Kg?</p></div>
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">3 : 1</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">3 : 2</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">4 : 3</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">5 : 3</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>Required ratio = 750 : 250 = 3 : 1
+Answer A</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>4373803707efa6e5ff92...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66360 · SUBAPTQUAN_Q063584</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>In a kilometer race, A beats B by 50 meters or 5 seconds. What time does A take to complete the race?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">199 sec</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">190 sec</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">726 sec</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">90 sec</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>Time taken by B run 1000 meters
+= (1000 * 5)/50 = 100 sec.
+Time taken by A = 100 - 10
+= 90 sec.
+Answer: D</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>e66438eb965612edd018...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66359 · SUBAPTQUAN_Q063583</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>A cycle is bought for Rs.900 and sold for Rs.1080, find the gain percent?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">10</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">16</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">20</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">22</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option C)</summary>
+        <div class="expl-body">
+          <p>C
+20%
+900 ---- 180
+100 ---- ? =&gt; 20%</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>c1fbf717627424ec6d72...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66358 · SUBAPTQUAN_Q063582</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>The measures of the 2 acute angles of a triangle are in the ratio of 2:7. What are the measures of the 2 angles?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">50°</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">70°</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">80°</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">90°</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option B)</summary>
+        <div class="expl-body">
+          <p>If the ratio of the two angles is 2:7, then the measures of two angles can be written as 2x and 7x. Also the two acute angles of a triangle is equal to 90°. Hence
+2x + 7x = 90
+9x = 90
+x = 10
+Measures of the two acute angles are
+2x = 2 × 10 = 20°
+7x = 7 × 10 = 70°
+B</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>62e3da7add58575f2052...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66357 · SUBAPTQUAN_Q063581</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>Two trains T1 and T2 start simultaneously from two stations X and Y respectively towards each other. If
+they are 40 km apart both 3 and 6 hours after start, then find the distance between the two stations.</p></div>
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">120km</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">150km</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">220km</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">180km</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>In first 3 hours T1 travels R km and T2 travels S km.
+After 6 hours they traveled R+S+40+ 40
+2(R+S ) = R+S +80
+R+S = 180
+Hence distance between XY is R+S+ 40 = 40 +80 =120
+Answer : A</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>995d38f9061df1b2addb...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66356 · SUBAPTQUAN_Q063580</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff hard">Hard</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>In a particular course, only two grades are given all semester: the midterm exam, which counts for 25% of the semester grade, and the final exam, which counts for the remainder. Lindsey&#x27;s semester grade was 88%. If the highest possible score on either exam is 100%, what is the lowest possible score B that Lindsey could have received on her midterm exam?</p></div>
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">52%</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">64%</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">72%</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">76%</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>If the midterm counts for 25% of the total grade, then the final exam must count for the remaining 75%, meaning that in this weighted average problem the final is weighted 3 times as much as the midterm. Using the weighted average mapping strategy, then, and maximizing her final exam score so that you minimize her midterm score, you have:
+100-------------88----------------------------x
+And you know that the ratio is 3:1. Since the final exam score of 100 is weighted heavier, then the difference of 12 between 100 and 88 is the1part of the ratio, meaning that 3(12) is the 3 portion. That equals 36, so the midterm score (x) is 36 less than the weighted average of 88. 88 - 36 = 52, sothe correct answer is 52%.</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>bec25331160a36e76905...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66355 · SUBAPTQUAN_Q063579</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff hard">Hard</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>A set of numbers has the property that for any number t in the set, t + 2 is in the set. If -1 is in the set, which of the following must also be in the set?
+I. 1
+II. -3
+III. 5</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">I only</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">II only</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">I and III only</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">II and III only</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option C)</summary>
+        <div class="expl-body">
+          <p>The question is which of the following must be in the set, not could be in the set.
+If -1 is in the set so must be -1+2=1, as 1 is in the set so must be 1+2=3, as 3 is in the set so must be 3+2=5 and so on. So basically knowing that -1 is in the set we can say that ALL odd numbers more than -1 are also in the set.
+Answer: C.</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>5ff6f2768aebfac71986...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66354 · SUBAPTQUAN_Q063578</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>In a camp, there is a meal for 180 men or 200 children. If 150 children have taken the meal, how many men will be catered to with the remaining meal ?</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">38 men</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">32 men</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">34 men</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">45 men</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>Explanation:
+There is meal for 200 children. 150 children have taken the meal.
+Remaining meal is to be catered to 50 children.
+Now, 200 children = 180 men
+So, 50 Children = 180/200 * 50 = 45 men
+Answer: D</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>00a0bbd56d6518d14462...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66353 · SUBAPTQUAN_Q063577</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>Ravi can do a piece of work in 20 days while Prakash can do it in 40 days. In how many days will they finish it together?</p></div>
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">13 1/3 days</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">15 1/3 days</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">17 1/3 days</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">17 7/3 days</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>1/20 + 1/40 =3/40
+40/3
+= 13 1/13 days
+Answer: A</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>a1ab80ff8160fb3782eb...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#66352 · SUBAPTQUAN_Q063576</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-bloom">Bloom: Apply</span>
+          <span class="badge b-type">Numerical</span>
+          <span class="badge b-pyq">PYQ: GRE / GMAT / CAT / SSC CGL Quantitative Pattern ()</span><span class="badge b-meta">Body: Open Quantitative Bank (Apache-2.0) · Global / India</span><span class="badge b-meta">Level: Graduate Competitive Level · Stage: Quantitative Aptitude CBT · Marks: +2.0 / -0.50</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Reasoning</span> ·
+          <span><strong>Unit:</strong> Quantitative Problem Solving &amp; Algebraic Reasoning</span> ·
+          <span><strong>Topic:</strong> Mathematical Word Problems &amp; Quantitative Analysis</span> ·
+          <span><strong>Branches:</strong> GEN</span>
+        </div>
+      </div>
+      <div class="q-stem"><p>If XY denotes X is raised to the power Y, Find the last two digits of 19413843+ 19614181</p></div>
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">12</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">22</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">42</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">82</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>1941^3843
+unit digit= 1^3=1
+10th digit=4*3=12=2 means last two digit =21
+and 1961^4181
+unit digit=1
+10th digit=6*1=6 mean last two digit= 61
+hence,
+21+61= 82
+ANSWER:D</p>
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Open-License Apache-2.0 Open License (deepmind/aqua_rat)</span>
+            <span><strong>SHA-256:</strong> <code>afd56367172c09d4abac...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+  </main>
+  <script>
+    let curPage = 1;
+    let totalPages = 1329;
+
+    function switchDb(dbVal) {
+      document.getElementById('dbFilter').value = dbVal;
+      loadPage(1);
+    }
+
+    async function loadPage(p) {
+      p = Math.max(1, Math.min(totalPages, p));
+      curPage = p;
+      const rawDb = document.getElementById('dbFilter').value || '';
+      const db = encodeURIComponent(rawDb);
+      const q = encodeURIComponent(document.getElementById('qSearch').value);
+      try {
+        let resp = await fetch(`/api/page?page=${p}&db=${db}&q=${q}&t=${Date.now()}`).catch(() => null);
+        if (!resp || !resp.ok) {
+          const dbKey = rawDb || 'ALL';
+          const staticPage = Math.min(5, Math.max(1, p));
+          resp = await fetch(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/main/mcq_live/page_${dbKey}_${staticPage}.json?t=${Date.now()}`);
+        }
+        if (!resp || !resp.ok) return;
+        const data = await resp.json();
+        curPage = data.page;
+        totalPages = data.total_pages;
+        document.getElementById('cardsContainer').innerHTML = data.cards_html;
+        document.getElementById('pageInfo').innerText =
+          `Page ${data.page} of ${data.total_pages} (Showing 50 per page · ${data.total_matching} matching questions)`;
+        document.getElementById('btnFirst').disabled = (curPage <= 1);
+        document.getElementById('btnPrev').disabled = (curPage <= 1);
+        document.getElementById('btnNext').disabled = (curPage >= totalPages);
+        document.getElementById('btnLast').disabled = (curPage >= totalPages);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (e) {}
+    }
+
+    async function pollCountersOnly() {
+      try {
+        let resp = await fetch('/api/db1_live?t=' + Date.now()).catch(() => null);
+        if (!resp || !resp.ok) {
+          resp = await fetch('https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/main/mcq_live/cloud_live_status.json?t=' + Date.now());
+        }
+        if (!resp || !resp.ok) return;
+        const data = await resp.json();
+        document.getElementById('liveTs').innerText = data.timestamp || data.last_updated_utc || '';
+        const logTxt = data.log_tail || data.recent_logs;
+        if (logTxt) document.getElementById('liveLogBox').innerText = logTxt;
+        if (data.raw_stats) {
+          document.getElementById('cntSeeds').innerText = data.raw_stats.seed_files;
+          document.getElementById('cntRawFp').innerText = data.raw_stats.raw_fingerprints;
+        }
+        if (data.counts) {
+          document.getElementById('cntDb1').innerText = data.counts['db1_scraped_mcqs.sqlite'] || 0;
+          document.getElementById('cntDb2').innerText = data.counts['db2_pyq_mcqs.sqlite'] || 0;
+        }
+      } catch (e) {}
+    }
+    setInterval(pollCountersOnly, 5000);
+    pollCountersOnly();
+  </script>
+</body>
+</html>

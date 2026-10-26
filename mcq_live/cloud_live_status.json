@@ -1,0 +1,13 @@
+{
+  "status": "RUNNING_IN_GITHUB_CLOUD",
+  "last_updated_utc": "2026-10-26 10:22:38 UTC",
+  "worldwide_exams_count": 19060,
+  "countries_covered": 31,
+  "counts": {
+    "db1_scraped_mcqs.sqlite": 59753,
+    "db2_pyq_mcqs.sqlite": 35990,
+    "db3_textbook_chunk_mcqs.sqlite": 0,
+    "mcq_bank.sqlite (Master)": 95743
+  },
+  "recent_logs": "[2026-10-26 10:18:53] [DIRECT-OPEN-HARVESTER] [openlifescienceai/medmcqa:default offset=36500] Ingested +0 DB1 MCQs & +72 DB2 PYQs | Totals -> DB1: 59457 | DB2 PYQ: 35835 | Master: 95292\n[2026-10-26 10:19:04] [DIRECT-OPEN-HARVESTER] [deepmind/aqua_rat:raw offset=34000] Ingested +99 DB1 MCQs & +0 DB2 PYQs | Totals -> DB1: 59556 | DB2 PYQ: 35835 | Master: 95391\n[2026-10-26 10:20:09] [DIRECT-OPEN-HARVESTER] [openlifescienceai/medmcqa:default offset=36600] Ingested +0 DB1 MCQs & +77 DB2 PYQs | Totals -> DB1: 59556 | DB2 PYQ: 35912 | Master: 95468\n[2026-10-26 10:20:21] [DIRECT-OPEN-HARVESTER] [deepmind/aqua_rat:raw offset=34100] Ingested +99 DB1 MCQs & +0 DB2 PYQs | Totals -> DB1: 59655 | DB2 PYQ: 35912 | Master: 95567\n[2026-10-26 10:21:24] [DIRECT-OPEN-HARVESTER] [openlifescienceai/medmcqa:default offset=36700] Ingested +0 DB1 MCQs & +78 DB2 PYQs | Totals -> DB1: 59655 | DB2 PYQ: 35990 | Master: 95645\n[2026-10-26 10:21:36] [DIRECT-OPEN-HARVESTER] [deepmind/aqua_rat:raw offset=34200] Ingested +98 DB1 MCQs & +0 DB2 PYQs | Totals -> DB1: 59753 | DB2 PYQ: 35990 | Master: 95743"
+}
