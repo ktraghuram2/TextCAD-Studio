@@ -1,19 +1,20 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-27 02:55:45 UTC \u00b7 \ud83d\udfe2 LIVE FROM GITHUB CLOUD",
-  "last_updated_utc": "2026-10-27 02:55:45 UTC",
+  "timestamp": "2026-10-29 15:17:06 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (100x TURBO + FIGURES)",
+  "last_updated_utc": "2026-10-29 15:17:06 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "counts": {
     "db1_scraped_mcqs.sqlite": 83910,
     "db2_pyq_mcqs.sqlite": 62585,
     "db3_textbook_chunk_mcqs.sqlite": 0,
-    "mcq_bank.sqlite (Master)": 146495
+    "mcq_bank.sqlite (Master)": 146495,
+    "figure_mcqs_count": 1194
   },
   "raw_stats": {
     "seed_files": 4449,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83d\udfe2 GITHUB CLOUD LIVE STREAM]\n[2026-10-26 21:27:24] [DIRECT-OPEN-HARVESTER] Starting 8-Thread Parallel High-Speed Copyright-Free & Official PYQ Direct Harvester...",
-  "recent_logs": "[2026-10-26 21:27:24] [DIRECT-OPEN-HARVESTER] Starting 8-Thread Parallel High-Speed Copyright-Free & Official PYQ Direct Harvester..."
+  "log_tail": "[\ud83d\udfe2 GITHUB CLOUD 100x TURBO + FIGURES STREAM]\n[2026-10-29 15:16:48 UTC] [TURBO-PARQUET+FIGURES] [Phase 1B Real Figures MMMU/MMMU:Psychology:validation] +24 Figure MCQs/PYQs | Total Figures: 1,128 | Master Total: 1,128\n[2026-10-29 15:16:48 UTC] [TURBO-PARQUET+FIGURES] [Phase 1B Real Figures MMMU/MMMU:Public_Health:dev] +5 Figure MCQs/PYQs | Total Figures: 1,133 | Master Total: 1,133\n[2026-10-29 15:16:49 UTC] [TURBO-PARQUET+FIGURES] [Phase 1B Real Figures MMMU/MMMU:Public_Health:validation] +29 Figure MCQs/PYQs | Total Figures: 1,162 | Master Total: 1,162\n[2026-10-29 15:16:50 UTC] [TURBO-PARQUET+FIGURES] [Phase 1B Real Figures MMMU/MMMU:Sociology:dev] +5 Figure MCQs/PYQs | Total Figures: 1,167 | Master Total: 1,167\n[2026-10-29 15:16:51 UTC] [TURBO-PARQUET+FIGURES] [Phase 1B Real Figures MMMU/MMMU:Sociology:validation] +27 Figure MCQs/PYQs | Total Figures: 1,194 | Master Total: 1,194",
+  "recent_logs": "[2026-10-29 15:16:48 UTC] [TURBO-PARQUET+FIGURES] [Phase 1B Real Figures MMMU/MMMU:Psychology:validation] +24 Figure MCQs/PYQs | Total Figures: 1,128 | Master Total: 1,128\n[2026-10-29 15:16:48 UTC] [TURBO-PARQUET+FIGURES] [Phase 1B Real Figures MMMU/MMMU:Public_Health:dev] +5 Figure MCQs/PYQs | Total Figures: 1,133 | Master Total: 1,133\n[2026-10-29 15:16:49 UTC] [TURBO-PARQUET+FIGURES] [Phase 1B Real Figures MMMU/MMMU:Public_Health:validation] +29 Figure MCQs/PYQs | Total Figures: 1,162 | Master Total: 1,162\n[2026-10-29 15:16:50 UTC] [TURBO-PARQUET+FIGURES] [Phase 1B Real Figures MMMU/MMMU:Sociology:dev] +5 Figure MCQs/PYQs | Total Figures: 1,167 | Master Total: 1,167\n[2026-10-29 15:16:51 UTC] [TURBO-PARQUET+FIGURES] [Phase 1B Real Figures MMMU/MMMU:Sociology:validation] +27 Figure MCQs/PYQs | Total Figures: 1,194 | Master Total: 1,194"
 }
