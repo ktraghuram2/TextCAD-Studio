@@ -1,20 +1,20 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-29 15:22:29 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (100x TURBO + FIGURES)",
-  "last_updated_utc": "2026-10-29 15:22:29 UTC",
+  "timestamp": "2026-10-29 15:24:04 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (100x TURBO + FIGURES)",
+  "last_updated_utc": "2026-10-29 15:24:04 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "counts": {
-    "db1_scraped_mcqs.sqlite": 29673,
+    "db1_scraped_mcqs.sqlite": 91792,
     "db2_pyq_mcqs.sqlite": 268262,
     "db3_textbook_chunk_mcqs.sqlite": 0,
-    "mcq_bank.sqlite (Master)": 297935,
+    "mcq_bank.sqlite (Master)": 360054,
     "figure_mcqs_count": 7713
   },
   "raw_stats": {
     "seed_files": 4449,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83d\udfe2 GITHUB CLOUD 100x TURBO + FIGURES STREAM]\n[2026-10-29 15:22:27 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:clinical_knowledge:validation] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 297,935 | Figures: 7,713\n[2026-10-29 15:22:28 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:college_biology:dev] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 297,935 | Figures: 7,713\n[2026-10-29 15:22:28 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:college_biology:test] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 297,935 | Figures: 7,713\n[2026-10-29 15:22:29 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:college_biology:validation] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 297,935 | Figures: 7,713\n[2026-10-29 15:22:29 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:college_chemistry:dev] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 297,935 | Figures: 7,713",
-  "recent_logs": "[2026-10-29 15:22:27 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:clinical_knowledge:validation] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 297,935 | Figures: 7,713\n[2026-10-29 15:22:28 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:college_biology:dev] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 297,935 | Figures: 7,713\n[2026-10-29 15:22:28 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:college_biology:test] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 297,935 | Figures: 7,713\n[2026-10-29 15:22:29 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:college_biology:validation] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 297,935 | Figures: 7,713\n[2026-10-29 15:22:29 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:college_chemistry:dev] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 297,935 | Figures: 7,713"
+  "log_tail": "[\ud83d\udfe2 GITHUB CLOUD 100x TURBO + FIGURES STREAM]\n[2026-10-29 15:23:36 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:world_religions:dev] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 297,935 | Figures: 7,713\n[2026-10-29 15:23:37 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:world_religions:test] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 297,935 | Figures: 7,713\n[2026-10-29 15:23:37 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:world_religions:validation] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 297,935 | Figures: 7,713\n[2026-10-29 15:23:37 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] deepmind/aqua_rat: 6 Parquet shards queued...\n[2026-10-29 15:23:38 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet deepmind/aqua_rat:raw:test] Ingested +253 MCQs (+253 DB1, +0 DB2) | Master Total: 298,188 | Figures: 7,713",
+  "recent_logs": "[2026-10-29 15:23:36 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:world_religions:dev] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 297,935 | Figures: 7,713\n[2026-10-29 15:23:37 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:world_religions:test] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 297,935 | Figures: 7,713\n[2026-10-29 15:23:37 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:world_religions:validation] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 297,935 | Figures: 7,713\n[2026-10-29 15:23:37 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] deepmind/aqua_rat: 6 Parquet shards queued...\n[2026-10-29 15:23:38 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet deepmind/aqua_rat:raw:test] Ingested +253 MCQs (+253 DB1, +0 DB2) | Master Total: 298,188 | Figures: 7,713"
 }
