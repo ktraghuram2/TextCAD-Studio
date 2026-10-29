@@ -1,0 +1,41 @@
+name: Unlimited 24x7 Cloud MCQ & Figure Factory (100x Turbo Parquet)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "_mcq_engine/**"
+      - ".github/workflows/mcq_unlimited_cloud.yml"
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */4 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mcq-unlimited-cloud-engine
+  cancel-in-progress: true
+
+jobs:
+  harvest-mcqs-and-figures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Fast Parquet & Image Engine and Run 24x7 Harvester
+        run: |
+          pip install pyarrow pillow beautifulsoup4 lxml langdetect
+          python -u _mcq_engine/public_cloud_runner.py
