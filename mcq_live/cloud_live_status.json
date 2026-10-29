@@ -1,20 +1,24 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-29 15:27:08 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (100x TURBO + FIGURES)",
-  "last_updated_utc": "2026-10-29 15:27:08 UTC",
+  "timestamp": "2026-10-29 16:26:45 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (VERIFIED + STAGING QUEUE + PASSAGES)",
+  "last_updated_utc": "2026-10-29 16:26:45 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "counts": {
-    "db1_scraped_mcqs.sqlite": 233801,
-    "db2_pyq_mcqs.sqlite": 268262,
+    "db1_scraped_mcqs.sqlite": 118971,
+    "db2_pyq_mcqs.sqlite": 123713,
     "db3_textbook_chunk_mcqs.sqlite": 0,
-    "mcq_bank.sqlite (Master)": 502063,
-    "figure_mcqs_count": 7713
+    "mcq_bank.sqlite (Master)": 242684,
+    "figure_mcqs_count": 2678,
+    "passage_mcqs_count": 0,
+    "shared_passages_count": 0,
+    "staging_pending_count": 259379,
+    "staging_promoted_count": 0
   },
   "raw_stats": {
     "seed_files": 4449,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83d\udfe2 GITHUB CLOUD 100x TURBO + FIGURES STREAM]\n[2026-10-29 15:25:04 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] tau/commonsense_qa: 3 Parquet shards queued...\n[2026-10-29 15:25:05 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet tau/commonsense_qa:default:test] Ingested +1,140 MCQs (+1,140 DB1, +0 DB2) | Master Total: 491,101 | Figures: 7,713\n[2026-10-29 15:25:08 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet tau/commonsense_qa:default:train] Ingested +9,741 MCQs (+9,741 DB1, +0 DB2) | Master Total: 500,842 | Figures: 7,713\n[2026-10-29 15:25:09 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet tau/commonsense_qa:default:validation] Ingested +1,221 MCQs (+1,221 DB1, +0 DB2) | Master Total: 502,063 | Figures: 7,713\n[2026-10-29 15:25:21 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] CohereForAI/Global-MMLU: 0 Parquet shards queued...",
-  "recent_logs": "[2026-10-29 15:25:04 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] tau/commonsense_qa: 3 Parquet shards queued...\n[2026-10-29 15:25:05 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet tau/commonsense_qa:default:test] Ingested +1,140 MCQs (+1,140 DB1, +0 DB2) | Master Total: 491,101 | Figures: 7,713\n[2026-10-29 15:25:08 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet tau/commonsense_qa:default:train] Ingested +9,741 MCQs (+9,741 DB1, +0 DB2) | Master Total: 500,842 | Figures: 7,713\n[2026-10-29 15:25:09 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet tau/commonsense_qa:default:validation] Ingested +1,221 MCQs (+1,221 DB1, +0 DB2) | Master Total: 502,063 | Figures: 7,713\n[2026-10-29 15:25:21 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] CohereForAI/Global-MMLU: 0 Parquet shards queued..."
+  "log_tail": "[\ud83d\udfe2 STRICT EXPLANATION GATE + STAGING QUEUE + SHARED PASSAGES]\n[STAGING-AUDIT-SWEEP] Moved 259,379 short/low/no-explanation items -> Staging Queue | Kept 242,684 Full-Explanation Verified MCQs | Staging Pending: 259,379",
+  "recent_logs": "[STAGING-AUDIT-SWEEP] Moved 259,379 short/low/no-explanation items -> Staging Queue | Kept 242,684 Full-Explanation Verified MCQs | Staging Pending: 259,379"
 }
