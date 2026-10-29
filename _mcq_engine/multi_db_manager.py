@@ -247,16 +247,42 @@ def get_db_counts() -> dict:
         else:
             stats[name] = 0
     fig_cnt = 0
+    psg_q_cnt = 0
+    psg_cnt = 0
     if MASTER_DB_PATH.exists():
         try:
             c = sqlite3.connect(MASTER_DB_PATH)
+            pipeline.ensure_db_schema(c)
             fig_cnt = c.execute(
                 "SELECT COUNT(*) FROM questions WHERE has_question_diagram = 1 OR (question_diagram_svg IS NOT NULL AND question_diagram_svg != '')"
             ).fetchone()[0]
+            psg_q_cnt = c.execute(
+                "SELECT COUNT(*) FROM questions WHERE has_passage = 1 AND passage_id != ''"
+            ).fetchone()[0]
+            psg_cnt = c.execute("SELECT COUNT(*) FROM passages").fetchone()[0]
             c.close()
         except Exception:
             pass
+    staging_pending = 0
+    staging_promoted = 0
+    st_path = BASE_DIR / "db_staging_queue.sqlite"
+    if st_path.exists():
+        try:
+            sc = sqlite3.connect(st_path)
+            staging_pending = sc.execute(
+                "SELECT COUNT(*) FROM staging_meta WHERE staging_status = 'PENDING_AI_AUDIT'"
+            ).fetchone()[0]
+            staging_promoted = sc.execute(
+                "SELECT COUNT(*) FROM staging_meta WHERE staging_status = 'PROMOTED'"
+            ).fetchone()[0]
+            sc.close()
+        except Exception:
+            pass
     stats["figure_mcqs_count"] = fig_cnt
+    stats["passage_mcqs_count"] = psg_q_cnt
+    stats["shared_passages_count"] = psg_cnt
+    stats["staging_pending_count"] = staging_pending
+    stats["staging_promoted_count"] = staging_promoted
     return stats
 
 

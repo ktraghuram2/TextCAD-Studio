@@ -127,10 +127,36 @@ def ensure_db_schema(conn: sqlite3.Connection):
         ("level_ids_json", "TEXT DEFAULT ''"),
         ("canonical_hash", "TEXT"),
         ("simhash_hex", "TEXT"),
+        ("has_passage", "INTEGER DEFAULT 0"),
+        ("passage_id", "TEXT DEFAULT ''"),
+        ("passage_question_num", "INTEGER DEFAULT 0"),
+        ("passage_total_questions", "INTEGER DEFAULT 0"),
         ("updated_at", "TEXT"),
     ]:
         if col not in cols:
             cur.execute(f"ALTER TABLE questions ADD COLUMN {col} {ctype}")
+
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS passages (
+            passage_id TEXT PRIMARY KEY,
+            passage_hash TEXT UNIQUE,
+            subject_id TEXT DEFAULT '',
+            subject TEXT DEFAULT '',
+            domain TEXT DEFAULT '',
+            passage_title TEXT DEFAULT '',
+            passage_html TEXT DEFAULT '',
+            has_passage_diagram INTEGER DEFAULT 0,
+            passage_diagram_svg TEXT DEFAULT '',
+            question_count INTEGER DEFAULT 1,
+            source_url TEXT DEFAULT '',
+            language TEXT DEFAULT 'en',
+            created_at TEXT,
+            updated_at TEXT
+        )
+        """
+    )
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_questions_passage_id ON questions(passage_id)")
     conn.commit()
 
 

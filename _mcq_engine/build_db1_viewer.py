@@ -3,10 +3,12 @@ r"""
 Feather-Light Paginated (50 Questions/Page) Live Cloud & Localhost Website
 (`build_db1_viewer.py`)
 ==========================================================================
-Generates both `db1_viewer.html` and the static live website folder `docs/`
-(`docs/index.html`, `docs/cloud_live_status.json`, `docs/page_*.json`)
-with full SVG & Embedded Figure rendering (`question_diagram_svg`, `explanation_diagram_svg`)
-published automatically to `https://ktraghuram2.github.io/TextCAD-Studio/mcq_live/`.
+Renders:
+  - Verified Sufficient-Explanation MCQs & PYQs (`DB1`, `DB2`, `Master`)
+  - `🖼️ Figure-Based MCQs & PYQs` (`<svg>` & Open-License Exam Figures)
+  - `📖 Shared-Passage MCQs (1 Para -> Multi Qs)` (`passages` table JOIN)
+  - `⏳ Staging Queue (Awaiting AI Check & Rich Explanation)` (`db_staging_queue.sqlite`)
+Published automatically to `https://ktraghuram2.github.io/TextCAD-Studio/mcq_live/`.
 """
 
 import html
@@ -17,11 +19,13 @@ from datetime import datetime
 from pathlib import Path
 
 import multi_db_manager
+import pipeline
 
 BASE_DIR = Path(__file__).resolve().parent
 DB1_PATH = BASE_DIR / "db1_scraped_mcqs.sqlite"
 DB2_PATH = BASE_DIR / "db2_pyq_mcqs.sqlite"
 MASTER_PATH = BASE_DIR / "mcq_bank.sqlite"
+STAGING_PATH = BASE_DIR / "db_staging_queue.sqlite"
 LOG_PATH = BASE_DIR / "turbo_parquet_and_figure_harvester.log"
 FALLBACK_LOG_PATH = BASE_DIR / "bulk_world_dataset_harvester.log"
 OUT_HTML = BASE_DIR / "db1_viewer.html"
@@ -42,7 +46,7 @@ def get_recent_log_lines(n: int = 4) -> str:
                     return "\n".join(tail[-n:])
             except Exception:
                 pass
-    return "Turbo Parquet & Figure Harvester + AI Workers running..."
+    return "Staging Queue Gate + Shared-Passage Engine + AI Auditor running..."
 
 
 def get_raw_scrape_stats() -> dict:
@@ -67,7 +71,7 @@ def get_raw_scrape_stats() -> dict:
     }
 
 
-def render_question_card(display_num: int, q: dict) -> str:
+def render_question_card(display_num: int, q: dict, is_staging_view: bool = False) -> str:
     diff = q.get("difficulty_level") or "Medium"
     diff_cls = diff.lower().replace(" ", "-")
     src_db = q.get("source_db") or "DB1_SCRAPED_MODIFIED"
@@ -75,9 +79,39 @@ def render_question_card(display_num: int, q: dict) -> str:
 
     q_svg = (q.get("question_diagram_svg") or "").strip()
     e_svg = (q.get("explanation_diagram_svg") or "").strip()
-    has_fig = bool(q.get("has_question_diagram") or q_svg or e_svg)
+    p_svg = (q.get("p_diagram_svg") or "").strip()
+    has_fig = bool(q.get("has_question_diagram") or q_svg or e_svg or p_svg)
 
     fig_badge = '<span class="badge b-fig">🖼️ Figure / Diagram</span>' if has_fig else ""
+
+    psg_id = (q.get("passage_id") or "").strip()
+    psg_html = (q.get("p_html") or "").strip()
+    psg_title = (q.get("p_title") or "Shared Comprehension / Common-Data Passage").strip()
+    p_qnum = int(q.get("passage_question_num") or 0)
+    p_qtot = int(q.get("passage_total_questions") or q.get("p_qcount") or 0)
+    has_psg = bool(psg_id and psg_html)
+
+    psg_badge = ""
+    psg_block = ""
+    if has_psg:
+        grp_lbl = f"Question {p_qnum} of {p_qtot}" if (p_qnum and p_qtot) else "Linked Passage Question"
+        psg_badge = f'<span class="badge b-psg">📖 Passage {html.escape(psg_id)} ({grp_lbl})</span>'
+        p_fig_inner = f'<div class="q-diagram-box" style="margin-top:8px;">{p_svg}</div>' if p_svg else ""
+        psg_block = f"""
+        <div class="passage-box">
+          <div class="passage-hdr">
+            <span>📖 {html.escape(psg_title)}</span>
+            <span class="passage-tag">Shared ID: {html.escape(psg_id)} · {grp_lbl}</span>
+          </div>
+          <div class="passage-body">{psg_html}</div>
+          {p_fig_inner}
+        </div>
+        """
+
+    staging_badge = ""
+    if is_staging_view or q.get("staging_reason"):
+        st_reason = html.escape(str(q.get("staging_reason") or "PENDING_AI_AUDIT"))
+        staging_badge = f'<span class="badge b-stg">⏳ STAGING QUEUE ({st_reason})</span>'
 
     pyq_badges = ""
     if is_pyq or q.get("pyq_exam_name"):
@@ -86,9 +120,6 @@ def render_question_card(display_num: int, q: dict) -> str:
             f'({html.escape(str(q.get("pyq_year") or ""))})</span>'
             f'<span class="badge b-meta">Body: {html.escape(q.get("pyq_exam_body") or "Official Board")} · '
             f'{html.escape(q.get("pyq_country") or "India/Global")}</span>'
-            f'<span class="badge b-meta">Level: {html.escape(q.get("pyq_qualification_level") or "Graduate")} · '
-            f'Stage: {html.escape(q.get("pyq_exam_stage") or "CBT")} · '
-            f'Marks: {html.escape(str(q.get("pyq_marks") or "+2.0"))} / {html.escape(str(q.get("pyq_negative_marks") or "-0.67"))}</span>'
         )
 
     q_fig_block = f'<div class="q-diagram-box">{q_svg}</div>' if q_svg else ""
@@ -112,21 +143,21 @@ def render_question_card(display_num: int, q: dict) -> str:
         <div class="q-badges">
           <span class="badge b-id">#{display_num} · {html.escape(q.get('question_id') or '')}</span>
           <span class="badge {'b-pyq-db' if is_pyq else 'b-db'}">{html.escape(src_db)}</span>
+          {staging_badge}
+          {psg_badge}
           {fig_badge}
           <span class="badge b-loc">{html.escape(q.get('locality_scope') or 'UNIVERSAL')}: {html.escape(q.get('applicable_countries') or 'ALL_COUNTRIES')}</span>
           <span class="badge b-subj">{html.escape(q.get('subject_id') or '')} — {html.escape(q.get('subject') or '')}</span>
           <span class="badge b-diff {diff_cls}">{html.escape(diff)}</span>
-          <span class="badge b-bloom">Bloom: {html.escape(q.get('blooms_taxonomy') or 'Apply')}</span>
-          <span class="badge b-type">{html.escape(q.get('question_type') or 'Conceptual')}</span>
           {pyq_badges}
         </div>
         <div class="q-meta">
           <span><strong>Domain:</strong> {html.escape(q.get('domain') or '')}</span> ·
           <span><strong>Unit:</strong> {html.escape(q.get('chapter_name') or '')}</span> ·
-          <span><strong>Topic:</strong> {html.escape(q.get('topic') or '')}</span> ·
-          <span><strong>Branches:</strong> {html.escape(q.get('branch_codes') or '')}</span>
+          <span><strong>Topic:</strong> {html.escape(q.get('topic') or '')}</span>
         </div>
       </div>
+      {psg_block}
       <div class="q-stem">{q.get('question_html') or ''}</div>
       {q_fig_block}
       <div class="opts-grid">{''.join(opts_html)}</div>
@@ -149,8 +180,14 @@ def query_paginated_questions(page: int = 1, page_size: int = PAGE_SIZE, db_filt
     page = max(1, int(page))
     page_size = max(10, min(50, int(page_size)))
     offset = (page - 1) * page_size
+    is_staging = db_filter == "STAGING"
+    order_sql = "q.seq_num DESC, q.question_id DESC"
 
-    if db_filter == "DB2_PYQ":
+    if is_staging:
+        target_db = STAGING_PATH
+        where_clauses = ["sm.staging_status = 'PENDING_AI_AUDIT'"]
+        params = []
+    elif db_filter == "DB2_PYQ":
         target_db = DB2_PATH
         where_clauses = ["1=1"]
         params = []
@@ -161,13 +198,22 @@ def query_paginated_questions(page: int = 1, page_size: int = PAGE_SIZE, db_filt
     elif db_filter == "FIGURES":
         target_db = MASTER_PATH
         where_clauses = [
-            "source_db IN ('DB1_SCRAPED_MODIFIED', 'DB2_PYQ')",
-            "(has_question_diagram = 1 OR (question_diagram_svg IS NOT NULL AND question_diagram_svg != ''))",
+            "q.source_db IN ('DB1_SCRAPED_MODIFIED', 'DB2_PYQ')",
+            "(q.has_question_diagram = 1 OR (q.question_diagram_svg IS NOT NULL AND q.question_diagram_svg != ''))",
         ]
         params = []
+    elif db_filter == "PASSAGES":
+        target_db = MASTER_PATH
+        where_clauses = [
+            "q.source_db IN ('DB1_SCRAPED_MODIFIED', 'DB2_PYQ')",
+            "(q.has_passage = 1 AND q.passage_id != '')",
+        ]
+        params = []
+        # Keep questions belonging to the same passage grouped together in order Q1, Q2, Q3!
+        order_sql = "q.passage_id DESC, q.passage_question_num ASC, q.seq_num ASC"
     else:
         target_db = MASTER_PATH
-        where_clauses = ["source_db IN ('DB1_SCRAPED_MODIFIED', 'DB2_PYQ')"]
+        where_clauses = ["q.source_db IN ('DB1_SCRAPED_MODIFIED', 'DB2_PYQ')"]
         params = []
 
     if not target_db.exists():
@@ -175,22 +221,61 @@ def query_paginated_questions(page: int = 1, page_size: int = PAGE_SIZE, db_filt
 
     if search_q.strip():
         q_like = f"%{search_q.strip()}%"
-        where_clauses.append("(question_html LIKE ? OR subject LIKE ? OR topic LIKE ? OR pyq_exam_name LIKE ?)")
+        where_clauses.append("(q.question_html LIKE ? OR q.subject LIKE ? OR q.topic LIKE ? OR q.pyq_exam_name LIKE ?)")
         params.extend([q_like, q_like, q_like, q_like])
 
     where_sql = " AND ".join(where_clauses)
     conn = sqlite3.connect(target_db, timeout=15.0)
+    pipeline.ensure_db_schema(conn)
+    if is_staging:
+        conn.execute(
+            "CREATE TABLE IF NOT EXISTS staging_meta (question_id TEXT PRIMARY KEY, staging_status TEXT DEFAULT 'PENDING_AI_AUDIT', staging_reason TEXT DEFAULT '', ai_audit_notes TEXT DEFAULT '', staged_at TEXT, audited_at TEXT)"
+        )
     conn.row_factory = sqlite3.Row
-    total_matching = conn.execute(f"SELECT COUNT(*) FROM questions WHERE {where_sql}", params).fetchone()[0]
-    rows = conn.execute(
-        f"SELECT * FROM questions WHERE {where_sql} ORDER BY seq_num DESC, question_id DESC LIMIT ? OFFSET ?",
-        [*params, page_size, offset],
-    ).fetchall()
+
+    if is_staging:
+        total_matching = conn.execute(
+            f"SELECT COUNT(*) FROM questions q JOIN staging_meta sm ON q.question_id = sm.question_id WHERE {where_sql}",
+            params,
+        ).fetchone()[0]
+        rows = conn.execute(
+            f"""
+            SELECT q.*, sm.staging_reason,
+                   p.passage_title AS p_title, p.passage_html AS p_html,
+                   p.passage_diagram_svg AS p_diagram_svg, p.question_count AS p_qcount
+            FROM questions q
+            JOIN staging_meta sm ON q.question_id = sm.question_id
+            LEFT JOIN passages p ON q.passage_id = p.passage_id
+            WHERE {where_sql}
+            ORDER BY {order_sql}
+            LIMIT ? OFFSET ?
+            """,
+            [*params, page_size, offset],
+        ).fetchall()
+    else:
+        total_matching = conn.execute(f"SELECT COUNT(*) FROM questions q WHERE {where_sql}", params).fetchone()[0]
+        rows = conn.execute(
+            f"""
+            SELECT q.*,
+                   p.passage_title AS p_title, p.passage_html AS p_html,
+                   p.passage_diagram_svg AS p_diagram_svg, p.question_count AS p_qcount
+            FROM questions q
+            LEFT JOIN passages p ON q.passage_id = p.passage_id
+            WHERE {where_sql}
+            ORDER BY {order_sql}
+            LIMIT ? OFFSET ?
+            """,
+            [*params, page_size, offset],
+        ).fetchall()
     conn.close()
 
     total_pages = max(1, (total_matching + page_size - 1) // page_size)
     cards = [
-        render_question_card(total_matching - (offset + i), dict(r))
+        render_question_card(
+            (offset + i + 1) if db_filter == "PASSAGES" else (total_matching - (offset + i)),
+            dict(r),
+            is_staging_view=is_staging,
+        )
         for i, r in enumerate(rows)
     ]
     return {
@@ -204,11 +289,13 @@ def query_paginated_questions(page: int = 1, page_size: int = PAGE_SIZE, db_filt
 
 def generate_db1_html() -> int:
     counts = multi_db_manager.get_db_counts()
-    raw_stats = get_raw_scrape_stats()
     page_data = query_paginated_questions(page=1, page_size=PAGE_SIZE)
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log_tail = html.escape(get_recent_log_lines(4))
     fig_cnt = counts.get("figure_mcqs_count", 0)
+    psg_q_cnt = counts.get("passage_mcqs_count", 0)
+    psg_cnt = counts.get("shared_passages_count", 0)
+    stg_cnt = counts.get("staging_pending_count", 0)
     master_cnt = counts.get("mcq_bank.sqlite (Master)", 0)
 
     page_html = f"""<!DOCTYPE html>
@@ -216,7 +303,7 @@ def generate_db1_html() -> int:
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Live Cloud Dashboard (50/Page) — Global & All-India MCQs & PYQs</title>
+  <title>Live Cloud Dashboard (50/Page) — Verified MCQs, Figures, Passages & Staging Queue</title>
   <style>
     :root {{
       --bg: #0f172a;
@@ -274,9 +361,8 @@ def generate_db1_html() -> int:
       padding: 10px 14px;
       cursor: pointer;
     }}
-    .stat-box.active-db {{ border-color: var(--accent); }}
-    .stat-val {{ font-size: 1.45rem; font-weight: 700; color: var(--accent); }}
-    .stat-lbl {{ font-size: 0.76rem; color: var(--muted); }}
+    .stat-val {{ font-size: 1.4rem; font-weight: 700; color: var(--accent); }}
+    .stat-lbl {{ font-size: 0.75rem; color: var(--muted); }}
     .controls, .pager {{
       display: flex;
       flex-wrap: wrap;
@@ -314,6 +400,8 @@ def generate_db1_html() -> int:
     .b-db {{ color: #38bdf8; border-color: #0284c7; }}
     .b-pyq-db {{ color: #f59e0b; border-color: #d97706; }}
     .b-fig {{ color: #f472b6; border-color: #db2777; background: rgba(219, 39, 119, 0.14); }}
+    .b-psg {{ color: #34d399; border-color: #059669; background: rgba(5, 150, 105, 0.16); }}
+    .b-stg {{ color: #fbbf24; border-color: #d97706; background: rgba(217, 119, 6, 0.18); }}
     .b-loc {{ color: #c084fc; border-color: #9333ea; }}
     .b-pyq {{ color: #fde047; border-color: #ca8a04; }}
     .b-subj {{ color: #a7f3d0; border-color: #059669; }}
@@ -322,6 +410,28 @@ def generate_db1_html() -> int:
     .b-diff.hard {{ color: #fb923c; }}
     .b-diff.extra-hard {{ color: #f87171; }}
     .q-meta {{ font-size: 0.8rem; color: var(--muted); margin-bottom: 10px; }}
+    .passage-box {{
+      background: #0b1629;
+      border-left: 4px solid #10b981;
+      border-top: 1px solid #1e3a5f;
+      border-right: 1px solid #1e3a5f;
+      border-bottom: 1px solid #1e3a5f;
+      border-radius: 8px;
+      padding: 12px 15px;
+      margin-bottom: 12px;
+    }}
+    .passage-hdr {{
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #34d399;
+      margin-bottom: 6px;
+    }}
+    .passage-tag {{ color: #94a3b8; font-weight: 600; }}
+    .passage-body {{ font-size: 0.94rem; color: #e2e8f0; }}
     .q-stem {{ font-size: 1rem; margin-bottom: 10px; color: #fff; }}
     .q-diagram-box {{
       background: #f8fafc;
@@ -337,18 +447,8 @@ def generate_db1_html() -> int:
       gap: 12px;
       overflow-x: auto;
     }}
-    .q-diagram-box svg {{
-      max-width: 100%;
-      height: auto;
-      max-height: 310px;
-    }}
-    .q-diagram-box img, .q-figure-img {{
-      max-width: 100%;
-      max-height: 340px;
-      height: auto;
-      border-radius: 6px;
-      object-fit: contain;
-    }}
+    .q-diagram-box svg {{ max-width: 100%; height: auto; max-height: 310px; }}
+    .q-diagram-box img, .q-figure-img {{ max-width: 100%; max-height: 340px; height: auto; border-radius: 6px; object-fit: contain; }}
     .opts-grid {{
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -364,10 +464,7 @@ def generate_db1_html() -> int:
       background: #0b1220;
       border: 1px solid var(--border);
     }}
-    .opt-item.correct-opt {{
-      border-color: var(--green);
-      background: rgba(34, 197, 94, 0.12);
-    }}
+    .opt-item.correct-opt {{ border-color: var(--green); background: rgba(34, 197, 94, 0.12); }}
     .opt-letter {{ font-weight: 700; color: var(--accent); min-width: 20px; }}
     .corr-tag {{ margin-left: auto; font-size: 0.74rem; font-weight: 700; color: var(--green); }}
     details.expl-box {{
@@ -392,50 +489,52 @@ def generate_db1_html() -> int:
 </head>
 <body>
   <header>
-    <h1><span class="live-dot"></span> Live Cloud Dashboard (Showing <strong>50 Questions per Page</strong>)</h1>
-    <div class="sub-bar">Live Sync: <strong id="liveTs">{now_str} · 🟢 LIVE FROM GITHUB CLOUD</strong> · Includes Real Open-License Exam Figures & Clean Recreated SVGs</div>
+    <h1><span class="live-dot"></span> Live Cloud Dashboard — Verified Sufficient-Explanation MCQs & Staging Queue</h1>
+    <div class="sub-bar">Live Sync: <strong id="liveTs">{now_str} · 🟢 LIVE FROM GITHUB CLOUD</strong> · Strict Explanation Gate + Shared Passages (1 Para → Multi Qs) + Figures</div>
     <div class="log-box" id="liveLogBox">{log_tail}</div>
     <div class="stats-grid">
       <div class="stat-box" onclick="switchDb('')">
         <div class="stat-val" id="cntMaster" style="color:#22c55e;">{master_cnt}</div>
-        <div class="stat-lbl">Master Total Verified MCQs (Click for All)</div>
+        <div class="stat-lbl">✅ Verified Master MCQs (Full Explanation Only)</div>
       </div>
       <div class="stat-box" onclick="switchDb('DB1_SCRAPED_MODIFIED')">
         <div class="stat-val" id="cntDb1">{counts.get('db1_scraped_mcqs.sqlite', 0)}</div>
-        <div class="stat-lbl">DB 1: Worldwide Scraped MCQs (Click to Filter)</div>
+        <div class="stat-lbl">DB 1: Verified Scraped MCQs</div>
       </div>
       <div class="stat-box" onclick="switchDb('DB2_PYQ')">
         <div class="stat-val" id="cntDb2" style="color:#f59e0b;">{counts.get('db2_pyq_mcqs.sqlite', 0)}</div>
-        <div class="stat-lbl">DB 2: Official Exam PYQs (Click to Filter)</div>
+        <div class="stat-lbl">DB 2: Verified Official PYQs</div>
       </div>
       <div class="stat-box" onclick="switchDb('FIGURES')">
         <div class="stat-val" id="cntFigures" style="color:#f472b6;">{fig_cnt}</div>
-        <div class="stat-lbl">🖼️ Figure-Based MCQs & PYQs (Click to View)</div>
+        <div class="stat-lbl">🖼️ Verified Figure MCQs & PYQs</div>
       </div>
-      <div class="stat-box">
-        <div class="stat-val" style="color:#c084fc;">19,060</div>
-        <div class="stat-lbl">Worldwide Competitive Exams (31 Countries)</div>
+      <div class="stat-box" onclick="switchDb('PASSAGES')">
+        <div class="stat-val" id="cntPassages" style="color:#34d399;">{psg_q_cnt}</div>
+        <div class="stat-lbl">📖 Shared-Passage MCQs (<span id="cntSharedPsg">{psg_cnt}</span> Passages)</div>
       </div>
-      <div class="stat-box">
-        <div class="stat-val" id="cntRawFp" style="color:#a78bfa;">{raw_stats['raw_fingerprints']}</div>
-        <div class="stat-lbl">Pre-AI Deduplicated Queue</div>
+      <div class="stat-box" onclick="switchDb('STAGING')">
+        <div class="stat-val" id="cntStaging" style="color:#fbbf24;">{stg_cnt}</div>
+        <div class="stat-lbl">⏳ Staging Queue (Awaiting AI Check & Explanation)</div>
       </div>
     </div>
     <div class="controls">
       <input type="text" id="qSearch" placeholder="Search question, subject, topic, or exam..." onkeydown="if(event.key==='Enter') loadPage(1)" style="flex:1; min-width:220px;" />
       <select id="dbFilter" onchange="loadPage(1)">
-        <option value="">DB 1 + DB 2 (All Scraped & PYQs)</option>
-        <option value="FIGURES">🖼️ Only Figure-Based MCQs & PYQs (Diagrams & SVGs)</option>
-        <option value="DB1_SCRAPED_MODIFIED">Only DB 1 (Scraped MCQs)</option>
-        <option value="DB2_PYQ">Only DB 2 (Official PYQs)</option>
+        <option value="">✅ Verified DB 1 + DB 2 (Full Explanations Only)</option>
+        <option value="FIGURES">🖼️ Verified Figure-Based MCQs & PYQs (Diagrams & SVGs)</option>
+        <option value="PASSAGES">📖 Verified Shared-Passage MCQs (1 Para → Multi Qs)</option>
+        <option value="DB1_SCRAPED_MODIFIED">Only Verified DB 1 (Scraped MCQs)</option>
+        <option value="DB2_PYQ">Only Verified DB 2 (Official PYQs)</option>
+        <option value="STAGING">⏳ Staging Queue (Held for AI Check & Explanation)</option>
       </select>
-      <button class="primary" onclick="loadPage(1)">↻ Load Latest 50</button>
+      <button class="primary" onclick="loadPage(1)">↻ Load 50</button>
     </div>
     <div class="pager">
       <button id="btnFirst" onclick="loadPage(1)">« First</button>
       <button id="btnPrev" onclick="loadPage(curPage - 1)">‹ Prev 50</button>
       <span id="pageInfo" style="font-size:0.9rem; color:#cbd5e1; font-weight:600;">
-        Page 1 of {page_data['total_pages']} (Showing latest 50 of {page_data['total_matching']} questions)
+        Page 1 of {page_data['total_pages']} (Showing 50 of {page_data['total_matching']} questions)
       </span>
       <button id="btnNext" onclick="loadPage(curPage + 1)">Next 50 ›</button>
       <button id="btnLast" onclick="loadPage(totalPages)">Last »</button>
@@ -492,10 +591,6 @@ def generate_db1_html() -> int:
         document.getElementById('liveTs').innerText = data.timestamp || data.last_updated_utc || '';
         const logTxt = data.log_tail || data.recent_logs;
         if (logTxt) document.getElementById('liveLogBox').innerText = logTxt;
-        if (data.raw_stats) {{
-          const elFp = document.getElementById('cntRawFp');
-          if (elFp) elFp.innerText = data.raw_stats.raw_fingerprints;
-        }}
         if (data.counts) {{
           const d1 = data.counts['db1_scraped_mcqs.sqlite'] || 0;
           const d2 = data.counts['db2_pyq_mcqs.sqlite'] || 0;
@@ -506,6 +601,12 @@ def generate_db1_html() -> int:
           if (elM) elM.innerText = m;
           const elF = document.getElementById('cntFigures');
           if (elF) elF.innerText = data.counts['figure_mcqs_count'] || 0;
+          const elP = document.getElementById('cntPassages');
+          if (elP) elP.innerText = data.counts['passage_mcqs_count'] || 0;
+          const elSP = document.getElementById('cntSharedPsg');
+          if (elSP) elSP.innerText = data.counts['shared_passages_count'] || 0;
+          const elS = document.getElementById('cntStaging');
+          if (elS) elS.innerText = data.counts['staging_pending_count'] || 0;
         }}
       }} catch (e) {{}}
     }}
@@ -519,7 +620,7 @@ def generate_db1_html() -> int:
     docs_dir = BASE_DIR / "docs"
     docs_dir.mkdir(parents=True, exist_ok=True)
     (docs_dir / "index.html").write_text(page_html, encoding="utf-8")
-    for db_k in ("", "FIGURES", "DB1_SCRAPED_MODIFIED", "DB2_PYQ"):
+    for db_k in ("", "FIGURES", "PASSAGES", "DB1_SCRAPED_MODIFIED", "DB2_PYQ", "STAGING"):
         key_lbl = db_k or "ALL"
         for pg in range(1, 6):
             p_obj = query_paginated_questions(page=pg, page_size=PAGE_SIZE, db_filter=db_k)
@@ -531,4 +632,4 @@ def generate_db1_html() -> int:
 
 if __name__ == "__main__":
     total = generate_db1_html()
-    print(f"Generated feather-light paginated db1_viewer.html & docs/ website (50 questions/page, {total} total)")
+    print(f"Generated paginated db1_viewer.html & docs/ website ({total} verified total)")

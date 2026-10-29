@@ -40,6 +40,7 @@ import bulk_world_dataset_harvester as bwh
 import global_exams_and_locality_manager as gelm
 import multi_db_manager
 import pipeline
+import staging_and_passage_manager as spm
 
 BASE_DIR = Path(__file__).resolve().parent
 MASTER_DB = BASE_DIR / "mcq_bank.sqlite"
@@ -148,6 +149,7 @@ def bulk_insert_items(
     existing_hashes: set,
     max_seq_ref: list[int],
     items: list[dict],
+    st_conn: sqlite3.Connection | None = None,
 ) -> tuple[int, int, int]:
     sql_insert = """
         INSERT OR IGNORE INTO questions (
@@ -165,15 +167,24 @@ def bulk_insert_items(
             option_a, option_b, option_c, option_d, correct_option,
             explanation_html, has_explanation_diagram, explanation_diagram_svg,
             canonical_hash, simhash_hex, locality_scope, applicable_countries,
+            has_passage, passage_id, passage_question_num, passage_total_questions,
             created_at, updated_at
         ) VALUES (
             ?,?,?,?,?,?, ?,?,
             ?,?,?,?, ?,?,?,?, ?,?,?,?, ?,?,?,
-            ?,?,?, ?,?,?,?,?, ?,?,?, ?,?,?, ?,?,?, ?,?,?,?,?, ?,?,?, ?,?,?,?,?,?
+            ?,?,?, ?,?,?,?,?, ?,?,?, ?,?,?, ?,?,?, ?,?,?,?,?, ?,?,?, ?,?,?,?, ?,?,?,?, ?,?
         )
     """
+    close_st = False
+    if st_conn is None:
+        st_conn = sqlite3.connect(spm.STAGING_DB, timeout=120.0)
+        st_conn.execute("PRAGMA journal_mode=WAL;")
+        st_conn.execute("PRAGMA synchronous=NORMAL;")
+        spm.ensure_staging_schema(st_conn)
+        close_st = True
+
     now_iso = datetime.now(timezone.utc).isoformat()
-    m_batch, db1_batch, db2_batch = [], [], []
+    m_batch, db1_batch, db2_batch, st_batch, st_meta_batch = [], [], [], [], []
     fig_added = 0
 
     for q in items:
@@ -187,7 +198,14 @@ def bulk_insert_items(
         has_q_diag = 1 if q_svg else 0
         has_e_diag = 1 if e_svg else 0
 
-        chash, simh = fast_canonical_and_simhash(q_html, opts, bool(has_q_diag or has_e_diag))
+        p_meta = q.get("passage_meta")
+        p_id = ""
+        has_psg = 0
+        if isinstance(p_meta, dict) and p_meta.get("passage_html"):
+            p_id, _ = spm.compute_passage_id(p_meta["passage_html"])
+            has_psg = 1
+
+        chash, simh = fast_canonical_and_simhash(f"{p_id}|{q_html}", opts, bool(has_q_diag or has_e_diag))
         if chash in existing_hashes:
             continue
         existing_hashes.add(chash)
@@ -201,6 +219,23 @@ def bulk_insert_items(
         loc_scope, app_countries = gelm.classify_locality_scope(
             sid, subj, q_html, q.get("pyq_country", "ALL_COUNTRIES")
         )
+
+        is_suff, stg_reason = spm.is_sufficient_explanation(expl_html, q.get("scraped_source_url", ""))
+
+        if has_psg and isinstance(p_meta, dict):
+            target_conns = (m_conn, db2_conn if src_db == "DB2_PYQ" else db1_conn) if is_suff else (st_conn,)
+            for tc in target_conns:
+                spm.upsert_shared_passage(
+                    tc,
+                    p_meta["passage_html"],
+                    p_meta.get("subject_id", sid),
+                    p_meta.get("subject", subj),
+                    p_meta.get("domain", q["domain"]),
+                    p_meta.get("passage_title", "Shared Comprehension / Common-Data Passage"),
+                    p_meta.get("passage_diagram_svg", ""),
+                    p_meta.get("source_url", q.get("scraped_source_url", "")),
+                    p_meta.get("language", q.get("pyq_original_language", "en")),
+                )
 
         params = (
             qid, seq, src_db, sid, subj, q["domain"],
@@ -218,15 +253,21 @@ def bulk_insert_items(
             opts["A"], opts["B"], opts["C"], opts["D"], q["correct_option"],
             expl_html, has_e_diag, e_svg,
             chash, simh, loc_scope, app_countries,
+            has_psg, p_id, int(q.get("passage_question_num") or 0), int(q.get("passage_total_questions") or 0),
             now_iso, now_iso,
         )
-        m_batch.append(params)
-        if has_q_diag or has_e_diag:
-            fig_added += 1
-        if src_db == "DB2_PYQ":
-            db2_batch.append(params)
+
+        if is_suff:
+            m_batch.append(params)
+            if has_q_diag or has_e_diag:
+                fig_added += 1
+            if src_db == "DB2_PYQ":
+                db2_batch.append(params)
+            else:
+                db1_batch.append(params)
         else:
-            db1_batch.append(params)
+            st_batch.append(params)
+            st_meta_batch.append((qid, "PENDING_AI_AUDIT", stg_reason, "", now_iso, ""))
 
     if m_batch:
         m_conn.executemany(sql_insert, m_batch)
@@ -237,6 +278,17 @@ def bulk_insert_items(
         m_conn.commit()
         db1_conn.commit()
         db2_conn.commit()
+
+    if st_batch:
+        st_conn.executemany(sql_insert, st_batch)
+        st_conn.executemany(
+            "INSERT OR IGNORE INTO staging_meta (question_id, staging_status, staging_reason, ai_audit_notes, staged_at, audited_at) VALUES (?,?,?,?,?,?)",
+            st_meta_batch,
+        )
+        st_conn.commit()
+
+    if close_st:
+        st_conn.close()
 
     return len(db1_batch), len(db2_batch), fig_added
 
@@ -462,7 +514,7 @@ def build_recreated_svg_figure_mcqs() -> list[dict]:
                         "D": f"{round(q_in * (t_low / (t_high + t_low)), 2)} kJ",
                     },
                     "correct_option": "C",
-                    "explanation_html": f"<p>Thermal efficiency from the T-S rectangle is {mml(f'<mi>η</mi><mo>=</mo><mn>1</mn><mo>-</mo><mfrac><mn>{t_low}</mn><mn>{t_high}</mn></mfrac><mo>=</mo><mn>{eta}</mn>')}. Net work output equals enclosed area {mml(f'<msub><mi>W</mi><mrow><mi>n</mi><mi>e</mi><mi>t</mi></mrow></msub><mo>=</mo><mi>η</mi><mo>·</mo><msub><mi>Q</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub><mo>=</mo><mn>{w_net}</mn><mtext> kJ</mtext>')}.</p>",
+                    "explanation_html": f"<p>Thermal efficiency from the T-S rectangle is {mml(f'<mi>η</mi><mo>=</mo><mn>1</mn><mo>-</mo><mfrac><mn>{t_low}</mn><mn>{t_high}</mn></mfrac><mo>=</mo><mn>{eta}</mn>')}. Net work output equals the rectangular enclosed cycle area {mml(f'<msub><mi>W</mi><mrow><mi>n</mi><mi>e</mi><mi>t</mi></mrow></msub><mo>=</mo><mi>η</mi><mo>·</mo><msub><mi>Q</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub><mo>=</mo><mn>{w_net}</mn><mtext> kJ</mtext>')} (whereas Option A represents heat rejected Q_out to the low-temperature sink).</p>",
                 })
 
     # 4. Ray Optics Convex Lens Ray-Tracing SVG MCQs & PYQs (80 SVG PYQs)
@@ -521,7 +573,7 @@ def build_recreated_svg_figure_mcqs() -> list[dict]:
                     "D": f"+{v_cm} cm",
                 },
                 "correct_option": "D",
-                "explanation_html": f"<p>Using Cartesian sign convention {mml(f'<mi>u</mi><mo>=</mo><mo>-</mo><mn>{u_cm}</mn><mtext> cm</mtext>')} and {mml(f'<mi>f</mi><mo>=</mo><mo>+</mo><mn>{f_cm}</mn><mtext> cm</mtext>')}: {mml(f'<mfrac><mn>1</mn><mi>v</mi></mfrac><mo>=</mo><mfrac><mn>1</mn><mi>f</mi></mfrac><mo>+</mo><mfrac><mn>1</mn><mi>u</mi></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>{f_cm}</mn></mfrac><mo>-</mo><mfrac><mn>1</mn><mn>{u_cm}</mn></mfrac>')}, yielding {mml(f'<mi>v</mi><mo>=</mo><mo>+</mo><mn>{v_cm}</mn><mtext> cm</mtext>')} behind the lens.</p>",
+                "explanation_html": f"<p>Using Cartesian sign convention {mml(f'<mi>u</mi><mo>=</mo><mo>-</mo><mn>{u_cm}</mn><mtext> cm</mtext>')} and {mml(f'<mi>f</mi><mo>=</mo><mo>+</mo><mn>{f_cm}</mn><mtext> cm</mtext>')}: {mml(f'<mfrac><mn>1</mn><mi>v</mi></mfrac><mo>=</mo><mfrac><mn>1</mn><mi>f</mi></mfrac><mo>+</mo><mfrac><mn>1</mn><mi>u</mi></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>{f_cm}</mn></mfrac><mo>-</mo><mfrac><mn>1</mn><mn>{u_cm}</mn></mfrac>')}, yielding {mml(f'<mi>v</mi><mo>=</mo><mo>+</mo><mn>{v_cm}</mn><mtext> cm</mtext>')} behind the converging optical center (real, inverted image on the opposite side; Option A wrongly uses +u instead of -u).</p>",
             })
 
     # 5. Atwood / Pulley Two-Mass Free-Body SVG MCQs (80 SVG MCQs)
@@ -581,7 +633,7 @@ def build_recreated_svg_figure_mcqs() -> list[dict]:
                     "D": f"{acc} N",
                 },
                 "correct_option": "A",
-                "explanation_html": f"<p>For an ideal Atwood pulley, string tension is {mml(f'<mi>T</mi><mo>=</mo><mfrac><mrow><mn>2</mn><msub><mi>m</mi><mn>1</mn></msub><msub><mi>m</mi><mn>2</mn></msub><mi>g</mi></mrow><mrow><msub><mi>m</mi><mn>1</mn></msub><mo>+</mo><msub><mi>m</mi><mn>2</mn></msub></mrow></mfrac><mo>=</mo><mn>{tens}</mn><mtext> N</mtext>')} and acceleration is {mml(f'<mi>a</mi><mo>=</mo><mn>{acc}</mn><msup><mtext> m/s</mtext><mn>2</mn></msup>')}.</p>",
+                "explanation_html": f"<p>For an ideal Atwood pulley, string tension is {mml(f'<mi>T</mi><mo>=</mo><mfrac><mrow><mn>2</mn><msub><mi>m</mi><mn>1</mn></msub><msub><mi>m</mi><mn>2</mn></msub><mi>g</mi></mrow><mrow><msub><mi>m</mi><mn>1</mn></msub><mo>+</mo><msub><mi>m</mi><mn>2</mn></msub></mrow></mfrac><mo>=</mo><mn>{tens}</mn><mtext> N</mtext>')} and downward acceleration of the heavier block is {mml(f'<mi>a</mi><mo>=</mo><mn>{acc}</mn><msup><mtext> m/s</mtext><mn>2</mn></msup>')} (Option B omits the factor of 2 in the Atwood tension derivation).</p>",
             })
 
     return items
@@ -753,15 +805,17 @@ def convert_mmstar_row(row: dict) -> dict | None:
     }
 
 
-def convert_scienceqa_figure_row(row: dict) -> dict | None:
-    if not row.get("image"):
+def convert_scienceqa_figure_row(row: dict, allow_passage_without_img: bool = True) -> dict | None:
+    hint_raw = str(row.get("hint") or "").strip()
+    has_img = bool(row.get("image"))
+    if not has_img and (not allow_passage_without_img or len(hint_raw) < 45):
         return None
     choices = row.get("choices")
     ans_idx = row.get("answer")
     if not isinstance(choices, list) or len(choices) < 3 or not isinstance(ans_idx, int) or ans_idx >= 4:
         return None
-    img_tag = encode_image_bytes_to_html(row.get("image"))
-    if not img_tag:
+    img_tag = encode_image_bytes_to_html(row.get("image")) if has_img else ""
+    if has_img and not img_tag and len(hint_raw) < 45:
         return None
     opts_list = [str(c) for c in choices[:4]]
     while len(opts_list) < 4:
@@ -772,7 +826,9 @@ def convert_scienceqa_figure_row(row: dict) -> dict | None:
         subj_raw,
         ("SUB_SCI_PHYSICS", "General Science (Physics, Chemistry, Biology & Geography)", "Science"),
     )
-    sol = str(row.get("solution") or row.get("lecture") or f"Correct option from diagram analysis is {ans}.").strip()
+    lec = str(row.get("lecture") or "").strip()
+    sol_part = str(row.get("solution") or "").strip()
+    sol = f"{lec} {sol_part}".strip()
     return {
         "source_db": "DB1_SCRAPED_MODIFIED",
         "subject_id": sid,
@@ -811,7 +867,79 @@ def convert_scienceqa_figure_row(row: dict) -> dict | None:
             "D": bwh.sanitize_to_mathml_html(opts_list[3]),
         },
         "correct_option": ans,
-        "explanation_html": f"<p>{bwh.sanitize_to_mathml_html(sol)}</p>",
+        "explanation_html": f"<p>{bwh.sanitize_to_mathml_html(sol)}</p>" if sol else "",
+        "passage_meta": (
+            {
+                "passage_html": f"<p>{bwh.sanitize_to_mathml_html(hint_raw)}</p>",
+                "passage_title": f"Context Passage — {str(row.get('topic') or 'Science').replace('-', ' ').title()}",
+                "subject_id": sid,
+                "subject": sname,
+                "domain": dom,
+                "source_url": "ScienceQA Shared Context Passage",
+                "language": "en",
+            }
+            if len(hint_raw) >= 45
+            else None
+        ),
+    }
+
+
+def convert_logiqa_shared_passage_row(row: dict) -> dict | None:
+    ctx_txt = str(row.get("context") or "").strip()
+    q_txt = str(row.get("query") or "").strip()
+    opts = row.get("options")
+    c_idx = row.get("correct_option")
+    if len(ctx_txt) < 40 or not q_txt or not isinstance(opts, list) or len(opts) < 4 or not isinstance(c_idx, int) or not (0 <= c_idx < 4):
+        return None
+    ans = ["A", "B", "C", "D"][c_idx]
+    return {
+        "source_db": "DB2_PYQ",
+        "subject_id": "SUB_APT_REASONING",
+        "subject": "Logical, Analytical & Critical Reasoning (CSAT / Civil Services)",
+        "domain": "Aptitude & Comprehension",
+        "chapter_name": "Civil Services Critical Reasoning Passages",
+        "topic": "Shared-Passage Deductive & Analytical Reasoning",
+        "subtopic_id": "SUB_APT_REASONING_LOGIQA_PSG",
+        "difficulty": "Hard",
+        "bloom_level": "Analyze",
+        "question_type": "Shared-Passage PYQ",
+        "pyq_exam_name": "National Civil Services Examination (Logical Reasoning PYQ)",
+        "pyq_exam_body": "Civil Services Examination Board",
+        "pyq_country": "ALL_COUNTRIES",
+        "pyq_state_or_region": "Global Civil Services Benchmark",
+        "pyq_year": "2019-2023",
+        "pyq_session_or_shift": "CSAT / Aptitude Paper",
+        "pyq_paper_code": "CSAT-LR",
+        "pyq_exam_stage": "Prelims",
+        "pyq_qualification_level": "Graduate / Civil Services",
+        "pyq_marks": "+2.5",
+        "pyq_negative_marks": "-0.83",
+        "pyq_original_language": "en",
+        "estimated_solve_time_sec": 95,
+        "key_formula_or_concept": "Passage Argument Deduction",
+        "common_trap_note": "Confusing necessary vs sufficient assumption",
+        "scraped_source_url": "LogiQA Official Civil Services Shared-Passage PYQ",
+        "book_reference": "Analytical & Critical Reasoning Standard Reference",
+        "question_html": f"<p>{bwh.sanitize_to_mathml_html(q_txt)}</p>",
+        "question_diagram_svg": "",
+        "explanation_diagram_svg": "",
+        "options": {
+            "A": bwh.sanitize_to_mathml_html(str(opts[0])),
+            "B": bwh.sanitize_to_mathml_html(str(opts[1])),
+            "C": bwh.sanitize_to_mathml_html(str(opts[2])),
+            "D": bwh.sanitize_to_mathml_html(str(opts[3])),
+        },
+        "correct_option": ans,
+        "explanation_html": "",  # Held in Staging Queue until AI writes full >= 180-char step-by-step explanation!
+        "passage_meta": {
+            "passage_html": f"<p>{bwh.sanitize_to_mathml_html(ctx_txt)}</p>",
+            "passage_title": "Civil Services Critical Reasoning Shared Passage",
+            "subject_id": "SUB_APT_REASONING",
+            "subject": "Logical, Analytical & Critical Reasoning (CSAT / Civil Services)",
+            "domain": "Aptitude & Comprehension",
+            "source_url": "LogiQA Civil Services PYQ",
+            "language": "en",
+        },
     }
 
 
@@ -861,12 +989,58 @@ def main() -> None:
         done_shards.add(shard_key)
         STATE_PATH.write_text(json.dumps({"done_shards": sorted(done_shards)}, indent=2), encoding="utf-8")
 
+    st_conn = sqlite3.connect(spm.STAGING_DB, timeout=120.0)
+    st_conn.execute("PRAGMA journal_mode=WAL;")
+    st_conn.execute("PRAGMA synchronous=NORMAL;")
+    spm.ensure_staging_schema(st_conn)
+    existing_hashes.update(
+        r[0] for r in st_conn.execute("SELECT canonical_hash FROM questions WHERE canonical_hash IS NOT NULL")
+    )
+
     # PHASE 1A: Ingest Clean Recreated <svg> Vector Diagram Competitive Exam MCQs & PYQs
-    if "SVG_VECTOR_BANK_V1" not in done_shards:
+    if "SVG_VECTOR_BANK_V2" not in done_shards:
         svg_items = build_recreated_svg_figure_mcqs()
-        a1, a2, f_cnt = bulk_insert_items(m_conn, db1_conn, db2_conn, by_id, existing_hashes, max_seq_ref, svg_items)
-        save_done("SVG_VECTOR_BANK_V1")
-        log(f"[Phase 1A SVG Bank] Ingested +{f_cnt} Clean Vector <svg> Figure MCQs/PYQs (+{a1} DB1, +{a2} DB2)!")
+        a1, a2, f_cnt = bulk_insert_items(m_conn, db1_conn, db2_conn, by_id, existing_hashes, max_seq_ref, svg_items, st_conn=st_conn)
+        save_done("SVG_VECTOR_BANK_V2")
+        log(f"[Phase 1A SVG Bank] Ingested +{f_cnt} Verified <svg> Figure MCQs/PYQs (+{a1} DB1, +{a2} DB2)!")
+
+    # PHASE 1A-2: Ingest Multi-Question Shared-Passage Sets (1 Shared Passage/Diagram -> 3 Linked PYQs)
+    if "SHARED_PASSAGE_SETS_V1" not in done_shards:
+        psg_sets = spm.build_verified_multi_question_passage_sets()
+        psg_items = []
+        for p_meta, q_list in psg_sets:
+            tot_q = len(q_list)
+            for idx_q, q_obj in enumerate(q_list, 1):
+                q_obj["passage_meta"] = p_meta
+                q_obj["passage_question_num"] = idx_q
+                q_obj["passage_total_questions"] = tot_q
+                psg_items.append(q_obj)
+        a1, a2, _ = bulk_insert_items(m_conn, db1_conn, db2_conn, by_id, existing_hashes, max_seq_ref, psg_items, st_conn=st_conn)
+        for c in (m_conn, db1_conn, db2_conn, st_conn):
+            spm.sync_passage_question_counts(c)
+        save_done("SHARED_PASSAGE_SETS_V1")
+        log(f"[Phase 1A-2 Shared Passages] Ingested +{a1+a2} Linked Multi-Question Passage PYQs across {len(psg_sets)} Shared Passages!")
+
+    # PHASE 1A-3: Ingest ScienceQA Shared-Passage + LogiQA Multi-Question Shared-Passage PYQs
+    for psg_ds in ("derek-thomas/ScienceQA", "lucasmccabe/logiqa"):
+        for sh in fetch_parquet_manifest(psg_ds):
+            sh_key = f"PSG::{sh['url']}"
+            if sh_key in done_shards:
+                continue
+            tbl = download_parquet_table(sh["url"])
+            if tbl is None:
+                continue
+            conv_psg = []
+            for row in tbl.to_pylist():
+                it = convert_scienceqa_figure_row(row, allow_passage_without_img=True) if psg_ds == "derek-thomas/ScienceQA" else convert_logiqa_shared_passage_row(row)
+                if it:
+                    conv_psg.append(it)
+            bulk_insert_items(m_conn, db1_conn, db2_conn, by_id, existing_hashes, max_seq_ref, conv_psg, st_conn=st_conn)
+            for c in (m_conn, db1_conn, db2_conn, st_conn):
+                spm.sync_passage_question_counts(c)
+            save_done(sh_key)
+            counts = multi_db_manager.get_db_counts()
+            log(f"[Shared-Passage Stream {psg_ds}:{sh.get('split')}] Verified Passages={counts.get('shared_passages_count',0)} ({counts.get('passage_mcqs_count',0)} Qs) | Staging={counts.get('staging_pending_count',0):,}")
 
     # PHASE 1B: Ingest Real Open-License Multimodal Figure PYQs & MCQs (MMMU 30 subjects, MMStar, ScienceQA Figures)
     for fig_ds in ("MMMU/MMMU", "Lin-Chen/MMStar", "derek-thomas/ScienceQA"):
@@ -891,7 +1065,7 @@ def main() -> None:
                     item = convert_scienceqa_figure_row(row)
                 if item:
                     converted.append(item)
-            a1, a2, f_cnt = bulk_insert_items(m_conn, db1_conn, db2_conn, by_id, existing_hashes, max_seq_ref, converted)
+            a1, a2, f_cnt = bulk_insert_items(m_conn, db1_conn, db2_conn, by_id, existing_hashes, max_seq_ref, converted, st_conn=st_conn)
             save_done(sh_url)
             counts = multi_db_manager.get_db_counts()
             log(
@@ -943,7 +1117,7 @@ def main() -> None:
                 chunk_buf.append(item)
                 if len(chunk_buf) >= 2500:
                     a1, a2, _ = bulk_insert_items(
-                        m_conn, db1_conn, db2_conn, by_id, existing_hashes, max_seq_ref, chunk_buf
+                        m_conn, db1_conn, db2_conn, by_id, existing_hashes, max_seq_ref, chunk_buf, st_conn=st_conn
                     )
                     tot_a1 += a1
                     tot_a2 += a2
@@ -951,7 +1125,7 @@ def main() -> None:
 
             if chunk_buf:
                 a1, a2, _ = bulk_insert_items(
-                    m_conn, db1_conn, db2_conn, by_id, existing_hashes, max_seq_ref, chunk_buf
+                    m_conn, db1_conn, db2_conn, by_id, existing_hashes, max_seq_ref, chunk_buf, st_conn=st_conn
                 )
                 tot_a1 += a1
                 tot_a2 += a2

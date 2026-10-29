@@ -1,4 +1,4 @@
-name: Unlimited 24x7 Cloud MCQ & Figure Factory (100x Turbo Parquet)
+name: Unlimited 24x7 Cloud MCQ, Passage, Figure & AI Staging Factory
 
 on:
   push:
@@ -13,13 +13,14 @@ on:
 
 permissions:
   contents: write
+  models: read
 
 concurrency:
   group: mcq-unlimited-cloud-engine
   cancel-in-progress: true
 
 jobs:
-  harvest-mcqs-and-figures:
+  harvest-audit-and-publish:
     runs-on: ubuntu-latest
     timeout-minutes: 330
     env:
@@ -35,7 +36,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Fast Parquet & Image Engine and Run 24x7 Harvester
+      - name: Install Parquet, Image & AI Staging Engine and Run 24x7 Pipeline
         run: |
           pip install pyarrow pillow beautifulsoup4 lxml langdetect
           python -u _mcq_engine/public_cloud_runner.py
