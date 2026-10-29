@@ -1,24 +1,24 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-29 16:28:29 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (VERIFIED + STAGING QUEUE + PASSAGES)",
-  "last_updated_utc": "2026-10-29 16:28:29 UTC",
+  "timestamp": "2026-10-29 16:29:48 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (VERIFIED + STAGING QUEUE + PASSAGES)",
+  "last_updated_utc": "2026-10-29 16:29:48 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "counts": {
-    "db1_scraped_mcqs.sqlite": 119819,
+    "db1_scraped_mcqs.sqlite": 122819,
     "db2_pyq_mcqs.sqlite": 124088,
     "db3_textbook_chunk_mcqs.sqlite": 0,
-    "mcq_bank.sqlite (Master)": 243907,
-    "figure_mcqs_count": 3730,
-    "passage_mcqs_count": 544,
-    "shared_passages_count": 394,
-    "staging_pending_count": 259929,
+    "mcq_bank.sqlite (Master)": 246907,
+    "figure_mcqs_count": 6108,
+    "passage_mcqs_count": 2429,
+    "shared_passages_count": 1585,
+    "staging_pending_count": 264248,
     "staging_promoted_count": 0
   },
   "raw_stats": {
     "seed_files": 4449,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83d\udfe2 STRICT EXPLANATION GATE + STAGING QUEUE + SHARED PASSAGES]\n[2026-10-29 16:27:17 UTC] [TURBO-PARQUET+FIGURES] Loaded 242,684 existing hashes (max_seq=488,960).\n[2026-10-29 16:27:18 UTC] [TURBO-PARQUET+FIGURES] [Phase 1A SVG Bank] Ingested +408 Verified <svg> Figure MCQs/PYQs (+48 DB1, +360 DB2)!\n[2026-10-29 16:27:18 UTC] [TURBO-PARQUET+FIGURES] [Phase 1A-2 Shared Passages] Ingested +15 Linked Multi-Question Passage PYQs across 5 Shared Passages!\n[2026-10-29 16:27:42 UTC] [TURBO-PARQUET+FIGURES] [Shared-Passage Stream derek-thomas/ScienceQA:test] Verified Passages=394 (544 Qs) | Staging=259,929\n[AI-STAGING-AUDITOR] Cycle 1: +0 AI-Verified & Promoted (Total AI-Promoted this run: 0, Rejected low-quality: 0)",
-  "recent_logs": "[2026-10-29 16:27:17 UTC] [TURBO-PARQUET+FIGURES] Loaded 242,684 existing hashes (max_seq=488,960).\n[2026-10-29 16:27:18 UTC] [TURBO-PARQUET+FIGURES] [Phase 1A SVG Bank] Ingested +408 Verified <svg> Figure MCQs/PYQs (+48 DB1, +360 DB2)!\n[2026-10-29 16:27:18 UTC] [TURBO-PARQUET+FIGURES] [Phase 1A-2 Shared Passages] Ingested +15 Linked Multi-Question Passage PYQs across 5 Shared Passages!\n[2026-10-29 16:27:42 UTC] [TURBO-PARQUET+FIGURES] [Shared-Passage Stream derek-thomas/ScienceQA:test] Verified Passages=394 (544 Qs) | Staging=259,929\n[AI-STAGING-AUDITOR] Cycle 1: +0 AI-Verified & Promoted (Total AI-Promoted this run: 0, Rejected low-quality: 0)"
+  "log_tail": "[\ud83d\udfe2 STRICT EXPLANATION GATE + STAGING QUEUE + SHARED PASSAGES]\n[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] cais/mmlu: 176 Parquet shards queued...\n[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] deepmind/aqua_rat: 6 Parquet shards queued...\n[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] allenai/openbookqa: 6 Parquet shards queued...\n[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] tau/commonsense_qa: 3 Parquet shards queued...\n[AI-STAGING-AUDITOR] Cycle 2: +0 AI-Verified & Promoted (Total AI-Promoted this run: 0, Rejected low-quality: 0)",
+  "recent_logs": "[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] cais/mmlu: 176 Parquet shards queued...\n[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] deepmind/aqua_rat: 6 Parquet shards queued...\n[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] allenai/openbookqa: 6 Parquet shards queued...\n[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] tau/commonsense_qa: 3 Parquet shards queued...\n[AI-STAGING-AUDITOR] Cycle 2: +0 AI-Verified & Promoted (Total AI-Promoted this run: 0, Rejected low-quality: 0)"
 }
