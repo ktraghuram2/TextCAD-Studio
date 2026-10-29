@@ -1,7 +1,7 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-29 16:38:14 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (VERIFIED + STAGING QUEUE + PASSAGES)",
-  "last_updated_utc": "2026-10-29 16:38:14 UTC",
+  "timestamp": "2026-10-29 16:40:04 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (VERIFIED + STAGING QUEUE + PASSAGES)",
+  "last_updated_utc": "2026-10-29 16:40:04 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "counts": {
@@ -19,6 +19,6 @@
     "seed_files": 4449,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83d\udfe2 STRICT EXPLANATION GATE + STAGING QUEUE + SHARED PASSAGES]\n[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] deepmind/aqua_rat: 6 Parquet shards queued...\n[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] allenai/openbookqa: 6 Parquet shards queued...\n[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] tau/commonsense_qa: 3 Parquet shards queued...\n[2026-10-29 16:29:56 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] CohereForAI/Global-MMLU: 0 Parquet shards queued...\n[AI-STAGING-AUDITOR] Cycle 8: +0 AI-Verified & Promoted (Total AI-Promoted this run: 0, Rejected low-quality: 0)",
-  "recent_logs": "[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] deepmind/aqua_rat: 6 Parquet shards queued...\n[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] allenai/openbookqa: 6 Parquet shards queued...\n[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] tau/commonsense_qa: 3 Parquet shards queued...\n[2026-10-29 16:29:56 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] CohereForAI/Global-MMLU: 0 Parquet shards queued...\n[AI-STAGING-AUDITOR] Cycle 8: +0 AI-Verified & Promoted (Total AI-Promoted this run: 0, Rejected low-quality: 0)"
+  "log_tail": "[\ud83d\udfe2 STRICT EXPLANATION GATE + STAGING QUEUE + SHARED PASSAGES]\n[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] deepmind/aqua_rat: 6 Parquet shards queued...\n[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] allenai/openbookqa: 6 Parquet shards queued...\n[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] tau/commonsense_qa: 3 Parquet shards queued...\n[2026-10-29 16:29:56 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] CohereForAI/Global-MMLU: 0 Parquet shards queued...\n[AI-STAGING-AUDITOR] Cycle 9: +0 AI-Verified & Promoted (Total AI-Promoted this run: 0, Rejected low-quality: 0)",
+  "recent_logs": "[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] deepmind/aqua_rat: 6 Parquet shards queued...\n[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] allenai/openbookqa: 6 Parquet shards queued...\n[2026-10-29 16:29:43 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] tau/commonsense_qa: 3 Parquet shards queued...\n[2026-10-29 16:29:56 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] CohereForAI/Global-MMLU: 0 Parquet shards queued...\n[AI-STAGING-AUDITOR] Cycle 9: +0 AI-Verified & Promoted (Total AI-Promoted this run: 0, Rejected low-quality: 0)"
 }
