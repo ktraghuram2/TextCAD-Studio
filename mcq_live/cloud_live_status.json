@@ -1,20 +1,20 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-29 15:19:20 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (100x TURBO + FIGURES)",
-  "last_updated_utc": "2026-10-29 15:19:20 UTC",
+  "timestamp": "2026-10-29 15:20:42 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (100x TURBO + FIGURES)",
+  "last_updated_utc": "2026-10-29 15:20:42 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "counts": {
-    "db1_scraped_mcqs.sqlite": 83910,
-    "db2_pyq_mcqs.sqlite": 62585,
+    "db1_scraped_mcqs.sqlite": 29673,
+    "db2_pyq_mcqs.sqlite": 165128,
     "db3_textbook_chunk_mcqs.sqlite": 0,
-    "mcq_bank.sqlite (Master)": 146495,
+    "mcq_bank.sqlite (Master)": 194801,
     "figure_mcqs_count": 7713
   },
   "raw_stats": {
     "seed_files": 4449,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83d\udfe2 GITHUB CLOUD 100x TURBO + FIGURES STREAM]\n[2026-10-29 15:17:39 UTC] [TURBO-PARQUET+FIGURES] [Phase 1B Real Figures derek-thomas/ScienceQA:default:test] +1147 Figure MCQs/PYQs | Total Figures: 3,355 | Master Total: 3,355\n[2026-10-29 15:18:49 UTC] [TURBO-PARQUET+FIGURES] [Phase 1B Real Figures derek-thomas/ScienceQA:default:train] +3280 Figure MCQs/PYQs | Total Figures: 6,635 | Master Total: 6,635\n[2026-10-29 15:19:13 UTC] [TURBO-PARQUET+FIGURES] [Phase 1B Real Figures derek-thomas/ScienceQA:default:validation] +1078 Figure MCQs/PYQs | Total Figures: 7,713 | Master Total: 7,713\n[2026-10-29 15:19:13 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] openlifescienceai/medmcqa: 3 Parquet shards queued...\n[2026-10-29 15:19:14 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet openlifescienceai/medmcqa:default:test] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 7,713 | Figures: 7,713",
-  "recent_logs": "[2026-10-29 15:17:39 UTC] [TURBO-PARQUET+FIGURES] [Phase 1B Real Figures derek-thomas/ScienceQA:default:test] +1147 Figure MCQs/PYQs | Total Figures: 3,355 | Master Total: 3,355\n[2026-10-29 15:18:49 UTC] [TURBO-PARQUET+FIGURES] [Phase 1B Real Figures derek-thomas/ScienceQA:default:train] +3280 Figure MCQs/PYQs | Total Figures: 6,635 | Master Total: 6,635\n[2026-10-29 15:19:13 UTC] [TURBO-PARQUET+FIGURES] [Phase 1B Real Figures derek-thomas/ScienceQA:default:validation] +1078 Figure MCQs/PYQs | Total Figures: 7,713 | Master Total: 7,713\n[2026-10-29 15:19:13 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] openlifescienceai/medmcqa: 3 Parquet shards queued...\n[2026-10-29 15:19:14 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet openlifescienceai/medmcqa:default:test] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 7,713 | Figures: 7,713"
+  "log_tail": "[\ud83d\udfe2 GITHUB CLOUD 100x TURBO + FIGURES STREAM]\n[2026-10-29 15:20:36 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet TIGER-Lab/MMLU-Pro:default:validation] Ingested +70 MCQs (+70 DB1, +0 DB2) | Master Total: 191,995 | Figures: 7,713\n[2026-10-29 15:20:36 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] cais/mmlu: 176 Parquet shards queued...\n[2026-10-29 15:20:36 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:abstract_algebra:dev] Ingested +5 MCQs (+0 DB1, +5 DB2) | Master Total: 192,000 | Figures: 7,713\n[2026-10-29 15:20:37 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:abstract_algebra:test] Ingested +100 MCQs (+0 DB1, +100 DB2) | Master Total: 192,100 | Figures: 7,713\n[2026-10-29 15:20:37 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:abstract_algebra:validation] Ingested +11 MCQs (+0 DB1, +11 DB2) | Master Total: 192,111 | Figures: 7,713",
+  "recent_logs": "[2026-10-29 15:20:36 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet TIGER-Lab/MMLU-Pro:default:validation] Ingested +70 MCQs (+70 DB1, +0 DB2) | Master Total: 191,995 | Figures: 7,713\n[2026-10-29 15:20:36 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] cais/mmlu: 176 Parquet shards queued...\n[2026-10-29 15:20:36 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:abstract_algebra:dev] Ingested +5 MCQs (+0 DB1, +5 DB2) | Master Total: 192,000 | Figures: 7,713\n[2026-10-29 15:20:37 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:abstract_algebra:test] Ingested +100 MCQs (+0 DB1, +100 DB2) | Master Total: 192,100 | Figures: 7,713\n[2026-10-29 15:20:37 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet cais/mmlu:abstract_algebra:validation] Ingested +11 MCQs (+0 DB1, +11 DB2) | Master Total: 192,111 | Figures: 7,713"
 }
