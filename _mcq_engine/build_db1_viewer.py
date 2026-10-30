@@ -65,6 +65,12 @@ def get_raw_scrape_stats() -> dict:
         conn.close()
     except Exception:
         pass
+    st_file = BASE_DIR / "cloud_subtopic_scraper_state.json"
+    if st_file.exists():
+        try:
+            seed_files = max(seed_files, int(json.loads(st_file.read_text(encoding="utf-8")).get("done_keys_count", 0)))
+        except Exception:
+            pass
     return {
         "seed_files": max(4449, seed_files),
         "raw_fingerprints": max(71413, raw_fp),
@@ -519,7 +525,7 @@ def generate_db1_html() -> int:
       </div>
       <div class="stat-box" onclick="switchDb('')">
         <div class="stat-val" id="cntPromoted" style="color:#a78bfa;">{counts.get('staging_promoted_count', 0)}</div>
-        <div class="stat-lbl">🤖 12 Cloud Agents · AI-Promoted to Verified</div>
+        <div class="stat-lbl">🤖 16 Nonstop Cloud Agents · AI-Promoted</div>
       </div>
     </div>
     <div class="controls">

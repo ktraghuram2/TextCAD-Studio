@@ -1,4 +1,4 @@
-name: Unlimited 24x7 Cloud 12-Agent MCQ, Passage, Figure & AI Staging Swarm
+name: Unlimited 24x7 Cloud 16-Agent Nonstop MCQ, Passage, Figure & AI Staging Swarm
 
 on:
   push:
@@ -14,15 +14,16 @@ on:
         required: false
         default: "ubuntu-latest"
   schedule:
-    - cron: "0 */4 * * *"
+    - cron: "*/30 * * * *"
 
 permissions:
   contents: write
+  actions: write
   models: read
 
 concurrency:
   group: mcq-unlimited-cloud-engine
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name != 'schedule' }}
 
 jobs:
   multi-agent-cloud-swarm:

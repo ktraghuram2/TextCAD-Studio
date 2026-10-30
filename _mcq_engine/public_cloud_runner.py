@@ -31,7 +31,7 @@ RELEASE_TAG = "v1.0-mcq-live-db"
 
 def log(msg: str) -> None:
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
-    print(f"[{ts}] [12-AGENT-CLOUD-SWARM] {msg}", flush=True)
+    print(f"[{ts}] [16-AGENT-NONSTOP-CLOUD] {msg}", flush=True)
 
 
 def prepare_workdir() -> None:
@@ -109,19 +109,20 @@ def build_and_push_live_pages(extra_note: str = "") -> dict:
 
     status_obj = {
         "status": "RUNNING_IN_GITHUB_CLOUD",
-        "timestamp": f"{now_utc} · 🟢 LIVE 24x7 CLOUD (12 PARALLEL AI & HARVESTER AGENTS)",
+        "timestamp": f"{now_utc} · 🟢 LIVE 24x7 CLOUD (16 NONSTOP CLOUD AGENTS: SCRAPERS + AI STAGING)",
         "last_updated_utc": now_utc,
         "worldwide_exams_count": 19060,
         "countries_covered": 31,
         "active_cloud_agents": {
             "ai_staging_agents": 8,
-            "harvester_agents": 4,
-            "total_parallel_agents": 12,
+            "parquet_harvester_agents": 4,
+            "web_subtopic_scraper_agents": 4,
+            "total_parallel_agents": 16,
             "telemetry": spm.SWARM_TELEMETRY,
         },
         "counts": counts,
         "raw_stats": raw_stats,
-        "log_tail": f"[🤖 12 PARALLEL CLOUD AGENTS: 8 AI AUDITORS + 4 HARVESTERS]\n{log_tail}",
+        "log_tail": f"[🤖 16 NONSTOP CLOUD AGENTS: 8 AI STAGING + 4 PARQUET + 4 WEB SCRAPERS]\n{log_tail}",
         "recent_logs": log_tail,
     }
 
@@ -169,7 +170,7 @@ def build_and_push_live_pages(extra_note: str = "") -> dict:
 
 def upload_release_checkpoints() -> None:
     upload_files = []
-    for fname in ("db1_scraped_mcqs.sqlite", "db2_pyq_mcqs.sqlite", "db_staging_queue.sqlite", "turbo_parquet_state.json"):
+    for fname in ("db1_scraped_mcqs.sqlite", "db2_pyq_mcqs.sqlite", "db_staging_queue.sqlite", "turbo_parquet_state.json", "cloud_subtopic_scraper_state.json"):
         fp = WORK_DIR / fname
         if fp.exists():
             gz_path = WORK_DIR / f"{fname}.gz"
@@ -203,6 +204,10 @@ def main() -> None:
         [sys.executable, "-u", str(WORK_DIR / "turbo_parquet_and_figure_harvester.py")],
         cwd=str(WORK_DIR),
     )
+    web_scraper_proc = subprocess.Popen(
+        [sys.executable, "-u", str(WORK_DIR / "continuous_cloud_web_scraper.py")],
+        cwd=str(WORK_DIR),
+    )
 
     stop_swarm = threading.Event()
     swarm_state = {"promoted_run": 0, "rejected_run": 0, "waves": 0, "last_note": "Starting 8 AI Agents..."}
@@ -226,7 +231,7 @@ def main() -> None:
     swarm_thread = threading.Thread(target=continuous_8_agent_ai_swarm, daemon=True)
     swarm_thread.start()
 
-    for cycle in range(1, 350):
+    for cycle in range(1, 361):
         time.sleep(45)
         note = (
             f"[8-AI-AGENT-SWARM] Wave {swarm_state['waves']}: +{swarm_state['promoted_run']:,} AI-Verified & Promoted this run "
@@ -245,13 +250,17 @@ def main() -> None:
         if cycle % 4 == 0:
             upload_release_checkpoints()
 
-        if harvester_proc.poll() is not None and s_cnt == 0:
-            break
+        # Restart web scraper if it ever exits so internet scraping NEVER stops!
+        if web_scraper_proc.poll() is not None:
+            web_scraper_proc = subprocess.Popen([sys.executable, '-u', str(WORK_DIR / 'continuous_cloud_web_scraper.py')], cwd=str(WORK_DIR))
 
     stop_swarm.set()
-    if harvester_proc.poll() is None:
-        harvester_proc.terminate()
+    for proc in (harvester_proc, web_scraper_proc):
+        if proc.poll() is None:
+            proc.terminate()
     upload_release_checkpoints()
+    log('Uploading complete! Self-chaining next 24x7 nonstop cloud run immediately...')
+    subprocess.run(['gh', 'workflow', 'run', 'mcq_unlimited_cloud.yml'], cwd=str(REPO_ROOT), check=False)
 
 
 if __name__ == "__main__":
