@@ -888,6 +888,73 @@ def convert_scienceqa_figure_row(row: dict, allow_passage_without_img: bool = Tr
     }
 
 
+def convert_belebele_shared_passage_row(cfg_code: str, row: dict) -> dict | None:
+    passage = str(row.get("flores_passage") or "").strip()
+    q_txt = str(row.get("question") or "").strip()
+    o1 = str(row.get("mc_answer1") or "").strip()
+    o2 = str(row.get("mc_answer2") or "").strip()
+    o3 = str(row.get("mc_answer3") or "").strip()
+    o4 = str(row.get("mc_answer4") or "").strip()
+    ans_num = str(row.get("correct_answer_num") or "").strip()
+    if len(passage) < 45 or len(q_txt) < 6 or not (o1 and o2 and o3 and o4) or ans_num not in ("1", "2", "3", "4"):
+        return None
+    ans = ["A", "B", "C", "D"][int(ans_num) - 1]
+    dialect = str(row.get("dialect") or cfg_code or "eng_Latn")
+    lang3 = dialect.split("_")[0].lower()
+    indian_langs = {"hin", "ben", "tam", "tel", "mar", "guj", "kan", "mal", "pan", "urd", "ory", "asm", "npi", "sin"}
+    country = "India" if lang3 in indian_langs else "ALL_COUNTRIES"
+    return {
+        "source_db": "DB1_SCRAPED_MODIFIED",
+        "subject_id": "SUB_LANG_ENGLISH" if lang3 == "eng" else "SUB_GS_GK",
+        "subject": "Multilingual Reading Comprehension & Analytical Verbal Ability",
+        "domain": "Aptitude & Comprehension",
+        "chapter_name": f"Shared-Passage Comprehension ({dialect})",
+        "topic": f"Multi-Question Reading Comprehension ({lang3.upper()})",
+        "subtopic_id": f"SUB_RC_{dialect.upper()}",
+        "difficulty": "Medium",
+        "bloom_level": "Analyze",
+        "question_type": "Shared-Passage MCQ",
+        "pyq_exam_name": f"Multilingual Standardized Reading Comprehension ({dialect})",
+        "pyq_exam_body": "Open Multilingual Comprehension Benchmark (CC-BY-SA-4.0)",
+        "pyq_country": country,
+        "pyq_state_or_region": "All-India / Global Multilingual",
+        "pyq_year": "2023-2024",
+        "pyq_session_or_shift": f"Language: {dialect}",
+        "pyq_paper_code": f"RC-{lang3.upper()}",
+        "pyq_exam_stage": "CBT",
+        "pyq_qualification_level": "Competitive Exam",
+        "pyq_marks": "+2.0",
+        "pyq_negative_marks": "-0.50",
+        "pyq_original_language": lang3,
+        "estimated_solve_time_sec": 70,
+        "key_formula_or_concept": "Passage Evidence & Contextual Deduction",
+        "common_trap_note": "Out-of-context distractor",
+        "scraped_source_url": f"Belebele CC-BY-SA-4.0 Multilingual Shared-Passage Bank ({dialect})",
+        "book_reference": "Multilingual Reading Comprehension Corpus",
+        "question_html": f"<p>{bwh.sanitize_to_mathml_html(q_txt)}</p>",
+        "question_diagram_svg": "",
+        "explanation_diagram_svg": "",
+        "options": {
+            "A": bwh.sanitize_to_mathml_html(o1),
+            "B": bwh.sanitize_to_mathml_html(o2),
+            "C": bwh.sanitize_to_mathml_html(o3),
+            "D": bwh.sanitize_to_mathml_html(o4),
+        },
+        "correct_option": ans,
+        "explanation_html": "",
+        "passage_question_num": int(row.get("question_number") or 1),
+        "passage_meta": {
+            "passage_html": f"<p>{bwh.sanitize_to_mathml_html(passage)}</p>",
+            "passage_title": f"Shared Comprehension Passage ({dialect})",
+            "subject_id": "SUB_LANG_ENGLISH" if lang3 == "eng" else "SUB_GS_GK",
+            "subject": "Multilingual Reading Comprehension & Analytical Verbal Ability",
+            "domain": "Aptitude & Comprehension",
+            "source_url": str(row.get("link") or f"Belebele ({dialect})"),
+            "language": lang3,
+        },
+    }
+
+
 def convert_race_shared_passage_row(row: dict) -> dict | None:
     article = str(row.get("article") or "").strip()
     q_txt = str(row.get("question") or "").strip()
@@ -1122,26 +1189,32 @@ def convert_universal_4opt_exam_row(ds_name: str, cfg_code: str, row: dict) -> d
         subj_hint,
         ("SUB_GS_GK", "Multidisciplinary Competitive Exam & General Studies", "Competitive Exams"),
     )
-    lang = "en"
+    lang = str(row.get("language") or "en").strip() or "en"
     if "MMMLU" in ds_name or "Global-MMLU" in ds_name:
         lang = cfg_code.split("_")[0].split("-")[0].lower()[:5] or "multi"
     elif "ceval" in ds_name or "cmmlu" in ds_name:
         lang = "zh"
+    elif "include-base-44" in ds_name:
+        lang = str(row.get("language") or cfg_code or "multi")[:18]
+
+    country_val = str(row.get("country") or "").strip()
+    if not country_val or country_val == "None":
+        country_val = "India" if lang.lower().startswith(("hi", "bn", "ta", "te", "mr", "mal", "ur", "od", "gu", "kn", "pa")) else "ALL_COUNTRIES"
 
     return {
-        "source_db": "DB2_PYQ" if ("ceval" in ds_name or "MMMLU" in ds_name) else "DB1_SCRAPED_MODIFIED",
+        "source_db": "DB2_PYQ" if ("ceval" in ds_name or "MMMLU" in ds_name or "include-base-44" in ds_name) else "DB1_SCRAPED_MODIFIED",
         "subject_id": sid,
         "subject": sname,
         "domain": dom,
         "chapter_name": subj_hint.title()[:110],
-        "topic": f"{subj_hint.title()} ({lang.upper()} Exam Paper)"[:110],
-        "subtopic_id": f"{sid}_{lang.upper()}_EXAM",
+        "topic": f"{subj_hint.title()} ({lang} Exam Paper)"[:110],
+        "subtopic_id": f"{sid}_{lang[:6].upper()}_EXAM",
         "difficulty": "Medium",
         "bloom_level": "Apply",
-        "question_type": "Multilingual Competitive Exam MCQ" if lang != "en" else "Competitive Exam PYQ",
-        "pyq_exam_name": f"Global & National Competitive Exam ({ds_name.split('/')[-1]})",
-        "pyq_exam_body": "Official Academic & Professional Exam Benchmark",
-        "pyq_country": "India" if lang in ("hi", "bn", "ta", "te", "mr") else "ALL_COUNTRIES",
+        "question_type": "Multilingual Competitive Exam PYQ" if lang != "en" else "Competitive Exam PYQ",
+        "pyq_exam_name": f"National & Regional Competitive Exam ({lang} · {ds_name.split('/')[-1]})",
+        "pyq_exam_body": "Official Academic & Professional Exam Board",
+        "pyq_country": country_val,
         "pyq_state_or_region": "Global Multi-Language Exam Bank",
         "pyq_year": "2021-2024",
         "pyq_session_or_shift": f"Language: {lang.upper()}",
@@ -1183,6 +1256,7 @@ BULK_PARQUET_DATASETS = [
     {"dataset": "CohereForAI/Global-MMLU", "license": "Apache-2.0 Open Multi-Language License", "source_db": "DB1_SCRAPED_MODIFIED"},
     {"dataset": "CohereLabs/Global-MMLU-Lite", "license": "Apache-2.0 Open Multi-Language License", "source_db": "DB1_SCRAPED_MODIFIED"},
     {"dataset": "openai/MMMLU", "license": "MIT 14-Language Global & Indian (Hindi/Bengali) Exam Bank", "source_db": "DB2_PYQ"},
+    {"dataset": "CohereLabs/include-base-44", "license": "CC-BY-4.0 44-Language National & Regional Competitive Exam PYQs", "source_db": "DB2_PYQ"},
     {"dataset": "ceval/ceval-exam", "license": "MIT 52-Subject University & Professional Exam PYQs", "source_db": "DB2_PYQ"},
     {"dataset": "haonan-li/cmmlu", "license": "MIT 67-Subject Academic & Licensing Exam Bank", "source_db": "DB1_SCRAPED_MODIFIED"},
 ]
@@ -1250,8 +1324,8 @@ def main() -> None:
         save_done("SHARED_PASSAGE_SETS_V1")
         log(f"[Phase 1A-2 Shared Passages] Ingested +{a1+a2} Linked Multi-Question Passage PYQs across {len(psg_sets)} Shared Passages!")
 
-    # PHASE 1A-3: 4-Agent Parallel Shared-Passage Harvester (ScienceQA + LogiQA + RACE 87,866 Multi-Q Passages)
-    for psg_ds in ("derek-thomas/ScienceQA", "lucasmccabe/logiqa", "ehovy/race"):
+    # PHASE 1A-3: 4-Agent Parallel Shared-Passage Harvester (ScienceQA + LogiQA + RACE + Belebele 122-Lang Multi-Q Passages)
+    for psg_ds in ("derek-thomas/ScienceQA", "lucasmccabe/logiqa", "ehovy/race", "facebook/belebele"):
         pending_sh = [
             sh for sh in fetch_parquet_manifest(psg_ds)
             if f"PSG::{sh['url']}" not in done_shards and (psg_ds != "ehovy/race" or sh.get("config") == "all")
@@ -1270,6 +1344,8 @@ def main() -> None:
                         it = convert_scienceqa_figure_row(row, allow_passage_without_img=True)
                     elif psg_ds == "lucasmccabe/logiqa":
                         it = convert_logiqa_shared_passage_row(row)
+                    elif psg_ds == "facebook/belebele":
+                        it = convert_belebele_shared_passage_row(sh.get("config", ""), row)
                     else:
                         it = convert_race_shared_passage_row(row)
                     if it:

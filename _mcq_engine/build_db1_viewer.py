@@ -562,6 +562,24 @@ def generate_db1_html() -> int:
   <script>
     let curPage = 1;
     let totalPages = {page_data['total_pages']};
+    let latestGitSha = 'main';
+    let lastShaCheckMs = 0;
+
+    async function refreshLatestGitSha() {{
+      if (Date.now() - lastShaCheckMs < 62000 && latestGitSha !== 'main') return latestGitSha;
+      lastShaCheckMs = Date.now();
+      try {{
+        const r = await fetch('https://api.github.com/repos/ktraghuram2/TextCAD-Studio/commits/main', {{
+          headers: {{ 'Accept': 'application/vnd.github+json' }},
+          cache: 'no-store'
+        }});
+        if (r && r.ok) {{
+          const j = await r.json();
+          if (j && j.sha) latestGitSha = j.sha;
+        }}
+      }} catch (e) {{}}
+      return latestGitSha;
+    }}
 
     function switchDb(dbVal) {{
       document.getElementById('dbFilter').value = dbVal;
@@ -577,9 +595,10 @@ def generate_db1_html() -> int:
       try {{
         let resp = await fetch(`/api/page?page=${{p}}&db=${{db}}&q=${{q}}&t=${{Date.now()}}`).catch(() => null);
         if (!resp || !resp.ok) {{
+          await refreshLatestGitSha();
           const dbKey = rawDb || 'ALL';
           const staticPage = Math.min(5, Math.max(1, p));
-          resp = await fetch(`./page_${{dbKey}}_${{staticPage}}.json?t=${{Date.now()}}`);
+          resp = await fetch(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/${{latestGitSha}}/mcq_live/page_${{dbKey}}_${{staticPage}}.json?t=${{Date.now()}}`);
         }}
         if (!resp || !resp.ok) return;
         const data = await resp.json();
@@ -587,7 +606,7 @@ def generate_db1_html() -> int:
         totalPages = data.total_pages;
         document.getElementById('cardsContainer').innerHTML = data.cards_html;
         document.getElementById('pageInfo').innerText =
-          `Page ${{data.page}} of ${{data.total_pages}} (Showing 50 per page · ${{data.total_matching}} matching questions)`;
+          `Page ${{data.page}} of ${{data.total_pages}} (Showing 50 per page · ${{Number(data.total_matching || 0).toLocaleString()}} matching questions)`;
         document.getElementById('btnFirst').disabled = (curPage <= 1);
         document.getElementById('btnPrev').disabled = (curPage <= 1);
         document.getElementById('btnNext').disabled = (curPage >= totalPages);
@@ -600,7 +619,8 @@ def generate_db1_html() -> int:
       try {{
         let resp = await fetch('/api/db1_live?t=' + Date.now()).catch(() => null);
         if (!resp || !resp.ok) {{
-          resp = await fetch('./cloud_live_status.json?t=' + Date.now());
+          await refreshLatestGitSha();
+          resp = await fetch(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/${{latestGitSha}}/mcq_live/cloud_live_status.json?t=${{Date.now()}}`);
         }}
         if (!resp || !resp.ok) return;
         const data = await resp.json();
@@ -611,24 +631,24 @@ def generate_db1_html() -> int:
           const d1 = data.counts['db1_scraped_mcqs.sqlite'] || 0;
           const d2 = data.counts['db2_pyq_mcqs.sqlite'] || 0;
           const m = data.counts['mcq_bank.sqlite (Master)'] || (d1 + d2);
-          document.getElementById('cntDb1').innerText = d1;
-          document.getElementById('cntDb2').innerText = d2;
+          document.getElementById('cntDb1').innerText = Number(d1).toLocaleString();
+          document.getElementById('cntDb2').innerText = Number(d2).toLocaleString();
           const elM = document.getElementById('cntMaster');
-          if (elM) elM.innerText = m;
+          if (elM) elM.innerText = Number(m).toLocaleString();
           const elF = document.getElementById('cntFigures');
-          if (elF) elF.innerText = data.counts['figure_mcqs_count'] || 0;
+          if (elF) elF.innerText = Number(data.counts['figure_mcqs_count'] || 0).toLocaleString();
           const elP = document.getElementById('cntPassages');
-          if (elP) elP.innerText = data.counts['passage_mcqs_count'] || 0;
+          if (elP) elP.innerText = Number(data.counts['passage_mcqs_count'] || 0).toLocaleString();
           const elSP = document.getElementById('cntSharedPsg');
-          if (elSP) elSP.innerText = data.counts['shared_passages_count'] || 0;
+          if (elSP) elSP.innerText = Number(data.counts['shared_passages_count'] || 0).toLocaleString();
           const elS = document.getElementById('cntStaging');
-          if (elS) elS.innerText = data.counts['staging_pending_count'] || 0;
+          if (elS) elS.innerText = Number(data.counts['staging_pending_count'] || 0).toLocaleString();
           const elPr = document.getElementById('cntPromoted');
-          if (elPr) elPr.innerText = data.counts['staging_promoted_count'] || 0;
+          if (elPr) elPr.innerText = Number(data.counts['staging_promoted_count'] || 0).toLocaleString();
         }}
       }} catch (e) {{}}
     }}
-    setInterval(pollCountersOnly, 5000);
+    setInterval(pollCountersOnly, 15000);
     pollCountersOnly();
     loadPage(1);
   </script>
