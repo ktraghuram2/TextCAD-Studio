@@ -194,22 +194,19 @@
 <body>
   <header>
     <h1><span class="live-dot"></span> Live Cloud Dashboard — Verified Sufficient-Explanation MCQs & Staging Queue</h1>
-    <div class="sub-bar">Live Sync: <strong id="liveTs">2026-10-30 07:10:28 · 🟢 LIVE FROM GITHUB CLOUD</strong> · Strict Explanation Gate + Shared Passages (1 Para → Multi Qs) + Figures</div>
-    <div class="log-box" id="liveLogBox">[2026-10-30 06:13:56 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] haonan-li/cmmlu: 0 Parquet shards queued...
-[2026-10-30 06:26:56 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,453/21,109] +29 web seeds -&gt; +0 Verified (+0 Staged, +0 SVG Figures)
-[2026-10-30 06:42:12 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,457/21,109] +13 web seeds -&gt; +0 Verified (+0 Staged, +0 SVG Figures)
-[2026-10-30 06:58:02 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,461/21,109] +17 web seeds -&gt; +0 Verified (+0 Staged, +0 SVG Figures)</div>
+    <div class="sub-bar">Live Sync: <strong id="liveTs">2026-10-30 08:40:53 · 🟢 LIVE FROM GITHUB CLOUD</strong> · Strict Explanation Gate + Shared Passages (1 Para → Multi Qs) + Figures</div>
+    <div class="log-box" id="liveLogBox">Staging Queue Gate + Shared-Passage Engine + AI Auditor running...</div>
     <div class="stats-grid">
       <div class="stat-box" onclick="switchDb('')">
-        <div class="stat-val" id="cntMaster" style="color:#22c55e;">248540</div>
+        <div class="stat-val" id="cntMaster" style="color:#22c55e;">248489</div>
         <div class="stat-lbl">✅ Verified Master MCQs (Full Explanation Only)</div>
       </div>
       <div class="stat-box" onclick="switchDb('DB1_SCRAPED_MODIFIED')">
-        <div class="stat-val" id="cntDb1">124298</div>
+        <div class="stat-val" id="cntDb1">124259</div>
         <div class="stat-lbl">DB 1: Verified Scraped MCQs</div>
       </div>
       <div class="stat-box" onclick="switchDb('DB2_PYQ')">
-        <div class="stat-val" id="cntDb2" style="color:#f59e0b;">124242</div>
+        <div class="stat-val" id="cntDb2" style="color:#f59e0b;">124230</div>
         <div class="stat-lbl">DB 2: Verified Official PYQs</div>
       </div>
       <div class="stat-box" onclick="switchDb('FIGURES')">
@@ -217,11 +214,11 @@
         <div class="stat-lbl">🖼️ Verified Figure MCQs & PYQs</div>
       </div>
       <div class="stat-box" onclick="switchDb('PASSAGES')">
-        <div class="stat-val" id="cntPassages" style="color:#34d399;">2582</div>
-        <div class="stat-lbl">📖 Shared-Passage MCQs (<span id="cntSharedPsg">1666</span> Passages)</div>
+        <div class="stat-val" id="cntPassages" style="color:#34d399;">2571</div>
+        <div class="stat-lbl">📖 Shared-Passage MCQs (<span id="cntSharedPsg">1659</span> Passages)</div>
       </div>
       <div class="stat-box" onclick="switchDb('STAGING')">
-        <div class="stat-val" id="cntStaging" style="color:#fbbf24;">578546</div>
+        <div class="stat-val" id="cntStaging" style="color:#fbbf24;">578586</div>
         <div class="stat-lbl">⏳ Staging Queue (Awaiting AI Check & Explanation)</div>
       </div>
       <div class="stat-box" onclick="switchDb('')">
@@ -245,7 +242,7 @@
       <button id="btnFirst" onclick="loadPage(1)">« First</button>
       <button id="btnPrev" onclick="loadPage(curPage - 1)">‹ Prev 50</button>
       <span id="pageInfo" style="font-size:0.9rem; color:#cbd5e1; font-weight:600;">
-        Page 1 of 4971 (Showing 50 of 248540 questions)
+        Page 1 of 4970 (Showing 50 of 248489 questions)
       </span>
       <button id="btnNext" onclick="loadPage(curPage + 1)">Next 50 ›</button>
       <button id="btnLast" onclick="loadPage(totalPages)">Last »</button>
@@ -256,7 +253,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248540 · SUBGSGK_Q711596</span>
+          <span class="badge b-id">#248489 · SUBGSGK_Q711596</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -295,7 +292,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248539 · SUBGSGK_Q711594</span>
+          <span class="badge b-id">#248488 · SUBGSGK_Q711594</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -334,7 +331,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248538 · SUBGSGK_Q711592</span>
+          <span class="badge b-id">#248487 · SUBGSGK_Q711592</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -373,7 +370,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248537 · SUBAPTQUAN_Q709808</span>
+          <span class="badge b-id">#248486 · SUBAPTQUAN_Q709808</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -411,7 +408,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248536 · SUBSCICHEM_Q709237</span>
+          <span class="badge b-id">#248485 · SUBSCICHEM_Q709237</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -449,7 +446,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248535 · SUBAPTQUAN_Q706814</span>
+          <span class="badge b-id">#248484 · SUBAPTQUAN_Q706814</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -487,44 +484,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248534 · SUBAPTQUAN_Q706811</span>
-          <span class="badge b-pyq-db">DB2_PYQ</span>
-          
-          
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_APT_QUANT — Quantitative Aptitude, Arithmetic, Data Interpretation &amp; Elementary Mathematics</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Global &amp; National Competitive Exam (ceval-exam) (2021-2024)</span><span class="badge b-meta">Body: Official Academic &amp; Professional Exam Benchmark · ALL_COUNTRIES</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Aptitude</span> ·
-          <span><strong>Unit:</strong> High School Mathematics</span> ·
-          <span><strong>Topic:</strong> High School Mathematics (ZH Exam Paper)</span>
-        </div>
-      </div>
-      
-      <div class="q-stem"><p>已知函数<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>f</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><mi>sin</mi><mo stretchy="false">&#x00028;</mo><mi>&#x003C9;</mi><mi>x</mi><mo>&#x02212;</mo><mfrac><mrow><mi>&#x003C0;</mi></mrow><mrow><mn>6</mn></mrow></mfrac><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00028;</mo><mi>&#x003C9;</mi><mo>&#x0003E;</mo><mn>0</mn><mo stretchy="false">&#x00029;</mo><mo>&#x0002E;</mo></mrow></math>若f(x)在<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mn>0</mn><mo>&#x0002C;</mo><mfrac><mrow><mi>&#x003C0;</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow></mrow></math>上有且仅有三个极值点，则不正确的有____</p></div>
-      
-      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">f(x)在区间<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo stretchy="false">[</mo><mn>0</mn><mo>&#x0002C;</mo><mfrac><mrow><mi>&#x003C0;</mi></mrow><mrow><mn>4</mn></mrow></mfrac><mo stretchy="false">]</mo></mrow></math>上的最小值可以等于<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo>&#x02212;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></math></div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">若<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>f</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo></mrow></math>的图像关于点<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mfrac><mrow><mi>&#x003C0;</mi></mrow><mrow><mn>3</mn></mrow></mfrac><mo>&#x0002C;</mo><mn>0</mn><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow></mrow></math>对称，则<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>f</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo></mrow></math>在区间<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mn>0</mn><mo>&#x0002C;</mo><mfrac><mrow><mi>&#x003C0;</mi></mrow><mrow><mn>12</mn></mrow></mfrac><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow></mrow></math>上单调递增</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>f</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo></mrow></math>的最小正周期可能为<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mfrac><mrow><mi>&#x003C0;</mi></mrow><mrow><mn>3</mn></mrow></mfrac></mrow></math></div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">若<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>f</mi><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mn>0</mn><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mo>&#x0002B;</mo><mi>f</mi><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mfrac><mrow><mi>&#x003C0;</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mo>&#x0003D;</mo><mn>0</mn></mrow></math>，将<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>g</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><mi>sin</mi><mrow><mn>2</mn><mi>x</mi></mrow></mrow></math>的图象向右平移<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mfrac><mrow><mi>&#x003C0;</mi></mrow><mrow><mn>12</mn></mrow></mfrac></mrow></math>个单位可得到<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>y</mi><mo>&#x0003D;</mo><mi>f</mi><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mn>3</mn></mrow></mfrac><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow></mrow></math>的图象</div></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option A)</summary>
-        <div class="expl-body">
-          <p>1. 根据极值点个数限制，可得<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mfrac><mrow><mi>&#x003C0;</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mi>&#x003C9;</mi><mo>&#x02212;</mo><mfrac><mrow><mi>&#x003C0;</mi></mrow><mrow><mn>6</mn></mrow></mfrac><mo>&#x02208;</mo><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mfrac><mrow><mn>5</mn><mi>&#x003C0;</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>&#x0002C;</mo><mfrac><mrow><mn>7</mn><mi>&#x003C0;</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow></mrow></math>，解得<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003C9;</mi><mo>&#x02208;</mo><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mfrac><mrow><mn>16</mn></mrow><mrow><mn>3</mn></mrow></mfrac><mo>&#x0002C;</mo><mfrac><mrow><mn>22</mn></mrow><mrow><mn>3</mn></mrow></mfrac><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow></mrow></math>。
-2. 若A选项成立，则可得<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mfrac><mrow><mi>&#x003C0;</mi></mrow><mrow><mn>4</mn></mrow></mfrac><mi>&#x003C9;</mi><mo>&#x02212;</mo><mfrac><mrow><mi>&#x003C0;</mi></mrow><mrow><mn>6</mn></mrow></mfrac><mo>&#x02264;</mo><mfrac><mrow><mn>7</mn><mi>&#x003C0;</mi></mrow><mrow><mn>6</mn></mrow></mfrac></mrow></math>，解得<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003C9;</mi><mo>&#x02264;</mo><mfrac><mrow><mn>16</mn></mrow><mrow><mn>3</mn></mrow></mfrac></mrow></math>，与1中范围矛盾。</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (MIT 52-Subject University &amp; Professional Exam PYQs) · ceval/ceval-exam</span>
-            <span><strong>SHA-256:</strong> <code>4981d3eeda4da8ca65d8...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248533 · SUBCSALGO_Q703898</span>
+          <span class="badge b-id">#248483 · SUBCSALGO_Q703898</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -562,7 +522,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248532 · SUBSCIPHYS_Q703315</span>
+          <span class="badge b-id">#248482 · SUBSCIPHYS_Q703315</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -600,7 +560,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248531 · SUBSCIPHYS_Q703313</span>
+          <span class="badge b-id">#248481 · SUBSCIPHYS_Q703313</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -639,7 +599,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248530 · SUBGSINDIA_Q702759</span>
+          <span class="badge b-id">#248480 · SUBGSINDIA_Q702759</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -679,7 +639,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248529 · SUBGSINDIA_Q702758</span>
+          <span class="badge b-id">#248479 · SUBGSINDIA_Q702758</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -718,7 +678,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248528 · SUBSCICHEM_Q702506</span>
+          <span class="badge b-id">#248478 · SUBSCICHEM_Q702506</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -757,7 +717,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248527 · SUBAPTQUAN_Q700493</span>
+          <span class="badge b-id">#248477 · SUBAPTQUAN_Q700493</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -798,7 +758,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248526 · SUBAPTQUAN_Q700492</span>
+          <span class="badge b-id">#248476 · SUBAPTQUAN_Q700492</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -838,7 +798,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248525 · SUBAPTQUAN_Q700491</span>
+          <span class="badge b-id">#248475 · SUBAPTQUAN_Q700491</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -877,7 +837,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248524 · SUBAPTQUAN_Q700490</span>
+          <span class="badge b-id">#248474 · SUBAPTQUAN_Q700490</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -915,7 +875,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248523 · SUBAPTQUAN_Q700489</span>
+          <span class="badge b-id">#248473 · SUBAPTQUAN_Q700489</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -954,7 +914,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248522 · SUBGENCORE_Q509146</span>
+          <span class="badge b-id">#248472 · SUBGENCORE_Q509146</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -990,7 +950,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248521 · SUBGENCORE_Q509145</span>
+          <span class="badge b-id">#248471 · SUBGENCORE_Q509145</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1026,7 +986,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248520 · SUBGENCORE_Q509143</span>
+          <span class="badge b-id">#248470 · SUBGENCORE_Q509143</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1062,7 +1022,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248519 · SUBGENCORE_Q509140</span>
+          <span class="badge b-id">#248469 · SUBGENCORE_Q509140</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1098,7 +1058,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248518 · SUBGENCORE_Q509138</span>
+          <span class="badge b-id">#248468 · SUBGENCORE_Q509138</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1134,7 +1094,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248517 · SUBGENCORE_Q509137</span>
+          <span class="badge b-id">#248467 · SUBGENCORE_Q509137</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1170,7 +1130,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248516 · SUBGENCORE_Q509132</span>
+          <span class="badge b-id">#248466 · SUBGENCORE_Q509132</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1206,7 +1166,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248515 · SUBGENCORE_Q509131</span>
+          <span class="badge b-id">#248465 · SUBGENCORE_Q509131</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1242,7 +1202,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248514 · SUBHUMPSYC_Q509125</span>
+          <span class="badge b-id">#248464 · SUBHUMPSYC_Q509125</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1278,7 +1238,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248513 · SUBHUMPSYC_Q509116</span>
+          <span class="badge b-id">#248463 · SUBHUMPSYC_Q509116</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1314,7 +1274,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248512 · SUBLAWCONS_Q509111</span>
+          <span class="badge b-id">#248462 · SUBLAWCONS_Q509111</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1350,7 +1310,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248511 · SUBLAWCONS_Q509109</span>
+          <span class="badge b-id">#248461 · SUBLAWCONS_Q509109</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1386,7 +1346,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248510 · SUBLAWCONS_Q509106</span>
+          <span class="badge b-id">#248460 · SUBLAWCONS_Q509106</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1422,7 +1382,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248509 · SUBLAWCONS_Q509105</span>
+          <span class="badge b-id">#248459 · SUBLAWCONS_Q509105</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1439,13 +1399,13 @@
         </div>
       </div>
       
-      <div class="q-stem"><p>Ọkùnrin kan wá gba ayàwòrán fídíò síṣẹ́ láti ya fídíò ìgbéyàwó ọmọbìnrin rẹ̀. Ìwé àdéhùn tí wọ́n kọ sínú ìwé náà ní &quot;ọ̀rọ̀ kan nínú tó sọ pé wọ́n máa &quot;san <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>10</mn><mo>&#x0002C;</mo><mn>000</mn><mi>f</mi><mi>ú</mi><mi>n</mi><mi>f</mi><mi>í</mi><mi>d</mi><mi>í</mi><mi>ò</mi><mi>ì</mi><mi>g</mi><mi>b</mi><mi>é</mi><mi>y</mi><mi>à</mi><mi>w</mi><mi>ó</mi><mi>n</mi><mi>á</mi><mi>à</mi><mi>à</mi><mi>t</mi><mi>i</mi><mi>à</mi><mi>p</mi><mi>è</mi><mi>j</mi><mi>ẹ</mi><mi>n</mi><mi>á</mi><mi>à</mi><mi>f</mi><mi>ú</mi><mi>n</mi><mi>o</mi><mi>d</mi><mi>i</mi><mi>n</mi><mi>d</mi><mi>i</mi><mi>ì</mi><mi>ṣ</mi><mi>é</mi><mi>̣</mi><mi>j</mi><mi>ú</mi><mn>60</mn><mo>&#x0002E;</mo><mi>”</mi><mi>Ọ</mi><mi>k</mi><mi>ù</mi><mi>n</mi><mi>r</mi><mi>i</mi><mi>n</mi><mi>n</mi><mi>á</mi><mi>à</mi><mi>f</mi><mi>i</mi><mi>k</mi><mi>ú</mi><mi>n</mi><mi>ì</mi><mi>w</mi><mi>é</mi><mi>à</mi><mi>d</mi><mi>é</mi><mi>h</mi><mi>ù</mi><mi>n</mi><mi>n</mi><mi>á</mi><mi>à</mi><mi>p</mi><mi>é</mi><mi>à</mi><mi>w</mi><mi>ọ</mi><mi>n</mi><mi>o</mi><mi>h</mi><mi>u</mi><mi>n</mi><mi>è</mi><mi>l</mi><mi>ò</mi><mi>t</mi><mi>ó</mi><mi>n</mi><mi>í</mi><mi>ì</mi><mi>t</mi><mi>u</mi><mi>m</mi><mi>ọ</mi><mi>̀</mi><mi>g</mi><mi>í</mi><mi>g</mi><mi>a</mi><mi>l</mi><mi>ó</mi><mi>m</mi><mi>á</mi><mi>a</mi><mi>f</mi><mi>i</mi><mi>ṣ</mi><mi>e</mi><mi>f</mi><mi>í</mi><mi>d</mi><mi>í</mi><mi>ò</mi><mi>n</mi><mi>á</mi><mi>à</mi><mo>&#x0002E;</mo><mi>À</mi><mi>d</mi><mi>é</mi><mi>h</mi><mi>ù</mi><mi>n</mi><mi>n</mi><mi>á</mi><mi>à</mi><mi>k</mi><mi>ò</mi><mi>m</mi><mi>é</mi><mi>̣</mi><mi>n</mi><mi>u</mi><mi>k</mi><mi>a</mi><mi>n</mi><mi>à</mi><mi>w</mi><mi>ọ</mi><mi>n</mi><mi>n</mi><mi>ǹ</mi><mi>k</mi><mi>a</mi><mi>n</mi><mi>m</mi><mi>ì</mi><mi>í</mi><mi>r</mi><mi>à</mi><mi>n</mi><mi>t</mi><mi>ó</mi><mi>n</mi><mi>í</mi><mi>í</mi><mi>ṣ</mi><mi>e</mi><mi>p</mi><mi>è</mi><mi>̣</mi><mi>l</mi><mi>ú</mi><mi>o</mi><mi>w</mi><mi>ó</mi><mi>ì</mi><mi>t</mi><mi>a</mi><mi>r</mi><mi>à</mi><mi>n</mi><mo>&#x0002E;</mo><mi>L</mi><mi>é</mi><mi>̣</mi><mi>y</mi><mi>ì</mi><mi>n</mi><mi>n</mi><mi>á</mi><mi>à</mi><mo>&#x0002C;</mo><mi>a</mi><mi>y</mi><mi>à</mi><mi>w</mi><mi>ò</mi><mi>r</mi><mi>á</mi><mi>n</mi><mi>n</mi><mi>á</mi><mi>à</mi><mi>y</mi><mi>a</mi><mi>f</mi><mi>í</mi><mi>d</mi><mi>í</mi><mi>ò</mi><mi>n</mi><mi>á</mi><mi>à</mi><mi>t</mi><mi>ó</mi><mi>g</mi><mi>ù</mi><mi>n</mi><mi>t</mi><mi>ó</mi><mi>ì</mi><mi>ṣ</mi><mi>é</mi><mi>̣</mi><mi>j</mi><mi>ú</mi><mn>60</mn><mo>&#x0002C;</mo><mi>ó</mi><mi>s</mi><mi>ì</mi><mi>t</mi><mi>ú</mi><mi>n</mi><mi>u</mi><mi>n</mi><mi>ṣ</mi><mi>e</mi><mo>&#x0002C;</mo><mi>ó</mi><mi>l</mi><mi>o</mi><mi>à</mi><mi>w</mi><mi>ọ</mi><mi>n</mi><mi>o</mi><mi>h</mi><mi>u</mi><mi>n</mi><mi>è</mi><mi>l</mi><mi>ò</mi><mi>t</mi><mi>ó</mi><mi>ń</mi><mi>m</mi><mi>ú</mi><mi>k</mi><mi>í</mi><mi>f</mi><mi>í</mi><mi>d</mi><mi>í</mi><mi>ò</mi><mi>n</mi><mi>á</mi><mi>à</mi><mi>ṣ</mi><mi>e</mi><mi>k</mi><mi>e</mi><mi>d</mi><mi>e</mi><mi>r</mi><mi>e</mi><mo>&#x0002C;</mo><mi>ó</mi><mi>s</mi><mi>ì</mi><mi>f</mi><mi>i</mi><mi>h</mi><mi>à</mi><mi>n</mi><mi>á</mi><mi>n</mi><mi>f</mi><mi>ú</mi><mi>n</mi><mi>ọ</mi><mi>k</mi><mi>ù</mi><mi>n</mi><mi>r</mi><mi>i</mi><mi>n</mi><mi>n</mi><mi>á</mi><mi>à</mi><mo>&#x0002E;</mo><mi>L</mi><mi>é</mi><mi>̣</mi><mi>y</mi><mi>ì</mi><mi>n</mi><mi>n</mi><mi>á</mi><mi>à</mi><mo>&#x0002C;</mo><mi>a</mi><mi>y</mi><mi>à</mi><mi>w</mi><mi>ò</mi><mi>r</mi><mi>á</mi><mi>n</mi><mi>f</mi><mi>í</mi><mi>d</mi><mi>í</mi><mi>ò</mi><mi>n</mi><mi>á</mi><mi>à</mi><mi>f</mi><mi>ú</mi><mi>n</mi><mi>ọ</mi><mi>k</mi><mi>ù</mi><mi>n</mi><mi>r</mi><mi>i</mi><mi>n</mi><mi>n</mi><mi>á</mi><mi>à</mi><mi>n</mi><mi>í</mi><mi>è</mi><mi>̣</mi><mi>r</mi><mi>í</mi><mi>o</mi><mi>w</mi><mi>ó</mi><mi>t</mi><mi>ó</mi><mi>j</mi><mi>é</mi><mi>̣</mi></mrow></math>15,000. Yàtọ̀ sí iye tí wọ́n san fún iṣẹ́ náà, ìyẹn <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>10</mn><mo>&#x0002C;</mo><mn>000</mn><mo>&#x0002C;</mo><mi>o</mi><mi>w</mi><mi>ó</mi><mi>t</mi><mi>í</mi><mi>w</mi><mi>ó</mi><mi>̣</mi><mi>n</mi><mi>f</mi><mi>i</mi><mi>g</mi><mi>b</mi><mi>a</mi><mi>à</mi><mi>w</mi><mi>ọ</mi><mi>n</mi><mi>è</mi><mi>̣</mi><mi>r</mi><mi>ọ</mi><mi>g</mi><mi>í</mi><mi>g</mi><mi>a</mi><mi>f</mi><mi>í</mi><mi>ì</mi><mi>m</mi><mi>ù</mi><mi>n</mi><mi>á</mi><mi>à</mi><mi>j</mi><mi>é</mi><mi>̣</mi></mrow></math>5,000. Èwo nínú àwọn àríyànjiyàn tó wà nísàlẹ̀ yìí ló ṣeé ṣe jù lọ láti tì ayàwòrán lẹ́yìn nínú àlàyé rẹ̀ pé nígbà tí ìwé àdéhùn tí wọ́n kọ sílẹ̀ náà bá wáyé, ọkùnrin náà gbà láti san <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>5</mn><mo>&#x0002C;</mo><mn>000</mn><mi>f</mi><mi>ú</mi><mi>n</mi><mi>a</mi><mi>y</mi><mi>à</mi><mi>w</mi><mi>ò</mi><mi>r</mi><mi>á</mi><mi>n</mi><mi>f</mi><mi>í</mi><mi>d</mi><mi>í</mi><mi>ò</mi><mi>f</mi><mi>ú</mi><mi>n</mi><mi>l</mi><mi>í</mi><mi>l</mi><mi>o</mi><mi>à</mi><mi>w</mi><mi>ọ</mi><mi>n</mi><mi>o</mi><mi>h</mi><mi>u</mi><mi>n</mi><mi>è</mi><mi>l</mi><mi>ò</mi><mi>g</mi><mi>í</mi><mi>g</mi><mi>a</mi><mo>&#x02212;</mo><mi>ì</mi><mi>t</mi><mi>u</mi><mi>m</mi><mi>ọ</mi><mi>̀</mi><mi>l</mi><mi>á</mi><mi>f</mi><mi>i</mi><mi>k</mi><mi>ú</mi><mi>n</mi><mi>s</mi><mi>í</mi><mi>o</mi><mi>w</mi><mi>ó</mi></mrow></math>10,000?</p></div>
+      <div class="q-stem"><p>Ọkùnrin kan wá gba ayàwòrán fídíò síṣẹ́ láti ya fídíò ìgbéyàwó ọmọbìnrin rẹ̀. Ìwé àdéhùn tí wọ́n kọ sínú ìwé náà ní &quot;ọ̀rọ̀ kan nínú tó sọ pé wọ́n máa &quot;san <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>10,000 fún fídíò ìgbéyàwó náà àti àpèjẹ náà fún odindi ìṣẹ́jú 60.” Ọkùnrin náà fi kún ìwé àdéhùn náà pé àwọn ohun èlò tó ní ìtumọ̀ gíga ló máa fi ṣe fídíò náà. Àdéhùn náà kò mẹ́nu kan àwọn nǹkan mìíràn tó ní í ṣe pẹ̀lú owó ìtaràn. Lẹ́yìn náà, ayàwòrán náà ya fídíò náà tó gùn tó ìṣẹ́jú 60, ó sì tún un ṣe, ó lo àwọn ohun èlò tó ń mú kí fídíò náà ṣe kedere, ó sì fi hàn án fún ọkùnrin náà. Lẹ́yìn náà, ayàwòrán fídíò náà fún ọkùnrin náà ní ẹ̀rí owó tó jẹ́ </mi></mrow></math>15,000. Yàtọ̀ sí iye tí wọ́n san fún iṣẹ́ náà, ìyẹn <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>10,000, owó tí wọ́n fi gba àwọn ẹ̀rọ gíga fíìmù náà jẹ́ </mi></mrow></math>5,000. Èwo nínú àwọn àríyànjiyàn tó wà nísàlẹ̀ yìí ló ṣeé ṣe jù lọ láti tì ayàwòrán lẹ́yìn nínú àlàyé rẹ̀ pé nígbà tí ìwé àdéhùn tí wọ́n kọ sílẹ̀ náà bá wáyé, ọkùnrin náà gbà láti san <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>5,000 fún ayàwòrán fídíò fún lílo àwọn ohun èlò gíga-ìtumọ̀ láfikún sí owó </mi></mrow></math>10,000?</p></div>
       
-      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">Níbàámu pẹ̀lú àṣà ìṣòwò tó wọ́pọ̀ lágbo iṣẹ́ fídíò, owó tí wọ́n máa ń san fún fídíò yíyà tó <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>10</mn><mo>&#x0002C;</mo><mn>000</mn><mi>t</mi><mi>ú</mi><mi>m</mi><mi>ò</mi><mi>̣</mi><mi>s</mi><mi>í</mi><mi>p</mi><mi>é</mi><mi>w</mi><mi>ó</mi><mi>̣</mi><mi>n</mi><mi>á</mi><mi>s</mi><mi>a</mi><mi>n</mi></mrow></math>10,000 lẹ́yìn owó àfikún tí wọ́n máa ń san bí wọ́n bá lo àwọn ẹ̀rọ tó ń gbé àwòrán jáde lọ́nà tó ṣe kedere.</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">Àdéhùn tí wọ́n bá ṣe ní ẹnu, tí wọ́n bá lè fi hàn pé ó wà níbàámu, yóò wulẹ̀ jẹ́ àfikún, kì í ṣe àtakò sí &quot;àlàkalẹ̀ ìsanwó&quot; tí wọ́n kọ.</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">Lábẹ́ àwọn òfin tó ń ṣàkóso káràkátá ọjà ní orílẹ̀-èdè Amẹ́ríkà, tí àwọn ẹ̀rí tí kò fojú hàn bá wà, àwọn àlàyé míràn tí ẹgbẹ́ méjèèjì jọ fara mọ́ jẹ́ ìtẹ́wọ́gbà àyàfi tí àwọn àlàyé náà “bá yàtọ̀ tàbí lòdì sí àwọn èyí tó wà nínú àdéhùn àkọsílẹ̀ náà.”</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">Nítorí àríyànjiyàn wípé “àkọsílẹ̀ nípa bí a ṣe ń sanwó” jẹ́ síso papọ̀ tí kò sì hàn gbangba pé kò ṣe kedere tàbí ohun tí ó ṣe kedere, ohun tí ó yẹ kí wọ́n ṣe pèsè fún lílo àwọn ẹ̀rí tí kò fojú hàn tí wọ́n bá wà fún àǹfààní àwọn ẹ̀gbẹ́ méjèèjì tí ọ̀rọ̀ náà kan, nígbà tí ó jẹ́ wípé olùyafídíò náà yóò pàdánù ẹgbẹ̀rún márùn-ún dọ́là (USD 5,000) lórí àdéhùn àkọsílẹ̀ náà.</div></div></div>
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">Níbàámu pẹ̀lú àṣà ìṣòwò tó wọ́pọ̀ lágbo iṣẹ́ fídíò, owó tí wọ́n máa ń san fún fídíò yíyà tó <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>10,000 túmọ̀ sí pé wọ́n á san </mi></mrow></math>10,000 lẹ́yìn owó àfikún tí wọ́n máa ń san bí wọ́n bá lo àwọn ẹ̀rọ tó ń gbé àwòrán jáde lọ́nà tó ṣe kedere.</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">Àdéhùn tí wọ́n bá ṣe ní ẹnu, tí wọ́n bá lè fi hàn pé ó wà níbàámu, yóò wulẹ̀ jẹ́ àfikún, kì í ṣe àtakò sí &quot;àlàkalẹ̀ ìsanwó&quot; tí wọ́n kọ.</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">Lábẹ́ àwọn òfin tó ń ṣàkóso káràkátá ọjà ní orílẹ̀-èdè Amẹ́ríkà, tí àwọn ẹ̀rí tí kò fojú hàn bá wà, àwọn àlàyé míràn tí ẹgbẹ́ méjèèjì jọ fara mọ́ jẹ́ ìtẹ́wọ́gbà àyàfi tí àwọn àlàyé náà “bá yàtọ̀ tàbí lòdì sí àwọn èyí tó wà nínú àdéhùn àkọsílẹ̀ náà.”</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">Nítorí àríyànjiyàn wípé “àkọsílẹ̀ nípa bí a ṣe ń sanwó” jẹ́ síso papọ̀ tí kò sì hàn gbangba pé kò ṣe kedere tàbí ohun tí ó ṣe kedere, ohun tí ó yẹ kí wọ́n ṣe pèsè fún lílo àwọn ẹ̀rí tí kò fojú hàn tí wọ́n bá wà fún àǹfààní àwọn ẹ̀gbẹ́ méjèèjì tí ọ̀rọ̀ náà kan, nígbà tí ó jẹ́ wípé olùyafídíò náà yóò pàdánù ẹgbẹ̀rún márùn-ún dọ́là (USD 5,000) lórí àdéhùn àkọsílẹ̀ náà.</div></div></div>
       <details class="expl-box">
         <summary>View Explanation & Provenance (Answer: Option A)</summary>
         <div class="expl-body">
-          <p>Correct Answer: (A) Níbàámu pẹ̀lú àṣà ìṣòwò tó wọ́pọ̀ lágbo iṣẹ́ fídíò, owó tí wọ́n máa ń san fún fídíò yíyà tó <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>10</mn><mo>&#x0002C;</mo><mn>000</mn><mi>t</mi><mi>ú</mi><mi>m</mi><mi>ò</mi><mi>̣</mi><mi>s</mi><mi>í</mi><mi>p</mi><mi>é</mi><mi>w</mi><mi>ó</mi><mi>̣</mi><mi>n</mi><mi>á</mi><mi>s</mi><mi>a</mi><mi>n</mi></mrow></math>10,000 lẹ́yìn owó àfikún tí wọ́n máa ń san bí wọ́n bá lo àwọn ẹ̀rọ tó ń gbé àwòrán jáde lọ́nà tó ṣe kedere. [Subject: Professional Law · Medium: EN].</p>
+          <p>Correct Answer: (A) Níbàámu pẹ̀lú àṣà ìṣòwò tó wọ́pọ̀ lágbo iṣẹ́ fídíò, owó tí wọ́n máa ń san fún fídíò yíyà tó <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>10,000 túmọ̀ sí pé wọ́n á san </mi></mrow></math>10,000 lẹ́yìn owó àfikún tí wọ́n máa ń san bí wọ́n bá lo àwọn ẹ̀rọ tó ń gbé àwòrán jáde lọ́nà tó ṣe kedere. [Subject: Professional Law · Medium: EN].</p>
           
           <div class="hash-row">
             <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
@@ -1458,7 +1418,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248508 · SUBLAWCONS_Q509104</span>
+          <span class="badge b-id">#248458 · SUBLAWCONS_Q509104</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1494,7 +1454,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248507 · SUBCOMFINA_Q509100</span>
+          <span class="badge b-id">#248457 · SUBCOMFINA_Q509100</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1530,7 +1490,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248506 · SUBCOMFINA_Q509098</span>
+          <span class="badge b-id">#248456 · SUBCOMFINA_Q509098</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1566,7 +1526,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248505 · SUBCOMFINA_Q509097</span>
+          <span class="badge b-id">#248455 · SUBCOMFINA_Q509097</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1602,7 +1562,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248504 · SUBCOMFINA_Q509095</span>
+          <span class="badge b-id">#248454 · SUBCOMFINA_Q509095</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1638,7 +1598,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248503 · SUBCOMFINA_Q509093</span>
+          <span class="badge b-id">#248453 · SUBCOMFINA_Q509093</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1674,7 +1634,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248502 · SUBCOMFINA_Q509087</span>
+          <span class="badge b-id">#248452 · SUBCOMFINA_Q509087</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1710,7 +1670,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248501 · SUBHISTWOR_Q509082</span>
+          <span class="badge b-id">#248451 · SUBHISTWOR_Q509082</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1746,7 +1706,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248500 · SUBHISTWOR_Q509081</span>
+          <span class="badge b-id">#248450 · SUBHISTWOR_Q509081</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1782,7 +1742,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248499 · SUBGENCORE_Q509064</span>
+          <span class="badge b-id">#248449 · SUBGENCORE_Q509064</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1818,7 +1778,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248498 · SUBGENCORE_Q509057</span>
+          <span class="badge b-id">#248448 · SUBGENCORE_Q509057</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1854,7 +1814,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248497 · SUBGENCORE_Q509039</span>
+          <span class="badge b-id">#248447 · SUBGENCORE_Q509039</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1890,7 +1850,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248496 · SUBGENCORE_Q509018</span>
+          <span class="badge b-id">#248446 · SUBGENCORE_Q509018</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1926,7 +1886,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248495 · SUBGENCORE_Q508969</span>
+          <span class="badge b-id">#248445 · SUBGENCORE_Q508969</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1962,7 +1922,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248494 · SUBGENCORE_Q508967</span>
+          <span class="badge b-id">#248444 · SUBGENCORE_Q508967</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1998,7 +1958,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248493 · SUBGENCORE_Q508959</span>
+          <span class="badge b-id">#248443 · SUBGENCORE_Q508959</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -2034,7 +1994,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248492 · SUBLAWCONS_Q508958</span>
+          <span class="badge b-id">#248442 · SUBLAWCONS_Q508958</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -2070,7 +2030,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248491 · SUBLAWCONS_Q508957</span>
+          <span class="badge b-id">#248441 · SUBLAWCONS_Q508957</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -2103,10 +2063,46 @@
       </details>
     </article>
     
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248440 · SUBLAWCONS_Q508956</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          
+          
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_LAW_CONST — Constitutional &amp; Administrative Law</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Law</span> ·
+          <span><strong>Unit:</strong> International Law (EN Medium)</span> ·
+          <span><strong>Topic:</strong> International Law</span>
+        </div>
+      </div>
+      
+      <div class="q-stem"><p>Kí ni ẹ̀kọ́ nípa ohun tó máa ń ṣẹlẹ̀ lẹ́yìn ikú?</p></div>
+      
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">Ó fi hàn pé ìjọba máa ń wà nígbà tí ó bá ṣiṣẹ́ nìkan</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">Ẹ̀kọ́ àwọn ipa náà ń ṣiṣẹ́ láti fún ìpínlẹ̀ náà ní ìsopọ̀ tó múná dóko pẹ̀lú ìwà ìpalára.</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">Ẹ̀kọ́ àwọn ipa náà ń ṣiṣẹ́ láti fún ìpínlẹ̀ ní àṣẹ láti pín orílẹ̀-èdè ẹlẹ́ṣẹ̀ náà.</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">Ẹ̀kọ́ àwọn ipa náà ń ṣiṣẹ́ láti fún Ìpínlẹ̀ ní àṣẹ lórí agbègbè tí ìwà náà ń mú àwọn ipa wá.</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>Correct Answer: (D) Ẹ̀kọ́ àwọn ipa náà ń ṣiṣẹ́ láti fún Ìpínlẹ̀ ní àṣẹ lórí agbègbè tí ìwà náà ń mú àwọn ipa wá. [Subject: International Law · Medium: EN].</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
+            <span><strong>SHA-256:</strong> <code>0933e8ba6d79952f5b7d...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
   </main>
   <script>
     let curPage = 1;
-    let totalPages = 4971;
+    let totalPages = 4970;
 
     function switchDb(dbVal) {
       document.getElementById('dbFilter').value = dbVal;
