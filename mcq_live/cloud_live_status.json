@@ -1,4 +1,5 @@
 {
+<<<<<<< Updated upstream
   "status": "RUNNING_IN_GITHUB_CLOUD",
   "timestamp": "2026-10-30 14:50:43 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (NONSTOP MULTI-AGENT SWARM \u00b7 100% CLEAN W3C MATHML)",
   "last_updated_utc": "2026-10-30 14:50:43 UTC",
@@ -11,6 +12,13 @@
     "total_unique_converted": 0,
     "clean_mathml_enforced": true
   },
+=======
+  "status": "RUNNING_LIVE_FROM_LOCAL_ULTRA_ENGINE",
+  "timestamp": "2026-10-30 15:14:21 UTC \u00b7 \ud83d\udfe2 LIVE NONSTOP ENGINE (GOOGLE AI ULTRA + PARQUET + WEB SCRAPER \u00b7 100% CLEAN MATHML)",
+  "last_updated_utc": "2026-10-30 15:14:21 UTC",
+  "worldwide_exams_count": 19060,
+  "countries_covered": 31,
+>>>>>>> Stashed changes
   "active_cloud_agents": {
     "ai_staging_agents": 4,
     "parquet_harvester_agents": 4,
@@ -26,6 +34,7 @@
     }
   },
   "counts": {
+<<<<<<< Updated upstream
     "db1_scraped_mcqs.sqlite": 124266,
     "db2_pyq_mcqs.sqlite": 124316,
     "db3_textbook_chunk_mcqs.sqlite": 0,
@@ -42,4 +51,22 @@
   },
   "log_tail": "[\ud83e\udd16 LIVE 24x7 CLOUD SWARM \u00b7 100% CLEAN W3C MATHML]\n[2026-10-30 14:48:29 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,541/21,109] +15 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[2026-10-30 14:49:27 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,543/21,109] +21 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[2026-10-30 14:50:24 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,545/21,109] +12 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[AI-STAGING-SWARM] Wave 27: +0 AI-Upgraded this run (Rejected low-quality: 0) | 8 Agents probing (timeout_1)",
   "recent_logs": "[2026-10-30 14:48:29 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,541/21,109] +15 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[2026-10-30 14:49:27 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,543/21,109] +21 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[2026-10-30 14:50:24 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,545/21,109] +12 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[AI-STAGING-SWARM] Wave 27: +0 AI-Upgraded this run (Rejected low-quality: 0) | 8 Agents probing (timeout_1)"
+=======
+    "db1_scraped_mcqs.sqlite": 124277,
+    "db2_pyq_mcqs.sqlite": 124316,
+    "db3_textbook_chunk_mcqs.sqlite": 986,
+    "mcq_bank.sqlite (Master)": 248593,
+    "figure_mcqs_count": 6127,
+    "passage_mcqs_count": 2671,
+    "shared_passages_count": 1721,
+    "staging_pending_count": 105446,
+    "staging_promoted_count": 19
+  },
+  "raw_stats": {
+    "seed_files": 4557,
+    "raw_fingerprints": 71413
+  },
+  "log_tail": "[\ud83e\udd16 LIVE NONSTOP ENGINE \u00b7 100% CLEAN W3C MATHML]\n[LOCAL-ULTRA-BOOT] Local Multi-Agent Engine Online & Pushing Live Counts Every 15s!",
+  "recent_logs": "[LOCAL-ULTRA-BOOT] Local Multi-Agent Engine Online & Pushing Live Counts Every 15s!"
+>>>>>>> Stashed changes
 }
