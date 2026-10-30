@@ -441,6 +441,10 @@ def generate_db1_html() -> int:
     .passage-tag {{ color: #94a3b8; font-weight: 600; }}
     .passage-body {{ font-size: 0.94rem; color: #e2e8f0; }}
     .q-stem {{ font-size: 1rem; margin-bottom: 10px; color: #fff; }}
+    math {{
+      font-family: "Cambria Math", "STIX Two Math", "Latin Modern Math", "Noto Sans Math", math, serif;
+      font-size: 1.08em;
+    }}
     .q-diagram-box {{
       background: #f8fafc;
       color: #0f172a;
@@ -626,6 +630,7 @@ def generate_db1_html() -> int:
     }}
     setInterval(pollCountersOnly, 5000);
     pollCountersOnly();
+    loadPage(1);
   </script>
 </body>
 </html>

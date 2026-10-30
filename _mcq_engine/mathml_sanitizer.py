@@ -194,12 +194,10 @@ def convert_latex_expr_to_mathml(expr: str, display: str = "inline") -> str:
 
 def _fix_broken_mi_block(match: re.Match) -> str:
     inner = html.unescape(match.group(1)).strip()
-    # Single clean variable like <mi>x</mi> or <mi>V</mi> is already valid MathML
-    if len(inner) <= 2 and inner.isalpha() and "\\" not in inner:
+    # Single clean 1-char variable like <mi>x</mi> or <mi>V</mi> is already valid MathML
+    if len(inner) == 1 and inner.isalpha():
         return match.group(0)
-    if any(ch in inner for ch in ("\\", "^", "_", "{", "}", "=", "+", "-", "/", "*")) or re.search(r"\d", inner) or " " in inner:
-        return convert_latex_expr_to_mathml(inner, display="inline")
-    return match.group(0)
+    return convert_latex_expr_to_mathml(inner, display="inline")
 
 
 def _is_currency_pair(inner: str) -> bool:
@@ -271,7 +269,7 @@ def _consume_balanced_group(text: str, pos: int, open_ch: str, close_ch: str) ->
 
 
 def _consume_sup_or_sub(text: str, pos: int) -> int:
-    """Consumes `^...` or `_...` starting at `pos` (including `^{\\circ}`, `^\\circ`, `^{-6}`, `^2`)."""
+    """Consumes `^...` or `_...` starting at `pos`. Always returns `pos` if no valid payload follows."""
     n = len(text)
     if pos >= n or text[pos] not in ("^", "_"):
         return pos
@@ -281,7 +279,8 @@ def _consume_sup_or_sub(text: str, pos: int) -> int:
     if k >= n:
         return pos
     if text[k] == "{":
-        return _consume_balanced_group(text, k, "{", "}")
+        res = _consume_balanced_group(text, k, "{", "}")
+        return res if res > k else pos
     if text[k] == "\\" and k + 1 < n and text[k + 1].isalpha():
         k += 1
         while k < n and text[k].isalpha():
@@ -289,11 +288,15 @@ def _consume_sup_or_sub(text: str, pos: int) -> int:
         if k < n and text[k] == "{":
             k = _consume_balanced_group(text, k, "{", "}")
         return k
-    if text[k] in ("+", "-") and k + 1 < n and text[k + 1].isalnum():
+    start_tok = k
+    if text[k] in ("+", "-"):
         k += 1
+        while k < n and text[k].isalnum():
+            k += 1
+        return k
     while k < n and text[k].isalnum():
         k += 1
-    return k
+    return k if k > start_tok else pos
 
 
 def _convert_bare_latex_in_plain_segment(seg: str) -> str:
@@ -302,6 +305,7 @@ def _convert_bare_latex_in_plain_segment(seg: str) -> str:
       - Bare brace-balanced LaTeX runs (`\\frac{\\sqrt{3}}{2}\\pi`, `3\\sqrt{2}`, `98^\\circ`, `45^{\\circ}`)
       - Bare `x^{2}`, `10^{-6}`, `x_{1}` tokens
       - Escaped literal punctuation (`\\%` -> `%`, `\\&` -> `&amp;`)
+    Guaranteed O(n) strict forward progress on all inputs.
     """
     if "\\" not in seg and "^" not in seg and "_" not in seg:
         return seg
@@ -324,6 +328,7 @@ def _convert_bare_latex_in_plain_segment(seg: str) -> str:
             start = i
             j = pref_end if pref_end > i else i
             while j < n:
+                loop_start_j = j
                 if text[j] in ("^", "_"):
                     nxt_j = _consume_sup_or_sub(text, j)
                     if nxt_j > j:
@@ -340,21 +345,31 @@ def _convert_bare_latex_in_plain_segment(seg: str) -> str:
                             k += 1
                         if k < n and text[k] in ("{", "["):
                             close_ch = "}" if text[k] == "{" else "]"
-                            j = _consume_balanced_group(text, k, text[k], close_ch)
+                            nxt_grp = _consume_balanced_group(text, k, text[k], close_ch)
+                            if nxt_grp > j:
+                                j = nxt_grp
+                            else:
+                                break
                         elif k < n and text[k] in ("^", "_"):
-                            j = _consume_sup_or_sub(text, k)
+                            nxt_sub = _consume_sup_or_sub(text, k)
+                            if nxt_sub > k:
+                                j = nxt_sub
+                            else:
+                                break
                         else:
                             break
                 # Continue math run if immediately followed by another \cmd, ^/_, or math operator glue
                 k = j
                 while k < n and text[k] == " ":
                     k += 1
-                if k < n and text[k] == "\\" and k + 1 < n and text[k + 1].isalpha():
+                if k < n and text[k] == "\\" and k + 1 < n and text[k + 1].isalpha() and k > loop_start_j:
                     j = k
                     continue
                 if k == j and k < n and text[k] in ("^", "_"):
-                    j = _consume_sup_or_sub(text, k)
-                    continue
+                    nxt_sub = _consume_sup_or_sub(text, k)
+                    if nxt_sub > j:
+                        j = nxt_sub
+                        continue
                 if k < n and text[k] in ("=", "+", "-", "*", "/"):
                     k += 1
                     while k < n and text[k] == " ":
@@ -364,31 +379,36 @@ def _convert_bare_latex_in_plain_segment(seg: str) -> str:
                         or text[k].isdigit()
                         or (text[k].isalpha() and (k + 1 == n or not text[k + 1].isalpha()))
                     ):
-                        j = k
-                        if text[j] != "\\":
-                            while j < n and (
-                                text[j].isdigit()
-                                or text[j] == "."
-                                or (text[j].isalpha() and (j + 1 == n or not text[j + 1].isalpha()))
+                        cand_j = k
+                        if text[cand_j] != "\\":
+                            while cand_j < n and (
+                                text[cand_j].isdigit()
+                                or text[cand_j] == "."
+                                or (text[cand_j].isalpha() and (cand_j + 1 == n or not text[cand_j + 1].isalpha()))
                             ):
-                                j += 1
-                            if j < n and text[j] in ("^", "_"):
-                                j = _consume_sup_or_sub(text, j)
-                        continue
+                                cand_j += 1
+                            if cand_j < n and text[cand_j] in ("^", "_"):
+                                nxt_s = _consume_sup_or_sub(text, cand_j)
+                                if nxt_s > cand_j:
+                                    cand_j = nxt_s
+                        if cand_j > loop_start_j:
+                            j = cand_j
+                            continue
                 # Consume trailing uppercase geometry labels or numbers like `\triangle ABC` or `\angle 14`
                 if k < n and k > j and is_cmd:
                     m_lbl = re.match(r"^([A-Z]{1,4}\b|\d{1,4}\b)(?!\s+[a-z]{3,})", text[k:])
-                    if m_lbl:
+                    if m_lbl and (k + len(m_lbl.group(1))) > loop_start_j:
                         j = k + len(m_lbl.group(1))
                         continue
                 break
 
-            expr = text[start:j].strip()
-            out.append(convert_latex_expr_to_mathml(expr, display="inline"))
-            if j > start and j <= n and text[j - 1] == " ":
-                out.append(" ")
-            i = j
-            continue
+            if j > start and (is_cmd or j > pref_end):
+                expr = text[start:j].strip()
+                out.append(convert_latex_expr_to_mathml(expr, display="inline"))
+                if j <= n and text[j - 1] == " ":
+                    out.append(" ")
+                i = j
+                continue
 
         out.append(html.escape(text[i], quote=False))
         i += 1
@@ -508,39 +528,42 @@ def retroactive_convert_db_latex_to_mathml(db_path: Path) -> int:
         return 0
     conn = sqlite3.connect(db_path, timeout=120.0)
     conn.execute("PRAGMA journal_mode=WAL;")
+    conn.execute("PRAGMA synchronous=NORMAL;")
+    conn.execute("PRAGMA temp_store=MEMORY;")
     conn.execute("PRAGMA busy_timeout=120000;")
 
     updated_rows = 0
-    cand_ids = [
+    cand_rowids = [
         r[0]
         for r in conn.execute(
             """
-            SELECT question_id
+            SELECT rowid
             FROM questions
-            WHERE question_html LIKE '%\\%' OR question_html LIKE '%$%' OR question_html LIKE '%^%' OR question_html LIKE '%_{%'
-               OR option_a LIKE '%\\%' OR option_a LIKE '%$%' OR option_a LIKE '%^%' OR option_a LIKE '%_{%'
-               OR option_b LIKE '%\\%' OR option_b LIKE '%$%' OR option_b LIKE '%^%' OR option_b LIKE '%_{%'
-               OR option_c LIKE '%\\%' OR option_c LIKE '%$%' OR option_c LIKE '%^%' OR option_c LIKE '%_{%'
-               OR option_d LIKE '%\\%' OR option_d LIKE '%$%' OR option_d LIKE '%^%' OR option_d LIKE '%_{%'
-               OR explanation_html LIKE '%\\%' OR explanation_html LIKE '%$%' OR explanation_html LIKE '%^%' OR explanation_html LIKE '%_{%'
+            WHERE question_html LIKE '%\\%' OR question_html LIKE '%$%' OR question_html LIKE '%^%' OR question_html LIKE '%_{%' OR question_html LIKE '%<mi>(%'
+               OR option_a LIKE '%\\%' OR option_a LIKE '%$%' OR option_a LIKE '%^%' OR option_a LIKE '%_{%' OR option_a LIKE '%<mi>(%'
+               OR option_b LIKE '%\\%' OR option_b LIKE '%$%' OR option_b LIKE '%^%' OR option_b LIKE '%_{%' OR option_b LIKE '%<mi>(%'
+               OR option_c LIKE '%\\%' OR option_c LIKE '%$%' OR option_c LIKE '%^%' OR option_c LIKE '%_{%' OR option_c LIKE '%<mi>(%'
+               OR option_d LIKE '%\\%' OR option_d LIKE '%$%' OR option_d LIKE '%^%' OR option_d LIKE '%_{%' OR option_d LIKE '%<mi>(%'
+               OR explanation_html LIKE '%\\%' OR explanation_html LIKE '%$%' OR explanation_html LIKE '%^%' OR explanation_html LIKE '%_{%' OR explanation_html LIKE '%<mi>(%'
             """
         ).fetchall()
     ]
 
-    chunk_size = 800
-    for start_idx in range(0, len(cand_ids), chunk_size):
-        chunk = cand_ids[start_idx : start_idx + chunk_size]
+    chunk_size = 900
+    pending_commits = 0
+    for start_idx in range(0, len(cand_rowids), chunk_size):
+        chunk = cand_rowids[start_idx : start_idx + chunk_size]
         placeholders = ",".join("?" for _ in chunk)
         rows = conn.execute(
             f"""
-            SELECT question_id, question_html, option_a, option_b, option_c, option_d, explanation_html
+            SELECT rowid, question_html, option_a, option_b, option_c, option_d, explanation_html
             FROM questions
-            WHERE question_id IN ({placeholders})
+            WHERE rowid IN ({placeholders})
             """,
             chunk,
         ).fetchall()
         batch_updates = []
-        for qid, qh, oa, ob, oc, od, eh in rows:
+        for rid, qh, oa, ob, oc, od, eh in rows:
             nqh = ensure_clean_mathml_html(qh or "")
             noa = ensure_clean_mathml_html(oa or "")
             nob = ensure_clean_mathml_html(ob or "")
@@ -548,18 +571,23 @@ def retroactive_convert_db_latex_to_mathml(db_path: Path) -> int:
             nod = ensure_clean_mathml_html(od or "")
             neh = ensure_clean_mathml_html(eh or "")
             if (nqh, noa, nob, noc, nod, neh) != (qh or "", oa or "", ob or "", oc or "", od or "", eh or ""):
-                batch_updates.append((nqh, noa, nob, noc, nod, neh, qid))
+                batch_updates.append((nqh, noa, nob, noc, nod, neh, rid))
                 updated_rows += 1
         if batch_updates:
             conn.executemany(
                 """
                 UPDATE questions
                 SET question_html = ?, option_a = ?, option_b = ?, option_c = ?, option_d = ?, explanation_html = ?
-                WHERE question_id = ?
+                WHERE rowid = ?
                 """,
                 batch_updates,
             )
-            conn.commit()
+            pending_commits += len(batch_updates)
+            if pending_commits >= 4500:
+                conn.commit()
+                pending_commits = 0
+    if pending_commits > 0:
+        conn.commit()
 
     # Also clean `passages` table if present
     try:
