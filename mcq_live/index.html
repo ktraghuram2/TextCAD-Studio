@@ -194,11 +194,8 @@
 <body>
   <header>
     <h1><span class="live-dot"></span> Live Cloud Dashboard — Verified Sufficient-Explanation MCQs & Staging Queue</h1>
-    <div class="sub-bar">Live Sync: <strong id="liveTs">2026-10-30 09:42:31 · 🟢 LIVE FROM GITHUB CLOUD</strong> · Strict Explanation Gate + Shared Passages (1 Para → Multi Qs) + Figures</div>
-    <div class="log-box" id="liveLogBox">[2026-10-30 08:43:05 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] haonan-li/cmmlu: 0 Parquet shards queued...
-[2026-10-30 09:00:22 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,465/21,109] +30 web seeds -&gt; +4 Verified (+0 Staged, +2 SVG Figures)
-[2026-10-30 09:14:33 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,469/21,109] +7 web seeds -&gt; +0 Verified (+0 Staged, +0 SVG Figures)
-[2026-10-30 09:30:28 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,473/21,109] +19 web seeds -&gt; +0 Verified (+0 Staged, +0 SVG Figures)</div>
+    <div class="sub-bar">Live Sync: <strong id="liveTs">2026-10-30 09:56:17 · 🟢 LIVE FROM GITHUB CLOUD</strong> · Strict Explanation Gate + Shared Passages (1 Para → Multi Qs) + Figures</div>
+    <div class="log-box" id="liveLogBox">Staging Queue Gate + Shared-Passage Engine + AI Auditor running...</div>
     <div class="stats-grid">
       <div class="stat-box" onclick="switchDb('')">
         <div class="stat-val" id="cntMaster" style="color:#22c55e;">248578</div>
@@ -221,11 +218,11 @@
         <div class="stat-lbl">📖 Shared-Passage MCQs (<span id="cntSharedPsg">1712</span> Passages)</div>
       </div>
       <div class="stat-box" onclick="switchDb('STAGING')">
-        <div class="stat-val" id="cntStaging" style="color:#fbbf24;">578439</div>
+        <div class="stat-val" id="cntStaging" style="color:#fbbf24;">0</div>
         <div class="stat-lbl">⏳ Staging Queue (Awaiting AI Check & Explanation)</div>
       </div>
       <div class="stat-box" onclick="switchDb('')">
-        <div class="stat-val" id="cntPromoted" style="color:#a78bfa;">238</div>
+        <div class="stat-val" id="cntPromoted" style="color:#a78bfa;">0</div>
         <div class="stat-lbl">🤖 16 Nonstop Cloud Agents · AI-Promoted</div>
       </div>
     </div>
@@ -2106,6 +2103,24 @@
   <script>
     let curPage = 1;
     let totalPages = 4972;
+    let latestGitSha = 'main';
+    let lastShaCheckMs = 0;
+
+    async function refreshLatestGitSha() {
+      if (Date.now() - lastShaCheckMs < 62000 && latestGitSha !== 'main') return latestGitSha;
+      lastShaCheckMs = Date.now();
+      try {
+        const r = await fetch('https://api.github.com/repos/ktraghuram2/TextCAD-Studio/commits/main', {
+          headers: { 'Accept': 'application/vnd.github+json' },
+          cache: 'no-store'
+        });
+        if (r && r.ok) {
+          const j = await r.json();
+          if (j && j.sha) latestGitSha = j.sha;
+        }
+      } catch (e) {}
+      return latestGitSha;
+    }
 
     function switchDb(dbVal) {
       document.getElementById('dbFilter').value = dbVal;
@@ -2121,9 +2136,10 @@
       try {
         let resp = await fetch(`/api/page?page=${p}&db=${db}&q=${q}&t=${Date.now()}`).catch(() => null);
         if (!resp || !resp.ok) {
+          await refreshLatestGitSha();
           const dbKey = rawDb || 'ALL';
           const staticPage = Math.min(5, Math.max(1, p));
-          resp = await fetch(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/main/mcq_live/page_${dbKey}_${staticPage}.json?t=${Date.now()}`);
+          resp = await fetch(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/${latestGitSha}/mcq_live/page_${dbKey}_${staticPage}.json?t=${Date.now()}`);
         }
         if (!resp || !resp.ok) return;
         const data = await resp.json();
@@ -2131,7 +2147,7 @@
         totalPages = data.total_pages;
         document.getElementById('cardsContainer').innerHTML = data.cards_html;
         document.getElementById('pageInfo').innerText =
-          `Page ${data.page} of ${data.total_pages} (Showing 50 per page · ${data.total_matching} matching questions)`;
+          `Page ${data.page} of ${data.total_pages} (Showing 50 per page · ${Number(data.total_matching || 0).toLocaleString()} matching questions)`;
         document.getElementById('btnFirst').disabled = (curPage <= 1);
         document.getElementById('btnPrev').disabled = (curPage <= 1);
         document.getElementById('btnNext').disabled = (curPage >= totalPages);
@@ -2144,7 +2160,8 @@
       try {
         let resp = await fetch('/api/db1_live?t=' + Date.now()).catch(() => null);
         if (!resp || !resp.ok) {
-          resp = await fetch('https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/main/mcq_live/cloud_live_status.json?t=' + Date.now());
+          await refreshLatestGitSha();
+          resp = await fetch(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/${latestGitSha}/mcq_live/cloud_live_status.json?t=${Date.now()}`);
         }
         if (!resp || !resp.ok) return;
         const data = await resp.json();
@@ -2155,24 +2172,24 @@
           const d1 = data.counts['db1_scraped_mcqs.sqlite'] || 0;
           const d2 = data.counts['db2_pyq_mcqs.sqlite'] || 0;
           const m = data.counts['mcq_bank.sqlite (Master)'] || (d1 + d2);
-          document.getElementById('cntDb1').innerText = d1;
-          document.getElementById('cntDb2').innerText = d2;
+          document.getElementById('cntDb1').innerText = Number(d1).toLocaleString();
+          document.getElementById('cntDb2').innerText = Number(d2).toLocaleString();
           const elM = document.getElementById('cntMaster');
-          if (elM) elM.innerText = m;
+          if (elM) elM.innerText = Number(m).toLocaleString();
           const elF = document.getElementById('cntFigures');
-          if (elF) elF.innerText = data.counts['figure_mcqs_count'] || 0;
+          if (elF) elF.innerText = Number(data.counts['figure_mcqs_count'] || 0).toLocaleString();
           const elP = document.getElementById('cntPassages');
-          if (elP) elP.innerText = data.counts['passage_mcqs_count'] || 0;
+          if (elP) elP.innerText = Number(data.counts['passage_mcqs_count'] || 0).toLocaleString();
           const elSP = document.getElementById('cntSharedPsg');
-          if (elSP) elSP.innerText = data.counts['shared_passages_count'] || 0;
+          if (elSP) elSP.innerText = Number(data.counts['shared_passages_count'] || 0).toLocaleString();
           const elS = document.getElementById('cntStaging');
-          if (elS) elS.innerText = data.counts['staging_pending_count'] || 0;
+          if (elS) elS.innerText = Number(data.counts['staging_pending_count'] || 0).toLocaleString();
           const elPr = document.getElementById('cntPromoted');
-          if (elPr) elPr.innerText = data.counts['staging_promoted_count'] || 0;
+          if (elPr) elPr.innerText = Number(data.counts['staging_promoted_count'] || 0).toLocaleString();
         }
       } catch (e) {}
     }
-    setInterval(pollCountersOnly, 5000);
+    setInterval(pollCountersOnly, 15000);
     pollCountersOnly();
     loadPage(1);
   </script>
