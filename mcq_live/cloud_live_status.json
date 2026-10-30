@@ -1,7 +1,7 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-30 07:01:14 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP CLOUD AGENTS: SCRAPERS + AI STAGING)",
-  "last_updated_utc": "2026-10-30 07:01:14 UTC",
+  "timestamp": "2026-10-30 07:02:29 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP CLOUD AGENTS: SCRAPERS + AI STAGING)",
+  "last_updated_utc": "2026-10-30 07:02:29 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "active_cloud_agents": {
@@ -23,14 +23,14 @@
   },
   "counts": {
     "db1_scraped_mcqs.sqlite": 124298,
-    "db2_pyq_mcqs.sqlite": 124220,
+    "db2_pyq_mcqs.sqlite": 124231,
     "db3_textbook_chunk_mcqs.sqlite": 0,
-    "mcq_bank.sqlite (Master)": 248518,
+    "mcq_bank.sqlite (Master)": 248529,
     "figure_mcqs_count": 6125,
-    "passage_mcqs_count": 2560,
-    "shared_passages_count": 1654,
-    "staging_pending_count": 578591,
-    "staging_promoted_count": 131
+    "passage_mcqs_count": 2571,
+    "shared_passages_count": 1659,
+    "staging_pending_count": 578570,
+    "staging_promoted_count": 142
   },
   "raw_stats": {
     "seed_files": 4461,
