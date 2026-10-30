@@ -1,7 +1,7 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-30 13:21:02 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP AGENTS \u00b7 100% CLEAN W3C MATHML)",
-  "last_updated_utc": "2026-10-30 13:21:02 UTC",
+  "timestamp": "2026-10-30 13:35:22 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (20 NONSTOP AGENTS \u00b7 100% CLEAN W3C MATHML)",
+  "last_updated_utc": "2026-10-30 13:35:22 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "mathml_status": {
@@ -12,36 +12,34 @@
     "clean_mathml_enforced": true
   },
   "active_cloud_agents": {
-    "ai_staging_agents": 8,
+    "ai_staging_agents": 12,
     "parquet_harvester_agents": 4,
     "web_subtopic_scraper_agents": 4,
-    "total_parallel_agents": 16,
+    "total_parallel_agents": 20,
     "telemetry": {
       "active_ai_agents": 8,
       "active_harvester_agents": 4,
-      "total_promoted_session": 11,
-      "total_rejected_session": 1,
-      "providers_succeeded": {
-        "g4f:keyless": 12
-      },
-      "last_agent_notes": "8 Agents probing (cooldown)"
+      "total_promoted_session": 0,
+      "total_rejected_session": 0,
+      "providers_succeeded": {},
+      "last_agent_notes": "8 Parallel Cloud AI Agents Initialized"
     }
   },
   "counts": {
-    "db1_scraped_mcqs.sqlite": 124276,
-    "db2_pyq_mcqs.sqlite": 124317,
+    "db1_scraped_mcqs.sqlite": 124262,
+    "db2_pyq_mcqs.sqlite": 124316,
     "db3_textbook_chunk_mcqs.sqlite": 0,
-    "mcq_bank.sqlite (Master)": 248593,
-    "figure_mcqs_count": 6129,
-    "passage_mcqs_count": 2667,
-    "shared_passages_count": 1720,
-    "staging_pending_count": 51287,
-    "staging_promoted_count": 11
+    "mcq_bank.sqlite (Master)": 248578,
+    "figure_mcqs_count": 6127,
+    "passage_mcqs_count": 2656,
+    "shared_passages_count": 1712,
+    "staging_pending_count": 0,
+    "staging_promoted_count": 0
   },
   "raw_stats": {
-    "seed_files": 4489,
+    "seed_files": 4473,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83e\udd16 16 NONSTOP CLOUD AGENTS \u00b7 100% CLEAN W3C MATHML]\n[2026-10-30 13:20:49 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,489/21,109] +14 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[2026-10-30 13:20:50 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1720 (2667 Qs) | Staging=49,487\n[2026-10-30 13:20:53 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1720 (2667 Qs) | Staging=50,387\n[8-AI-AGENT-SWARM] Wave 3: +11 AI-Verified & Promoted this run (Rejected low-quality: 1) | 8 Cloud AI Agents active via g4f:keyless",
-  "recent_logs": "[2026-10-30 13:20:49 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,489/21,109] +14 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[2026-10-30 13:20:50 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1720 (2667 Qs) | Staging=49,487\n[2026-10-30 13:20:53 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1720 (2667 Qs) | Staging=50,387\n[8-AI-AGENT-SWARM] Wave 3: +11 AI-Verified & Promoted this run (Rejected low-quality: 1) | 8 Cloud AI Agents active via g4f:keyless"
+  "log_tail": "[\ud83e\udd16 20 NONSTOP CLOUD AGENTS \u00b7 100% CLEAN W3C MATHML]\n[BOOT-OK] 20 Nonstop Cloud Agents Online (12 AI Agents + 25s Live Stream Active)!",
+  "recent_logs": "[BOOT-OK] 20 Nonstop Cloud Agents Online (12 AI Agents + 25s Live Stream Active)!"
 }
