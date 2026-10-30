@@ -1,7 +1,7 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-30 10:27:06 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP AGENTS \u00b7 100% CLEAN W3C MATHML)",
-  "last_updated_utc": "2026-10-30 10:27:06 UTC",
+  "timestamp": "2026-10-30 10:27:29 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP AGENTS \u00b7 100% CLEAN W3C MATHML)",
+  "last_updated_utc": "2026-10-30 10:27:29 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "mathml_status": {
@@ -21,25 +21,27 @@
       "active_harvester_agents": 4,
       "total_promoted_session": 0,
       "total_rejected_session": 0,
-      "providers_succeeded": {},
+      "providers_succeeded": {
+        "g4f:keyless": 6
+      },
       "last_agent_notes": "8 Agents probing (timeout_1)"
     }
   },
   "counts": {
-    "db1_scraped_mcqs.sqlite": 124262,
+    "db1_scraped_mcqs.sqlite": 124268,
     "db2_pyq_mcqs.sqlite": 124316,
     "db3_textbook_chunk_mcqs.sqlite": 0,
-    "mcq_bank.sqlite (Master)": 248578,
+    "mcq_bank.sqlite (Master)": 248584,
     "figure_mcqs_count": 6127,
-    "passage_mcqs_count": 2656,
-    "shared_passages_count": 1712,
-    "staging_pending_count": 45899,
-    "staging_promoted_count": 0
+    "passage_mcqs_count": 2662,
+    "shared_passages_count": 1716,
+    "staging_pending_count": 51293,
+    "staging_promoted_count": 6
   },
   "raw_stats": {
-    "seed_files": 4485,
+    "seed_files": 4489,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83e\udd16 16 NONSTOP CLOUD AGENTS \u00b7 100% CLEAN W3C MATHML]\n[2026-10-30 10:26:55 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=43,199\n[2026-10-30 10:26:59 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=44,099\n[2026-10-30 10:27:02 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=44,999\n[8-AI-AGENT-SWARM] Wave 4: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Agents probing (timeout_1)",
-  "recent_logs": "[2026-10-30 10:26:55 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=43,199\n[2026-10-30 10:26:59 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=44,099\n[2026-10-30 10:27:02 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=44,999\n[8-AI-AGENT-SWARM] Wave 4: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Agents probing (timeout_1)"
+  "log_tail": "[\ud83e\udd16 16 NONSTOP CLOUD AGENTS \u00b7 100% CLEAN W3C MATHML]\n[2026-10-30 10:27:25 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,489/21,109] +14 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[2026-10-30 10:27:26 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1716 (2662 Qs) | Staging=50,393\n[2026-10-30 10:27:28 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1716 (2662 Qs) | Staging=51,293\n[8-AI-AGENT-SWARM] Wave 4: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Agents probing (timeout_1)",
+  "recent_logs": "[2026-10-30 10:27:25 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,489/21,109] +14 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[2026-10-30 10:27:26 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1716 (2662 Qs) | Staging=50,393\n[2026-10-30 10:27:28 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1716 (2662 Qs) | Staging=51,293\n[8-AI-AGENT-SWARM] Wave 4: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Agents probing (timeout_1)"
 }
