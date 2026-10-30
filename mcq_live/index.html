@@ -195,18 +195,15 @@
 <body>
   <header>
     <h1><span class="live-dot"></span> Live Cloud Dashboard — Verified Sufficient-Explanation MCQs & Staging Queue</h1>
-    <div class="sub-bar">Live Sync: <strong id="liveTs">2026-10-30 09:59:52 · 🟢 LIVE FROM GITHUB CLOUD</strong> <span id="livePollBadge" style="color:#4ade80; font-weight:600;">· 🔄 Live Cloud Link Active (5s Auto-Refresh)</span></div>
-    <div class="log-box" id="liveLogBox">[2026-10-30 09:59:37 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,493/21,109] +10 web seeds -&gt; +0 Verified (+0 Staged, +0 SVG Figures)
-[2026-10-30 09:59:38 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1716 (2662 Qs) | Staging=39,593
-[2026-10-30 09:59:43 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1716 (2662 Qs) | Staging=40,493
-[2026-10-30 09:59:50 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1718 (2665 Qs) | Staging=41,390</div>
+    <div class="sub-bar">Live Sync: <strong id="liveTs">2026-10-30 10:23:59 · 🟢 LIVE FROM GITHUB CLOUD</strong> <span id="livePollBadge" style="color:#4ade80; font-weight:600;">· 🔄 Live Cloud Link Active (5s Auto-Refresh)</span></div>
+    <div class="log-box" id="liveLogBox">Staging Queue Gate + Shared-Passage Engine + AI Auditor running...</div>
     <div class="stats-grid">
       <div class="stat-box" onclick="switchDb('')">
-        <div class="stat-val" id="cntMaster" style="color:#22c55e;">248584</div>
+        <div class="stat-val" id="cntMaster" style="color:#22c55e;">248578</div>
         <div class="stat-lbl">✅ Verified Master MCQs (Full Explanation Only)</div>
       </div>
       <div class="stat-box" onclick="switchDb('DB1_SCRAPED_MODIFIED')">
-        <div class="stat-val" id="cntDb1">124268</div>
+        <div class="stat-val" id="cntDb1">124262</div>
         <div class="stat-lbl">DB 1: Verified Scraped MCQs</div>
       </div>
       <div class="stat-box" onclick="switchDb('DB2_PYQ')">
@@ -218,15 +215,15 @@
         <div class="stat-lbl">🖼️ Verified Figure MCQs & PYQs</div>
       </div>
       <div class="stat-box" onclick="switchDb('PASSAGES')">
-        <div class="stat-val" id="cntPassages" style="color:#34d399;">2662</div>
-        <div class="stat-lbl">📖 Shared-Passage MCQs (<span id="cntSharedPsg">1716</span> Passages)</div>
+        <div class="stat-val" id="cntPassages" style="color:#34d399;">2656</div>
+        <div class="stat-lbl">📖 Shared-Passage MCQs (<span id="cntSharedPsg">1712</span> Passages)</div>
       </div>
       <div class="stat-box" onclick="switchDb('STAGING')">
-        <div class="stat-val" id="cntStaging" style="color:#fbbf24;">41393</div>
+        <div class="stat-val" id="cntStaging" style="color:#fbbf24;">0</div>
         <div class="stat-lbl">⏳ Staging Queue (Awaiting AI Check & Explanation)</div>
       </div>
       <div class="stat-box" onclick="switchDb('')">
-        <div class="stat-val" id="cntPromoted" style="color:#a78bfa;">6</div>
+        <div class="stat-val" id="cntPromoted" style="color:#a78bfa;">0</div>
         <div class="stat-lbl">🤖 16 Nonstop Cloud Agents · AI-Promoted</div>
       </div>
     </div>
@@ -246,283 +243,13 @@
       <button id="btnFirst" onclick="loadPage(1)">« First</button>
       <button id="btnPrev" onclick="loadPage(curPage - 1)">‹ Prev 50</button>
       <span id="pageInfo" style="font-size:0.9rem; color:#cbd5e1; font-weight:600;">
-        Page 1 of 4972 (Showing 50 of 248584 questions)
+        Page 1 of 4972 (Showing 50 of 248578 questions)
       </span>
       <button id="btnNext" onclick="loadPage(curPage + 1)">Next 50 ›</button>
       <button id="btnLast" onclick="loadPage(totalPages)">Last »</button>
     </div>
   </header>
   <main id="cardsContainer">
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248584 · SUBGSGK_Q714036</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          <span class="badge b-psg">📖 Passage PSG_BBE125D8E6BF (Question 1 of 1)</span>
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_GS_GK — Multilingual Reading Comprehension &amp; Analytical Verbal Ability</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Multilingual Standardized Reading Comprehension (acm_Arab) (2023-2024)</span><span class="badge b-meta">Body: Open Multilingual Comprehension Benchmark (CC-BY-SA-4.0) · ALL_COUNTRIES</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Aptitude &amp; Comprehension</span> ·
-          <span><strong>Unit:</strong> Shared-Passage Comprehension (acm_Arab)</span> ·
-          <span><strong>Topic:</strong> Multi-Question Reading Comprehension (ACM)</span>
-        </div>
-      </div>
-      
-        <div class="passage-box">
-          <div class="passage-hdr">
-            <span>📖 Shared Comprehension Passage (acm_Arab)</span>
-            <span class="passage-tag">Shared ID: PSG_BBE125D8E6BF · Question 1 of 1</span>
-          </div>
-          <div class="passage-body"><p>"""رفض روبرتس رفض قاطع أن يصرح برأيه عن الموعد الي تتكون بي حياة، وهو سؤال مهم عند التفكير بأخلاقيات الإجهاض، وكَال إنه راح يكون من غير الأخلاقي التعليق على تفاصيل الحالات المحتملة. بس كرر تصريحه السابق بأن قضية رو ضد ويد كانت """"قانون الأرض المستقر""""، وأكد على أهمية تنظيم أحكام المحكمة العليا. وأكد همينه أنه يؤمن بالحق الضمني بالخصوصية اللي  يعتمد عليه قرار رو."""</p></div>
-          
-        </div>
-        
-      <div class="q-stem"><p>شنو الاعتقاد اللي رفض روبرتس يصرح عنه؟</p></div>
-      
-      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">أخلاقيات مناقشة الحالات</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">أهمية تنظيم أحكام المحكمة العليا</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">بداية الحياة</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">حق الخصوصية</div></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option C)</summary>
-        <div class="expl-body">
-          <p>The passage states that Roberts refused to state his opinion on when life begins, which is relevant to abortion ethics, and considered commenting on possible cases unethical. He reaffirmed Roe v. Wade as settled law, emphasized regulating Supreme Court decisions, and supported the implicit right to privacy. Thus, the refused belief is when life begins. Options A, B, and D describe positions he actually expressed or affirmed.</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> Belebele CC-BY-SA-4.0 Multilingual Shared-Passage Bank (acm_Arab) · AI_AUDITED_VERIFIED (g4f is up-to-date (version 8.8.8).)</span>
-            <span><strong>SHA-256:</strong> <code>6e456064202c05433a9c...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248583 · SUBGSGK_Q714035</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          <span class="badge b-psg">📖 Passage PSG_297111105C57 (Question 2 of 2)</span>
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_GS_GK — Multilingual Reading Comprehension &amp; Analytical Verbal Ability</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Multilingual Standardized Reading Comprehension (acm_Arab) (2023-2024)</span><span class="badge b-meta">Body: Open Multilingual Comprehension Benchmark (CC-BY-SA-4.0) · ALL_COUNTRIES</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Aptitude &amp; Comprehension</span> ·
-          <span><strong>Unit:</strong> Shared-Passage Comprehension (acm_Arab)</span> ·
-          <span><strong>Topic:</strong> Multi-Question Reading Comprehension (ACM)</span>
-        </div>
-      </div>
-      
-        <div class="passage-box">
-          <div class="passage-hdr">
-            <span>📖 Shared Comprehension Passage (acm_Arab)</span>
-            <span class="passage-tag">Shared ID: PSG_297111105C57 · Question 2 of 2</span>
-          </div>
-          <div class="passage-body"><p>بالأضافة إلى الجليد المدمر، ما تزال الظروف الجوية القاسية عائق أمام جهود الإنقاذ. اقترح بيتمان أن الأحوال ما راح تتحسن لحد الأسبوع الجاي. ذكر بيتمان أن كمية وسمك طبقة الجليد هي أسوأ مما كانت عليه بالسنوات الـ15 الأخيرة بالنسبة لصيادي الفقمات.</p></div>
-          
-        </div>
-        
-      <div class="q-stem"><p>بالإضافة للثلج، شنو اكو بعد يأثر على جهود الإنقاذ؟</p></div>
-      
-      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">نقص المؤن</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">حالة الطقس</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">نقص المساعدة</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">صيادين الفقمات</div></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option B)</summary>
-        <div class="expl-body">
-          <p>The passage says that, in addition to destructive ice, harsh weather conditions remain an obstacle to rescue efforts, and Bateman expects no improvement until next week. Therefore, weather is the additional factor affecting rescue efforts. Supplies, assistance, and seal hunters are not identified in the passage as rescue obstacles, so options A, C, and D are incorrect.</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> Belebele CC-BY-SA-4.0 Multilingual Shared-Passage Bank (acm_Arab) · AI_AUDITED_VERIFIED (g4f is up-to-date (version 8.8.8).)</span>
-            <span><strong>SHA-256:</strong> <code>de360f9bc55cf01b8a08...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248582 · SUBGSGK_Q714034</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          <span class="badge b-psg">📖 Passage PSG_297111105C57 (Question 1 of 2)</span>
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_GS_GK — Multilingual Reading Comprehension &amp; Analytical Verbal Ability</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Multilingual Standardized Reading Comprehension (acm_Arab) (2023-2024)</span><span class="badge b-meta">Body: Open Multilingual Comprehension Benchmark (CC-BY-SA-4.0) · ALL_COUNTRIES</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Aptitude &amp; Comprehension</span> ·
-          <span><strong>Unit:</strong> Shared-Passage Comprehension (acm_Arab)</span> ·
-          <span><strong>Topic:</strong> Multi-Question Reading Comprehension (ACM)</span>
-        </div>
-      </div>
-      
-        <div class="passage-box">
-          <div class="passage-hdr">
-            <span>📖 Shared Comprehension Passage (acm_Arab)</span>
-            <span class="passage-tag">Shared ID: PSG_297111105C57 · Question 1 of 2</span>
-          </div>
-          <div class="passage-body"><p>بالأضافة إلى الجليد المدمر، ما تزال الظروف الجوية القاسية عائق أمام جهود الإنقاذ. اقترح بيتمان أن الأحوال ما راح تتحسن لحد الأسبوع الجاي. ذكر بيتمان أن كمية وسمك طبقة الجليد هي أسوأ مما كانت عليه بالسنوات الـ15 الأخيرة بالنسبة لصيادي الفقمات.</p></div>
-          
-        </div>
-        
-      <div class="q-stem"><p>بحسب الفقرة، شنو هي الي ما تشكل مشكلة حاليا لصيادي الفقمات؟</p></div>
-      
-      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">الظروف الجوية القاسية</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">كمية الثلج</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">سمك الثلج</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">الثلج المايع</div><span class="corr-tag">✓ Correct</span></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option D)</summary>
-        <div class="expl-body">
-          <p>The passage identifies destructive ice and harsh weather as rescue obstacles, and states that both the amount and thickness of the ice layer are worse for seal hunters than in the last 15 years. It never identifies melted ice as a current problem, so option D is supported. Options A, B, and C are explicitly mentioned as difficulties, making them incorrect.</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> Belebele CC-BY-SA-4.0 Multilingual Shared-Passage Bank (acm_Arab) · AI_AUDITED_VERIFIED (g4f is up-to-date (version 8.8.8).)</span>
-            <span><strong>SHA-256:</strong> <code>02cbcb9b131e45e292f2...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248581 · SUBGSGK_Q713958</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          <span class="badge b-psg">📖 Passage PSG_D305AB48B1C8 (Question 1 of 1)</span>
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_GS_GK — Multilingual Reading Comprehension &amp; Analytical Verbal Ability</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Multilingual Standardized Reading Comprehension (acm_Arab) (2023-2024)</span><span class="badge b-meta">Body: Open Multilingual Comprehension Benchmark (CC-BY-SA-4.0) · ALL_COUNTRIES</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Aptitude &amp; Comprehension</span> ·
-          <span><strong>Unit:</strong> Shared-Passage Comprehension (acm_Arab)</span> ·
-          <span><strong>Topic:</strong> Multi-Question Reading Comprehension (ACM)</span>
-        </div>
-      </div>
-      
-        <div class="passage-box">
-          <div class="passage-hdr">
-            <span>📖 Shared Comprehension Passage (acm_Arab)</span>
-            <span class="passage-tag">Shared ID: PSG_D305AB48B1C8 · Question 1 of 1</span>
-          </div>
-          <div class="passage-body"><p>انفجرت سيارة مفخخة البارحة الصبح  بمركز شرطة  بمنطقة غازي عنتاب بتركيا، مما إدى الى وفاة ضابطين من الشرطة وإصابة أكثر من عشرين آخرين بجروح. وكَال مكتب المحافظ أن ١٩ من المصابين كانوا من ضباط الشرطة. وكَالت الشرطة إنها تشتبه بمسؤولية أحد مقاتلي داعش عن الهجوم.</p></div>
-          
-        </div>
-        
-      <div class="q-stem"><p>شكد عدد القتلى بسبب الهجوم من غير ضباط الشرطة؟</p></div>
-      
-      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">19</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">2</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">0</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">20</div></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option C)</summary>
-        <div class="expl-body">
-          <p>The passage reports two police officers were killed and more than twenty others were injured. It also says nineteen of the injured were police officers. No deaths among non-police are mentioned, so the number of killed non-police is zero. Option C is correct. Options A and D refer to injured counts or total injured, and B refers to police deaths.</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> Belebele CC-BY-SA-4.0 Multilingual Shared-Passage Bank (acm_Arab) · AI_AUDITED_VERIFIED (g4f is up-to-date (version 8.8.8).)</span>
-            <span><strong>SHA-256:</strong> <code>4d76a3bdde77624796a8...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248580 · SUBGSGK_Q713957</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          <span class="badge b-psg">📖 Passage PSG_FA503D4F6E0B (Question 2 of 2)</span>
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_GS_GK — Multilingual Reading Comprehension &amp; Analytical Verbal Ability</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Multilingual Standardized Reading Comprehension (acm_Arab) (2023-2024)</span><span class="badge b-meta">Body: Open Multilingual Comprehension Benchmark (CC-BY-SA-4.0) · ALL_COUNTRIES</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Aptitude &amp; Comprehension</span> ·
-          <span><strong>Unit:</strong> Shared-Passage Comprehension (acm_Arab)</span> ·
-          <span><strong>Topic:</strong> Multi-Question Reading Comprehension (ACM)</span>
-        </div>
-      </div>
-      
-        <div class="passage-box">
-          <div class="passage-hdr">
-            <span>📖 Shared Comprehension Passage (acm_Arab)</span>
-            <span class="passage-tag">Shared ID: PSG_FA503D4F6E0B · Question 2 of 2</span>
-          </div>
-          <div class="passage-body"><p>"""كانت شركة """"إيه أو إل""""،لحد الآن، قادرة على تحريك وتطوير سوق الرسائل الفورية بطريقتها الخاصة، بسبب استخدامها على نطاقٍ واسعٍ داخل الولايات المتحدة. بوجود هذا الترتيب، يمكن راح تنتهي هذي  الحرية. عدد مستخدمي موقع ياهو! و خدمات مايكروسوفت مجتمعة، راح تنافس (إيه أو إل ) بعدد العملاء."""</p></div>
-          
-        </div>
-        
-      <div class="q-stem"><p>شني من التالي قد ينتهي باتباع الترتيب الجديد؟</p></div>
-      
-      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">تطوير الإنترنت على نطاق واسع في الولايات المتحدة</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">استخدام الرسائل الفورية</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">حرية شركة «إيه أو إل» بتطوير السوق بطريقتها الخاصة</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">شراكة ياهو ومايكروسوفت</div></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option C)</summary>
-        <div class="expl-body">
-          <p>The passage says AOL has been able to move and develop the instant messaging market in its own way, but this freedom may end under the new arrangement. The combined users of Yahoo and Microsoft will compete with AOL. Therefore, what may end is AOL's freedom to develop the market independently. Option C states this directly, while A, B, and D are not identified as ending.</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> Belebele CC-BY-SA-4.0 Multilingual Shared-Passage Bank (acm_Arab) · AI_AUDITED_VERIFIED (g4f is up-to-date (version 8.8.8).)</span>
-            <span><strong>SHA-256:</strong> <code>b8ecc2e4a0ab360c6ef2...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248579 · SUBGSGK_Q713956</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          <span class="badge b-psg">📖 Passage PSG_FA503D4F6E0B (Question 1 of 2)</span>
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_GS_GK — Multilingual Reading Comprehension &amp; Analytical Verbal Ability</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Multilingual Standardized Reading Comprehension (acm_Arab) (2023-2024)</span><span class="badge b-meta">Body: Open Multilingual Comprehension Benchmark (CC-BY-SA-4.0) · ALL_COUNTRIES</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Aptitude &amp; Comprehension</span> ·
-          <span><strong>Unit:</strong> Shared-Passage Comprehension (acm_Arab)</span> ·
-          <span><strong>Topic:</strong> Multi-Question Reading Comprehension (ACM)</span>
-        </div>
-      </div>
-      
-        <div class="passage-box">
-          <div class="passage-hdr">
-            <span>📖 Shared Comprehension Passage (acm_Arab)</span>
-            <span class="passage-tag">Shared ID: PSG_FA503D4F6E0B · Question 1 of 2</span>
-          </div>
-          <div class="passage-body"><p>"""كانت شركة """"إيه أو إل""""،لحد الآن، قادرة على تحريك وتطوير سوق الرسائل الفورية بطريقتها الخاصة، بسبب استخدامها على نطاقٍ واسعٍ داخل الولايات المتحدة. بوجود هذا الترتيب، يمكن راح تنتهي هذي  الحرية. عدد مستخدمي موقع ياهو! و خدمات مايكروسوفت مجتمعة، راح تنافس (إيه أو إل ) بعدد العملاء."""</p></div>
-          
-        </div>
-        
-      <div class="q-stem"><p>بحسب الفقرة، شلون ديأثر التنظيم على شركة «إيه أو إل»؟</p></div>
-      
-      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">على الأغلب راح يزداد عدد مستخدمين شركة «إيه أو إل»</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">شركة «إيه أو إل» راح تكون الشركة الوحيدة اللي طورت سوق الرسائل الفورية</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">عدد مستخدمين «إيه أو إل» راح يكون محل منافسة مع عدد مستخدمين ياهو ومايكروسوفت</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">ما راح يتم استخدام شركة «إيه أو إل» بالولايات المتحدة</div></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option C)</summary>
-        <div class="expl-body">
-          <p>The passage states AOL has so far developed the instant messaging market independently because of its broad U.S. use. The new arrangement means Yahoo and Microsoft's combined users will compete with AOL's customers, so AOL's independent freedom may end. Option C captures this competitive effect. A is unsupported, B overstates AOL's exclusivity, and D contradicts the U.S. usage mentioned.</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> Belebele CC-BY-SA-4.0 Multilingual Shared-Passage Bank (acm_Arab) · AI_AUDITED_VERIFIED (g4f is up-to-date (version 8.8.8).)</span>
-            <span><strong>SHA-256:</strong> <code>5eb9f18e4893724b80c4...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
     
     <article class="q-card">
       <div class="q-head">
@@ -2157,10 +1884,226 @@
       </details>
     </article>
     
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248534 · SUBGENCORE_Q509064</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          
+          
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GEN_CORE — Nutrition</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Multi-Disciplinary</span> ·
+          <span><strong>Unit:</strong> Nutrition (EN Medium)</span> ·
+          <span><strong>Topic:</strong> Nutrition</span>
+        </div>
+      </div>
+      
+      <div class="q-stem"><p>Kini awọn ipa ti agbaye lori aabo ounje?</p></div>
+      
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">Awọn ifunni awọn orilẹ-ede ọlọrọ ati awọn idena iṣowo jẹ ki o ṣoro fun awọn orilẹ-ede to sese ndagbasoke lati lo anfani ti agbara agbaye fun ilọsiwaju aabo ounjẹ.</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">Awọn ofin ti Eto Iṣowo Agbaye ko ni aabo iṣẹ-ogbin, nitorinaa agbaye ko ni ipa lori aabo ounje.</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">Awọn ile itaja nla jẹ ọna kan ṣoṣo ti ounjẹ ati iṣẹ-ogbin ti ni iriri agbaye.</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">Awọn orilẹ-ede to sese ndagbasoke nilo lati ṣẹda awọn ifiṣura ounjẹ ti gbogbo eniyan lati le mọ awọn anfani ti o pọju.</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>Correct Answer: (A) Awọn ifunni awọn orilẹ-ede ọlọrọ ati awọn idena iṣowo jẹ ki o ṣoro fun awọn orilẹ-ede to sese ndagbasoke lati lo anfani ti agbara agbaye fun ilọsiwaju aabo ounjẹ. [Subject: Nutrition · Medium: EN].</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
+            <span><strong>SHA-256:</strong> <code>15e30c7422bc80277dc8...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248533 · SUBGENCORE_Q509057</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          
+          
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GEN_CORE — Nutrition</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Multi-Disciplinary</span> ·
+          <span><strong>Unit:</strong> Nutrition (EN Medium)</span> ·
+          <span><strong>Topic:</strong> Nutrition</span>
+        </div>
+      </div>
+      
+      <div class="q-stem"><p>Gbólóhùn ẹyọkan wo nipa tito nkan lẹsẹsẹ ọra ati gbigba jẹ deede?</p></div>
+      
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">Gbigba awọn asidi fatty ninu ifun waye nipataki nipasẹ FABP ati awọn ọlọjẹ gbigbe FAT/CD36 ninu awọn enterocytes ti duodenum jijin.</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">Lẹhin gbigba, alabọde pq triglycerides (MCT) wọ inu eto lymphatic, lakoko ti awọn triglycerides pq gigun wọ inu eto ẹjẹ ẹnu-ọna.</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">Awọn ọja ti tito nkan lẹsẹsẹ ti awọn triglycerides (triacylglycerol) le ṣẹda awọn micelles ti a dapọ pẹlu idaabobo awọ pancreatic ati awọn phospholipids ati pe eyi pọ si gbigba.</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">Triglycerides (triacylglycerol) gbọdọ jẹ emulsified ati digested ṣaaju ki o to gbe awọn acids fatty le gbe.</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>Correct Answer: (D) Triglycerides (triacylglycerol) gbọdọ jẹ emulsified ati digested ṣaaju ki o to gbe awọn acids fatty le gbe. [Subject: Nutrition · Medium: EN].</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
+            <span><strong>SHA-256:</strong> <code>847e9cd97fb6c1f6f58c...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248532 · SUBGENCORE_Q509039</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          
+          
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GEN_CORE — Miscellaneous</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Multi-Disciplinary</span> ·
+          <span><strong>Unit:</strong> Miscellaneous (EN Medium)</span> ·
+          <span><strong>Topic:</strong> Miscellaneous</span>
+        </div>
+      </div>
+      
+      <div class="q-stem"><p>Láti ìgbà ìbẹ̀rẹ̀ pẹ̀pẹ̀, Mo kọwé láti ṣe àlàye ìgbésí ayé mi fún ara mí, tí mo sì pe èyíkéyìi ònkàwé láti dárapọ̀ mọ́ mi lórí okùn tó wà lókè. Mo máa ṣiṣẹ́ láì lo àwọ̀n kankan àti láìsí ariwo àwọn èèrò láti dàmiláàmú. Wíwo ilẹ̀ láti òkè ńmú òòyì kọ́ mi. ó ńtọnisọ́nà. Mi ò ní àkọọ́lẹ̀ àgbáyé ní bí ó ti wá fún mi ní pàtó ṣùgbọ́n mo yíi padà nìpasẹ̀ mímú kí ó gba prísíìmu àwọn ìtàn tó yááyì tí mo ti ṣe àkójọ rẹ̀ ní ọ̀nà tí lepidopterist fí ńtọ́jú àfòpiná alárà inú klórófọ́ọ̀mù rẹ̀ pamọ, tàbí àwọn Beetle láti Costa Rica. Àwọn ìtàn rì bíi ohun èèlò tí mò ńlò láti fi ṣe ìtumọ̀ sí ara mi. ----------Pat Conroy Èwo nínú àwọn wọ̀nyí ló ṣe àpèjúwe títò ti abala yí dáradára jùlọ?</p></div>
+      
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">Ònkọ̀wé náà ńpèsè àwọn àlàyé lóríṣiríṣi fún gbígbé àwọn ìgbésẹ̀ kan nípàtó.</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">Òǹkọ̀wé náà ńlo àwọn àkàwé láti ṣe àlàyé àwọn ìrírí rẹ̀ ní ti ìgbésẹ̀ kan nìpàtó.</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">Ònkọ̀wé náà ńṣe àfiwé láàrin àwọn ìrírí rẹ̀ àti ti àwọn yòókù nínú iṣẹ́ tirẹ̀.</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">Òǹkọ̀wé kan ṣe átòkalẹ̀ àwọn ipele lóríṣiríṣi ti iṣẹ́ rẹ̀ nínú iṣẹ́ kan ní pàtó.</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option B)</summary>
+        <div class="expl-body">
+          <p>Correct Answer: (B) Òǹkọ̀wé náà ńlo àwọn àkàwé láti ṣe àlàyé àwọn ìrírí rẹ̀ ní ti ìgbésẹ̀ kan nìpàtó. [Subject: Miscellaneous · Medium: EN].</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
+            <span><strong>SHA-256:</strong> <code>76936317ea8f88bbd69d...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248531 · SUBGENCORE_Q509018</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          
+          
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GEN_CORE — Miscellaneous</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Multi-Disciplinary</span> ·
+          <span><strong>Unit:</strong> Miscellaneous (EN Medium)</span> ·
+          <span><strong>Topic:</strong> Miscellaneous</span>
+        </div>
+      </div>
+      
+      <div class="q-stem"><p>Èwo nínú àwọn wọ̀nyí ni ó fa ọgbọ́n yọ jùlọ fún òṣèré tí iṣẹ́ rẹ̀ níílò wípé kí ó lo ohun àmúlò tó léwu kan ní pàtó?</p></div>
+      
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">Ṣíṣàwárí ohun àmúlò tí kò léwu láti lò àti ṣíṣe àyípadà ètò ṣíṣe-ọnà gẹ́gẹ́ bí ó ti ṣe kókó</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">Kíka àlẹ̀mọ́ lára ohun àmúlò náà kí á sì tẹ̀síwájú gẹ́gẹ́ bíi ìdarí lára àlẹ̀mọ́ náà</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">Ṣíṣe àrídájú wípé kò sí ọmọdé kankan níbẹ̀ nígbàti a bá ńlo ohun àmúlò náà.</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">Bíbèèrè lọ́wọ́ akọ́ṣẹ́mọṣẹ́ onímọ̀ nípa ewu ṣáájú lílo ohun èèlò náà</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option B)</summary>
+        <div class="expl-body">
+          <p>Correct Answer: (B) Kíka àlẹ̀mọ́ lára ohun àmúlò náà kí á sì tẹ̀síwájú gẹ́gẹ́ bíi ìdarí lára àlẹ̀mọ́ náà [Subject: Miscellaneous · Medium: EN].</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
+            <span><strong>SHA-256:</strong> <code>afed44072404a578b59d...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248530 · SUBGENCORE_Q508969</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          
+          
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GEN_CORE — Logical Fallacies</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Multi-Disciplinary</span> ·
+          <span><strong>Unit:</strong> Logical Fallacies (EN Medium)</span> ·
+          <span><strong>Topic:</strong> Logical Fallacies</span>
+        </div>
+      </div>
+      
+      <div class="q-stem"><p>Fálásì àròkọ ni</p></div>
+      
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">ó ńfi okùnfà ìṣẹ̀lẹ̀ sí okùnfà ìrọ̀rùn kan nígbàtí okùnfà náà ti pẹ̀ka</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">ṣíṣe àríyànjiyàn wípé ohun tó jẹ́ òtítọ́ nípa apá kan ohun kan gbọ́dọ̀ jẹ́ òtítọ́ nípa gbogbo ara nǹkan náà</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">ó parí ọrọ̀ láì ní ẹ̀rí tó péye láti ṣe àtìlẹ́yìn fún ìparí ọ̀rọ̀ náà</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">ó parí ọrọ̀ tó dá lóri ríro èrò àkọlé ìbùwọ́lù nígbàtí kò dìídì ní àjọṣepọ̀ tààrà kankan láàrin ìbùwọ́lù àfẹnujẹ́ àti àkòrí ọrọ̀ ìparí náà</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option B)</summary>
+        <div class="expl-body">
+          <p>Correct Answer: (B) ṣíṣe àríyànjiyàn wípé ohun tó jẹ́ òtítọ́ nípa apá kan ohun kan gbọ́dọ̀ jẹ́ òtítọ́ nípa gbogbo ara nǹkan náà [Subject: Logical Fallacies · Medium: EN].</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
+            <span><strong>SHA-256:</strong> <code>274054f89705704a1ed2...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248529 · SUBGENCORE_Q508967</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          
+          
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GEN_CORE — Jurisprudence</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Multi-Disciplinary</span> ·
+          <span><strong>Unit:</strong> Jurisprudence (EN Medium)</span> ·
+          <span><strong>Topic:</strong> Jurisprudence</span>
+        </div>
+      </div>
+      
+      <div class="q-stem"><p>Kí ló dé tí ọ̀nà &#x27;agbára&#x27; sí ìdájọ́ òdodo kọ ìlànà Rawls?</p></div>
+      
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">Nítorí pé ó kùnà láti yanjú agbára gangan tí àwọn ènìyàn ní láti jàfààní láti inú ìmọ̀ ìdájọ́ òdodo rẹ̀.</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">Nítorí pé ó fojú fo ojúṣe àwọn ènìyàn.</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">Nítorí pé ó kan àwọn àwùjọ ìjọba ìjọba nìkan.</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">Nítorí pé ó fojú fo pàtàkì ilé-ẹjọ́.</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>Correct Answer: (A) Nítorí pé ó kùnà láti yanjú agbára gangan tí àwọn ènìyàn ní láti jàfààní láti inú ìmọ̀ ìdájọ́ òdodo rẹ̀. [Subject: Jurisprudence · Medium: EN].</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
+            <span><strong>SHA-256:</strong> <code>65c37a78798e7109c863...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
   </main>
   <script>
     let curPage = 1;
-    let totalPages = 1332;
+    let totalPages = 4972;
     let latestGitSha = 'main';
     let lastShaCheckMs = 0;
     let bestCloudScore = 0;

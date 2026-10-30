@@ -1,7 +1,7 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-30 10:01:24 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP AGENTS \u00b7 100% CLEAN W3C MATHML)",
-  "last_updated_utc": "2026-10-30 10:01:24 UTC",
+  "timestamp": "2026-10-30 10:24:17 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP AGENTS \u00b7 100% CLEAN W3C MATHML)",
+  "last_updated_utc": "2026-10-30 10:24:17 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "mathml_status": {
@@ -19,29 +19,27 @@
     "telemetry": {
       "active_ai_agents": 8,
       "active_harvester_agents": 4,
-      "total_promoted_session": 9,
+      "total_promoted_session": 0,
       "total_rejected_session": 0,
-      "providers_succeeded": {
-        "g4f is up-to-date (version 8.8.8).": 9
-      },
-      "last_agent_notes": "8 Agents probing (meta/llama-3.3-70b-instruct->JSONDecodeError, openai/gpt-4o-mini->JSONDecodeError, microsoft/Phi-3-medium-128k-instruct->JSONDecodeError)"
+      "providers_succeeded": {},
+      "last_agent_notes": "8 Parallel Cloud AI Agents Initialized"
     }
   },
   "counts": {
-    "db1_scraped_mcqs.sqlite": 124271,
+    "db1_scraped_mcqs.sqlite": 124262,
     "db2_pyq_mcqs.sqlite": 124316,
     "db3_textbook_chunk_mcqs.sqlite": 0,
-    "mcq_bank.sqlite (Master)": 248587,
+    "mcq_bank.sqlite (Master)": 248578,
     "figure_mcqs_count": 6127,
-    "passage_mcqs_count": 2665,
-    "shared_passages_count": 1718,
-    "staging_pending_count": 50390,
-    "staging_promoted_count": 9
+    "passage_mcqs_count": 2656,
+    "shared_passages_count": 1712,
+    "staging_pending_count": 0,
+    "staging_promoted_count": 0
   },
   "raw_stats": {
-    "seed_files": 4501,
+    "seed_files": 4473,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83e\udd16 16 NONSTOP CLOUD AGENTS \u00b7 100% CLEAN W3C MATHML]\n[2026-10-30 10:01:05 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,501/21,109] +10 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[2026-10-30 10:01:12 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1718 (2665 Qs) | Staging=49,490\n[2026-10-30 10:01:21 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1718 (2665 Qs) | Staging=50,390\n[8-AI-AGENT-SWARM] Wave 3: +3 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Agents probing (openai/gpt-4.1-mini->JSONDecodeError, openai/gpt-4.1->JSONDecodeError, openai/gpt-4.1-nano->JSONDecodeError)",
-  "recent_logs": "[2026-10-30 10:01:05 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,501/21,109] +10 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[2026-10-30 10:01:12 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1718 (2665 Qs) | Staging=49,490\n[2026-10-30 10:01:21 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1718 (2665 Qs) | Staging=50,390\n[8-AI-AGENT-SWARM] Wave 3: +3 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Agents probing (openai/gpt-4.1-mini->JSONDecodeError, openai/gpt-4.1->JSONDecodeError, openai/gpt-4.1-nano->JSONDecodeError)"
+  "log_tail": "[\ud83e\udd16 16 NONSTOP CLOUD AGENTS \u00b7 100% CLEAN W3C MATHML]\n[BOOT-OK] 16 Nonstop Cloud Agents Online (20s Live HTML Counter Link Active)!",
+  "recent_logs": "[BOOT-OK] 16 Nonstop Cloud Agents Online (20s Live HTML Counter Link Active)!"
 }
