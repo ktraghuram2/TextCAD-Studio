@@ -1,7 +1,7 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-30 14:29:06 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (NONSTOP MULTI-AGENT SWARM \u00b7 100% CLEAN W3C MATHML)",
-  "last_updated_utc": "2026-10-30 14:29:06 UTC",
+  "timestamp": "2026-10-30 14:50:43 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (NONSTOP MULTI-AGENT SWARM \u00b7 100% CLEAN W3C MATHML)",
+  "last_updated_utc": "2026-10-30 14:50:43 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "mathml_status": {
@@ -22,7 +22,7 @@
       "total_promoted_session": 0,
       "total_rejected_session": 0,
       "providers_succeeded": {},
-      "last_agent_notes": "8 Parallel Cloud AI Agents Initialized"
+      "last_agent_notes": "8 Agents probing (timeout_2)"
     }
   },
   "counts": {
@@ -33,13 +33,13 @@
     "figure_mcqs_count": 6127,
     "passage_mcqs_count": 2660,
     "shared_passages_count": 1714,
-    "staging_pending_count": 27891,
+    "staging_pending_count": 105458,
     "staging_promoted_count": 8
   },
   "raw_stats": {
-    "seed_files": 4489,
+    "seed_files": 4545,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83e\udd16 LIVE 24x7 CLOUD SWARM \u00b7 100% CLEAN W3C MATHML]\n[BOOT-OK] 20 Nonstop Cloud Agents Online (12 AI Agents + 25s Live Stream Active)!",
-  "recent_logs": "[BOOT-OK] 20 Nonstop Cloud Agents Online (12 AI Agents + 25s Live Stream Active)!"
+  "log_tail": "[\ud83e\udd16 LIVE 24x7 CLOUD SWARM \u00b7 100% CLEAN W3C MATHML]\n[2026-10-30 14:48:29 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,541/21,109] +15 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[2026-10-30 14:49:27 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,543/21,109] +21 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[2026-10-30 14:50:24 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,545/21,109] +12 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[AI-STAGING-SWARM] Wave 27: +0 AI-Upgraded this run (Rejected low-quality: 0) | 8 Agents probing (timeout_1)",
+  "recent_logs": "[2026-10-30 14:48:29 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,541/21,109] +15 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[2026-10-30 14:49:27 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,543/21,109] +21 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[2026-10-30 14:50:24 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,545/21,109] +12 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[AI-STAGING-SWARM] Wave 27: +0 AI-Upgraded this run (Rejected low-quality: 0) | 8 Agents probing (timeout_1)"
 }
