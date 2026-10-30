@@ -1,26 +1,21 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-<<<<<<< Updated upstream
-  "timestamp": "2026-10-30 13:35:22 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (20 NONSTOP AGENTS \u00b7 100% CLEAN W3C MATHML)",
-  "last_updated_utc": "2026-10-30 13:35:22 UTC",
-=======
-  "timestamp": "2026-10-30 13:38:10 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (20 NONSTOP AGENTS \u00b7 100% CLEAN W3C MATHML)",
-  "last_updated_utc": "2026-10-30 13:38:10 UTC",
->>>>>>> Stashed changes
+  "timestamp": "2026-10-30 14:29:06 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (NONSTOP MULTI-AGENT SWARM \u00b7 100% CLEAN W3C MATHML)",
+  "last_updated_utc": "2026-10-30 14:29:06 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "mathml_status": {
-    "db1_converted": 29,
-    "db2_converted": 9,
+    "db1_converted": 0,
+    "db2_converted": 0,
     "staging_converted": 0,
-    "total_unique_converted": 38,
+    "total_unique_converted": 0,
     "clean_mathml_enforced": true
   },
   "active_cloud_agents": {
-    "ai_staging_agents": 12,
+    "ai_staging_agents": 4,
     "parquet_harvester_agents": 4,
-    "web_subtopic_scraper_agents": 4,
-    "total_parallel_agents": 20,
+    "web_subtopic_scraper_agents": 2,
+    "total_parallel_agents": 10,
     "telemetry": {
       "active_ai_agents": 8,
       "active_harvester_agents": 4,
@@ -31,20 +26,20 @@
     }
   },
   "counts": {
-    "db1_scraped_mcqs.sqlite": 124262,
+    "db1_scraped_mcqs.sqlite": 124266,
     "db2_pyq_mcqs.sqlite": 124316,
     "db3_textbook_chunk_mcqs.sqlite": 0,
-    "mcq_bank.sqlite (Master)": 248578,
+    "mcq_bank.sqlite (Master)": 248582,
     "figure_mcqs_count": 6127,
-    "passage_mcqs_count": 2656,
-    "shared_passages_count": 1712,
-    "staging_pending_count": 0,
-    "staging_promoted_count": 0
+    "passage_mcqs_count": 2660,
+    "shared_passages_count": 1714,
+    "staging_pending_count": 27891,
+    "staging_promoted_count": 8
   },
   "raw_stats": {
-    "seed_files": 4473,
+    "seed_files": 4489,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83e\udd16 20 NONSTOP CLOUD AGENTS \u00b7 100% CLEAN W3C MATHML]\n[BOOT-OK] 20 Nonstop Cloud Agents Online (12 AI Agents + 25s Live Stream Active)!",
+  "log_tail": "[\ud83e\udd16 LIVE 24x7 CLOUD SWARM \u00b7 100% CLEAN W3C MATHML]\n[BOOT-OK] 20 Nonstop Cloud Agents Online (12 AI Agents + 25s Live Stream Active)!",
   "recent_logs": "[BOOT-OK] 20 Nonstop Cloud Agents Online (12 AI Agents + 25s Live Stream Active)!"
 }
