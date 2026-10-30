@@ -1,7 +1,7 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-30 06:13:41 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP CLOUD AGENTS: SCRAPERS + AI STAGING)",
-  "last_updated_utc": "2026-10-30 06:13:41 UTC",
+  "timestamp": "2026-10-30 06:15:28 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP CLOUD AGENTS: SCRAPERS + AI STAGING)",
+  "last_updated_utc": "2026-10-30 06:15:28 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "active_cloud_agents": {
@@ -15,26 +15,26 @@
       "total_promoted_session": 0,
       "total_rejected_session": 0,
       "providers_succeeded": {
-        "g4f:": 14
+        "g4f:": 35
       },
       "last_agent_notes": "8 Parallel Cloud AI Agents Initialized"
     }
   },
   "counts": {
     "db1_scraped_mcqs.sqlite": 124298,
-    "db2_pyq_mcqs.sqlite": 124140,
+    "db2_pyq_mcqs.sqlite": 124154,
     "db3_textbook_chunk_mcqs.sqlite": 0,
-    "mcq_bank.sqlite (Master)": 248438,
+    "mcq_bank.sqlite (Master)": 248452,
     "figure_mcqs_count": 6125,
-    "passage_mcqs_count": 2480,
-    "shared_passages_count": 1616,
-    "staging_pending_count": 578025,
-    "staging_promoted_count": 51
+    "passage_mcqs_count": 2494,
+    "shared_passages_count": 1623,
+    "staging_pending_count": 578708,
+    "staging_promoted_count": 65
   },
   "raw_stats": {
     "seed_files": 4449,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83e\udd16 16 NONSTOP CLOUD AGENTS: 8 AI STAGING + 4 PARQUET + 4 WEB SCRAPERS]\n[2026-10-30 06:13:39 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:teacher_qualification:test] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,438 | Figures: 6,125\n[2026-10-30 06:13:40 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:teacher_qualification:val] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,438 | Figures: 6,125\n[2026-10-30 06:13:41 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:urban_and_rural_planner:dev] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,438 | Figures: 6,125\n[8-AI-AGENT-SWARM] Wave 0: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | Starting 8 AI Agents...",
-  "recent_logs": "[2026-10-30 06:13:39 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:teacher_qualification:test] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,438 | Figures: 6,125\n[2026-10-30 06:13:40 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:teacher_qualification:val] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,438 | Figures: 6,125\n[2026-10-30 06:13:41 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:urban_and_rural_planner:dev] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,438 | Figures: 6,125\n[8-AI-AGENT-SWARM] Wave 0: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | Starting 8 AI Agents..."
+  "log_tail": "[\ud83e\udd16 16 NONSTOP CLOUD AGENTS: 8 AI STAGING + 4 PARQUET + 4 WEB SCRAPERS]\n[2026-10-30 06:13:43 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:veterinary_medicine:test] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,438 | Figures: 6,125\n[2026-10-30 06:13:44 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:veterinary_medicine:val] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,438 | Figures: 6,125\n[2026-10-30 06:13:56 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] haonan-li/cmmlu: 0 Parquet shards queued...\n[8-AI-AGENT-SWARM] Wave 0: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | Starting 8 AI Agents...",
+  "recent_logs": "[2026-10-30 06:13:43 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:veterinary_medicine:test] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,438 | Figures: 6,125\n[2026-10-30 06:13:44 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:veterinary_medicine:val] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,438 | Figures: 6,125\n[2026-10-30 06:13:56 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] haonan-li/cmmlu: 0 Parquet shards queued...\n[8-AI-AGENT-SWARM] Wave 0: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | Starting 8 AI Agents..."
 }

@@ -190,14 +190,14 @@
 <body>
   <header>
     <h1><span class="live-dot"></span> Live Cloud Dashboard — Verified Sufficient-Explanation MCQs & Staging Queue</h1>
-    <div class="sub-bar">Live Sync: <strong id="liveTs">2026-10-30 06:13:17 · 🟢 LIVE FROM GITHUB CLOUD</strong> · Strict Explanation Gate + Shared Passages (1 Para → Multi Qs) + Figures</div>
-    <div class="log-box" id="liveLogBox">[2026-10-30 06:13:15 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:middle_school_history:dev] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,434 | Figures: 6,125
-[2026-10-30 06:13:15 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:middle_school_history:test] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,434 | Figures: 6,125
-[2026-10-30 06:13:16 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:middle_school_history:val] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,434 | Figures: 6,125
-[2026-10-30 06:13:16 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:middle_school_mathematics:dev] Ingested +1 MCQs (+0 DB1, +1 DB2) | Master Total: 248,435 | Figures: 6,125</div>
+    <div class="sub-bar">Live Sync: <strong id="liveTs">2026-10-30 06:15:05 · 🟢 LIVE FROM GITHUB CLOUD</strong> · Strict Explanation Gate + Shared Passages (1 Para → Multi Qs) + Figures</div>
+    <div class="log-box" id="liveLogBox">[2026-10-30 06:13:43 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:veterinary_medicine:dev] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,438 | Figures: 6,125
+[2026-10-30 06:13:43 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:veterinary_medicine:test] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,438 | Figures: 6,125
+[2026-10-30 06:13:44 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:veterinary_medicine:val] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,438 | Figures: 6,125
+[2026-10-30 06:13:56 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] haonan-li/cmmlu: 0 Parquet shards queued...</div>
     <div class="stats-grid">
       <div class="stat-box" onclick="switchDb('')">
-        <div class="stat-val" id="cntMaster" style="color:#22c55e;">248434</div>
+        <div class="stat-val" id="cntMaster" style="color:#22c55e;">248452</div>
         <div class="stat-lbl">✅ Verified Master MCQs (Full Explanation Only)</div>
       </div>
       <div class="stat-box" onclick="switchDb('DB1_SCRAPED_MODIFIED')">
@@ -205,7 +205,7 @@
         <div class="stat-lbl">DB 1: Verified Scraped MCQs</div>
       </div>
       <div class="stat-box" onclick="switchDb('DB2_PYQ')">
-        <div class="stat-val" id="cntDb2" style="color:#f59e0b;">124136</div>
+        <div class="stat-val" id="cntDb2" style="color:#f59e0b;">124154</div>
         <div class="stat-lbl">DB 2: Verified Official PYQs</div>
       </div>
       <div class="stat-box" onclick="switchDb('FIGURES')">
@@ -213,15 +213,15 @@
         <div class="stat-lbl">🖼️ Verified Figure MCQs & PYQs</div>
       </div>
       <div class="stat-box" onclick="switchDb('PASSAGES')">
-        <div class="stat-val" id="cntPassages" style="color:#34d399;">2480</div>
-        <div class="stat-lbl">📖 Shared-Passage MCQs (<span id="cntSharedPsg">1616</span> Passages)</div>
+        <div class="stat-val" id="cntPassages" style="color:#34d399;">2494</div>
+        <div class="stat-lbl">📖 Shared-Passage MCQs (<span id="cntSharedPsg">1623</span> Passages)</div>
       </div>
       <div class="stat-box" onclick="switchDb('STAGING')">
-        <div class="stat-val" id="cntStaging" style="color:#fbbf24;">574602</div>
+        <div class="stat-val" id="cntStaging" style="color:#fbbf24;">578708</div>
         <div class="stat-lbl">⏳ Staging Queue (Awaiting AI Check & Explanation)</div>
       </div>
       <div class="stat-box" onclick="switchDb('')">
-        <div class="stat-val" id="cntPromoted" style="color:#a78bfa;">51</div>
+        <div class="stat-val" id="cntPromoted" style="color:#a78bfa;">65</div>
         <div class="stat-lbl">🤖 16 Nonstop Cloud Agents · AI-Promoted</div>
       </div>
     </div>
@@ -241,7 +241,7 @@
       <button id="btnFirst" onclick="loadPage(1)">« First</button>
       <button id="btnPrev" onclick="loadPage(curPage - 1)">‹ Prev 50</button>
       <span id="pageInfo" style="font-size:0.9rem; color:#cbd5e1; font-weight:600;">
-        Page 1 of 4969 (Showing 50 of 248435 questions)
+        Page 1 of 4970 (Showing 50 of 248452 questions)
       </span>
       <button id="btnNext" onclick="loadPage(curPage + 1)">Next 50 ›</button>
       <button id="btnLast" onclick="loadPage(totalPages)">Last »</button>
@@ -252,7 +252,124 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248435 · SUBAPTQUAN_Q709808</span>
+          <span class="badge b-id">#248452 · SUBGSGK_Q711596</span>
+          <span class="badge b-pyq-db">DB2_PYQ</span>
+          
+          
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GS_GK — Multidisciplinary Competitive Exam &amp; General Studies</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Global &amp; National Competitive Exam (ceval-exam) (2021-2024)</span><span class="badge b-meta">Body: Official Academic &amp; Professional Exam Benchmark · ALL_COUNTRIES</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Competitive Exams</span> ·
+          <span><strong>Unit:</strong> Probability And Statistics</span> ·
+          <span><strong>Topic:</strong> Probability And Statistics (ZH Exam Paper)</span>
+        </div>
+      </div>
+      
+      <div class="q-stem"><p>设二维随机变量<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>(X,Y)</mi></mrow></math>的概率密度函数为:<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>f(x,y)=\left\{\begin{array}{lc}a(x+y),&amp;0&lt;x&lt;2,0&lt;y&lt;1\\0,&amp;\text{其他}\end{array}\right.</mi></mrow></math>,则常数<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>a=</mi></mrow></math>____</p></div>
+      
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\frac{1}{3}</mi></mrow></math></div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">2</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">3</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\frac{1}{2}</mi></mrow></math></div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>1. 首先，对于二维随机变量<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>(X,Y)</mi></mrow></math>，其概率密度函数<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>f(x,y)</mi></mrow></math>需满足归一性，即<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\iint_{-\infty}^{\infty} f(x,y) \, dx \, dy = 1</mi></mrow></math>。
+2. 其次，我们需要计算概率密度函数在定义域内的二重积分。根据题目给定的定义域，我们有：<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\iint_{0}^{2}\iint_{0}^{1} a(x+y) \, dy \, dx</mi></mrow></math>。
+3. 接着，我们计算二重积分。首先对y积分，得到<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\int_{0}^{1} a(x+y) \, dy = a[x + \frac{1}{2}(y^2)]_{0}^{1} = a(x + \frac{1}{2})</mi></mrow></math>。然后对x积分，得到<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\int_{0}^{2} a(x + \frac{1}{2}) \, dx = a[\frac{1}{2}(x^2 + x)]_{0}^{2} = 3a</mi></mrow></math>。
+4. 最后，根据归一性，我们有<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>3a = 1</mi></mrow></math>，解得常数<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>a = \frac{1}{3}</mi></mrow></math>。</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (MIT 52-Subject University &amp; Professional Exam PYQs) · ceval/ceval-exam</span>
+            <span><strong>SHA-256:</strong> <code>4abb45effc497a4d7516...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248451 · SUBGSGK_Q711594</span>
+          <span class="badge b-pyq-db">DB2_PYQ</span>
+          
+          
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GS_GK — Multidisciplinary Competitive Exam &amp; General Studies</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Global &amp; National Competitive Exam (ceval-exam) (2021-2024)</span><span class="badge b-meta">Body: Official Academic &amp; Professional Exam Benchmark · ALL_COUNTRIES</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Competitive Exams</span> ·
+          <span><strong>Unit:</strong> Probability And Statistics</span> ·
+          <span><strong>Topic:</strong> Probability And Statistics (ZH Exam Paper)</span>
+        </div>
+      </div>
+      
+      <div class="q-stem"><p>独立地测量一个物理量,记每次测量的结果为<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>X=\mu+\varepsilon</mi></mrow></math>,其中<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\mu</mi></mrow></math>是物理量的真值,<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\varepsilon</mi></mrow></math>是测量产生的随机误差,且已知每次测量产生的随机误差都服从<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>(-1,1)</mi></mrow></math>上的均匀分布,如果取<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>n</mi></mrow></math>次测量结果的算术平均值<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\bar{X}=\frac{1}{64}\sum_{i=1}^{64}X_i</mi></mrow></math>作为真值<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\mu</mi></mrow></math>的近似值,用切比雪夫不等式估计<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>|\bar{X}-\mu|&lt;\frac{1}{8}</mi></mrow></math>的概率的结果:____</p></div>
+      
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">不超过 <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\frac{2}{3}</mi></mrow></math></div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">不小于 <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\frac{1}{3}</mi></mrow></math></div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">不小于 <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\frac{2}{3}</mi></mrow></math></div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">不超过 <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\frac{1}{3}</mi></mrow></math></div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option C)</summary>
+        <div class="expl-body">
+          <p>1. 首先，我们需要知道切比雪夫不等式：对于任意随机变量X，其期望为μ，方差为σ^2，那么对于任意正数k，有<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P(|X-\mu|\geq k\sigma)\leq \frac{1}{k^2}</mi></mrow></math>。
+2. 其次，我们需要计算随机误差<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\varepsilon</mi></mrow></math>的期望和方差。由题意知，<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\varepsilon</mi></mrow></math>服从<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>(-1,1)</mi></mrow></math>上的均匀分布，其期望<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>E(\varepsilon)=0</mi></mrow></math>，方差<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>Var(\varepsilon)=\frac{2^2}{12}=\frac{1}{3}</mi></mrow></math>。
+3. 接着，我们计算<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\bar{X}</mi></mrow></math>的期望和方差。由于每次测量都是独立的，所以<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>E(\bar{X})=E(\frac{1}{64}\sum_{i=1}^{64}X_i)=\mu</mi></mrow></math>，<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>Var(\bar{X})=Var(\frac{1}{64}\sum_{i=1}^{64}X_i)=\frac{1}{64^2}\sum_{i=1}^{64}Var(X_i)=\frac{1}{64}\cdot\frac{1}{3}</mi></mrow></math>。 
+4. 最后，我们利用切比雪夫不等式估计<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P(|\bar{X}-\mu|&lt;\frac{1}{8})</mi></mrow></math>。由切比雪夫不等式，我们有<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P(|\bar{X}-\mu|\geq \frac{1}{8})\leq \frac{Var(\bar{X})}{(\frac{1}{8})^2}=\frac{\frac{1}{64}\cdot\frac{1}{3}}{(\frac{1}{8})^2}=\frac{1}{3}</mi></mrow></math>。所以，<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P(|\bar{X}-\mu|&lt;\frac{1}{8})\geq 1-\frac{1}{3}=\frac{2}{3}</mi></mrow></math>。 因此，<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>|\bar{X}-\mu|&lt;\frac{1}{8}</mi></mrow></math>的概率不小于<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\frac{2}{3}</mi></mrow></math>，答案是C。</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (MIT 52-Subject University &amp; Professional Exam PYQs) · ceval/ceval-exam</span>
+            <span><strong>SHA-256:</strong> <code>9027448a16e7706200bc...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248450 · SUBGSGK_Q711592</span>
+          <span class="badge b-pyq-db">DB2_PYQ</span>
+          
+          
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GS_GK — Multidisciplinary Competitive Exam &amp; General Studies</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Global &amp; National Competitive Exam (ceval-exam) (2021-2024)</span><span class="badge b-meta">Body: Official Academic &amp; Professional Exam Benchmark · ALL_COUNTRIES</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Competitive Exams</span> ·
+          <span><strong>Unit:</strong> Probability And Statistics</span> ·
+          <span><strong>Topic:</strong> Probability And Statistics (ZH Exam Paper)</span>
+        </div>
+      </div>
+      
+      <div class="q-stem"><p>设随机变量<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>(X,Y)</mi></mrow></math>的联合密度函数是:<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>f(x,y)=\left\{\begin{array}{c}ke^{-x-2y},x&gt;0,y&gt;0\\0,\text{其他}\end{array}\right.</mi></mrow></math>则<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P(0\leq X\leq2,0\leq Y\leq1)=</mi></mrow></math>____</p></div>
+      
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\left(1-e^{-4}\right)^{2}</mi></mrow></math></div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\left(1-e^{-8}\right)^{2}</mi></mrow></math></div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\left(1-e^{-2}\right)^{2}</mi></mrow></math></div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\left(1-e^{-6}\right)^{2}</mi></mrow></math></div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option C)</summary>
+        <div class="expl-body">
+          <p>1. 首先，我们需要找到常数k。为了使f(x, y)成为一个有效的联合密度函数，我们需要满足<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}f(x,y)dxdy=1</mi></mrow></math>。由于f(x, y)在x&gt;0和y&gt;0的区域内为非零值，我们可以将积分限改为<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>\int_{0}^{\infty}\int_{0}^{\infty}ke^{-x-2y}dxdy=1</mi></mrow></math>。
+2. 计算积分，得到<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>k\int_{0}^{\infty}\int_{0}^{\infty}e^{-x-2y}dxdy=k\int_{0}^{\infty}(-e^{-x-2y}|_{x=0}^{x=\infty})dy=k\int_{0}^{\infty}e^{-2y}dy=k(-\frac{1}{2}e^{-2y}|_{y=0}^{y=\infty})=k\frac{1}{2}=1</mi></mrow></math>。解得<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>k=2</mi></mrow></math>。
+3. 现在我们已经知道联合密度函数<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>f(x,y)=\left\{\begin{array}{c}2e^{-x-2y},x&gt;0,y&gt;0\\0,\text{其他}\end{array}\right.</mi></mrow></math>。接下来，我们需要计算<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P(0\leq X\leq2,0\leq Y\leq1)</mi></mrow></math>，即在给定范围内的联合密度函数的积分：<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P(0\leq X\leq2,0\leq Y\leq1)=\int_{0}^{1}\int_{0}^{2}2e^{-x-2y}dxdy</mi></mrow></math>。
+4. 计算积分，得到<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P(0\leq X\leq2,0\leq Y\leq1)=\int_{0}^{1}(-e^{-x-2y}|_{x=0}^{x=2})dy=\int_{0}^{1}(e^{-2y}-e^{-2-2y})dy=(-\frac{1}{2}e^{-2y}|_{y=0}^{y=1})+\frac{1}{2}(e^{-2-2y}|_{y=0}^{y=1})=(1-e^{-2})^2</mi></mrow></math>。</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (MIT 52-Subject University &amp; Professional Exam PYQs) · ceval/ceval-exam</span>
+            <span><strong>SHA-256:</strong> <code>838729a87e8f8610fea5...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248449 · SUBAPTQUAN_Q709808</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -290,7 +407,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248434 · SUBSCICHEM_Q709237</span>
+          <span class="badge b-id">#248448 · SUBSCICHEM_Q709237</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -328,7 +445,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248433 · SUBAPTQUAN_Q706814</span>
+          <span class="badge b-id">#248447 · SUBAPTQUAN_Q706814</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -366,7 +483,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248432 · SUBAPTQUAN_Q706811</span>
+          <span class="badge b-id">#248446 · SUBAPTQUAN_Q706811</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -403,7 +520,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248431 · SUBCSALGO_Q703898</span>
+          <span class="badge b-id">#248445 · SUBCSALGO_Q703898</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -441,7 +558,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248430 · SUBSCIPHYS_Q703315</span>
+          <span class="badge b-id">#248444 · SUBSCIPHYS_Q703315</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -479,7 +596,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248429 · SUBSCIPHYS_Q703313</span>
+          <span class="badge b-id">#248443 · SUBSCIPHYS_Q703313</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -518,7 +635,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248428 · SUBGSINDIA_Q702759</span>
+          <span class="badge b-id">#248442 · SUBGSINDIA_Q702759</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -558,7 +675,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248427 · SUBGSINDIA_Q702758</span>
+          <span class="badge b-id">#248441 · SUBGSINDIA_Q702758</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -597,7 +714,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248426 · SUBSCICHEM_Q702506</span>
+          <span class="badge b-id">#248440 · SUBSCICHEM_Q702506</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -636,7 +753,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248425 · SUBAPTQUAN_Q700493</span>
+          <span class="badge b-id">#248439 · SUBAPTQUAN_Q700493</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -677,7 +794,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248424 · SUBAPTQUAN_Q700492</span>
+          <span class="badge b-id">#248438 · SUBAPTQUAN_Q700492</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -717,7 +834,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248423 · SUBAPTQUAN_Q700491</span>
+          <span class="badge b-id">#248437 · SUBAPTQUAN_Q700491</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -756,7 +873,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248422 · SUBAPTQUAN_Q700490</span>
+          <span class="badge b-id">#248436 · SUBAPTQUAN_Q700490</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -794,7 +911,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248421 · SUBAPTQUAN_Q700489</span>
+          <span class="badge b-id">#248435 · SUBAPTQUAN_Q700489</span>
           <span class="badge b-pyq-db">DB2_PYQ</span>
           
           
@@ -833,7 +950,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248420 · SUBGENCORE_Q509146</span>
+          <span class="badge b-id">#248434 · SUBGENCORE_Q509146</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -869,7 +986,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248419 · SUBGENCORE_Q509145</span>
+          <span class="badge b-id">#248433 · SUBGENCORE_Q509145</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -905,7 +1022,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248418 · SUBGENCORE_Q509143</span>
+          <span class="badge b-id">#248432 · SUBGENCORE_Q509143</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -941,7 +1058,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248417 · SUBGENCORE_Q509140</span>
+          <span class="badge b-id">#248431 · SUBGENCORE_Q509140</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -977,7 +1094,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248416 · SUBGENCORE_Q509138</span>
+          <span class="badge b-id">#248430 · SUBGENCORE_Q509138</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1013,7 +1130,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248415 · SUBGENCORE_Q509137</span>
+          <span class="badge b-id">#248429 · SUBGENCORE_Q509137</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1049,7 +1166,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248414 · SUBGENCORE_Q509132</span>
+          <span class="badge b-id">#248428 · SUBGENCORE_Q509132</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1085,7 +1202,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248413 · SUBGENCORE_Q509131</span>
+          <span class="badge b-id">#248427 · SUBGENCORE_Q509131</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1121,7 +1238,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248412 · SUBHUMPSYC_Q509125</span>
+          <span class="badge b-id">#248426 · SUBHUMPSYC_Q509125</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1157,7 +1274,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248411 · SUBHUMPSYC_Q509116</span>
+          <span class="badge b-id">#248425 · SUBHUMPSYC_Q509116</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1193,7 +1310,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248410 · SUBLAWCONS_Q509111</span>
+          <span class="badge b-id">#248424 · SUBLAWCONS_Q509111</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1229,7 +1346,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248409 · SUBLAWCONS_Q509109</span>
+          <span class="badge b-id">#248423 · SUBLAWCONS_Q509109</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1265,7 +1382,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248408 · SUBLAWCONS_Q509106</span>
+          <span class="badge b-id">#248422 · SUBLAWCONS_Q509106</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1301,7 +1418,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248407 · SUBLAWCONS_Q509105</span>
+          <span class="badge b-id">#248421 · SUBLAWCONS_Q509105</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1337,7 +1454,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248406 · SUBLAWCONS_Q509104</span>
+          <span class="badge b-id">#248420 · SUBLAWCONS_Q509104</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1373,7 +1490,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248405 · SUBCOMFINA_Q509100</span>
+          <span class="badge b-id">#248419 · SUBCOMFINA_Q509100</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1409,7 +1526,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248404 · SUBCOMFINA_Q509098</span>
+          <span class="badge b-id">#248418 · SUBCOMFINA_Q509098</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1445,7 +1562,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248403 · SUBCOMFINA_Q509097</span>
+          <span class="badge b-id">#248417 · SUBCOMFINA_Q509097</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1481,7 +1598,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248402 · SUBCOMFINA_Q509095</span>
+          <span class="badge b-id">#248416 · SUBCOMFINA_Q509095</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1517,7 +1634,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248401 · SUBCOMFINA_Q509093</span>
+          <span class="badge b-id">#248415 · SUBCOMFINA_Q509093</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1553,7 +1670,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248400 · SUBCOMFINA_Q509087</span>
+          <span class="badge b-id">#248414 · SUBCOMFINA_Q509087</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1589,7 +1706,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248399 · SUBHISTWOR_Q509082</span>
+          <span class="badge b-id">#248413 · SUBHISTWOR_Q509082</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1625,7 +1742,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248398 · SUBHISTWOR_Q509081</span>
+          <span class="badge b-id">#248412 · SUBHISTWOR_Q509081</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1661,7 +1778,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248397 · SUBGENCORE_Q509064</span>
+          <span class="badge b-id">#248411 · SUBGENCORE_Q509064</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1697,7 +1814,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248396 · SUBGENCORE_Q509057</span>
+          <span class="badge b-id">#248410 · SUBGENCORE_Q509057</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1733,7 +1850,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248395 · SUBGENCORE_Q509039</span>
+          <span class="badge b-id">#248409 · SUBGENCORE_Q509039</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1769,7 +1886,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248394 · SUBGENCORE_Q509018</span>
+          <span class="badge b-id">#248408 · SUBGENCORE_Q509018</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1805,7 +1922,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248393 · SUBGENCORE_Q508969</span>
+          <span class="badge b-id">#248407 · SUBGENCORE_Q508969</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1841,7 +1958,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248392 · SUBGENCORE_Q508967</span>
+          <span class="badge b-id">#248406 · SUBGENCORE_Q508967</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1877,7 +1994,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248391 · SUBGENCORE_Q508959</span>
+          <span class="badge b-id">#248405 · SUBGENCORE_Q508959</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1913,7 +2030,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248390 · SUBLAWCONS_Q508958</span>
+          <span class="badge b-id">#248404 · SUBLAWCONS_Q508958</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1949,7 +2066,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#248389 · SUBLAWCONS_Q508957</span>
+          <span class="badge b-id">#248403 · SUBLAWCONS_Q508957</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1982,118 +2099,10 @@
       </details>
     </article>
     
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248388 · SUBLAWCONS_Q508956</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_LAW_CONST — Constitutional &amp; Administrative Law</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Law</span> ·
-          <span><strong>Unit:</strong> International Law (EN Medium)</span> ·
-          <span><strong>Topic:</strong> International Law</span>
-        </div>
-      </div>
-      
-      <div class="q-stem"><p>Kí ni ẹ̀kọ́ nípa ohun tó máa ń ṣẹlẹ̀ lẹ́yìn ikú?</p></div>
-      
-      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">Ó fi hàn pé ìjọba máa ń wà nígbà tí ó bá ṣiṣẹ́ nìkan</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">Ẹ̀kọ́ àwọn ipa náà ń ṣiṣẹ́ láti fún ìpínlẹ̀ náà ní ìsopọ̀ tó múná dóko pẹ̀lú ìwà ìpalára.</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">Ẹ̀kọ́ àwọn ipa náà ń ṣiṣẹ́ láti fún ìpínlẹ̀ ní àṣẹ láti pín orílẹ̀-èdè ẹlẹ́ṣẹ̀ náà.</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">Ẹ̀kọ́ àwọn ipa náà ń ṣiṣẹ́ láti fún Ìpínlẹ̀ ní àṣẹ lórí agbègbè tí ìwà náà ń mú àwọn ipa wá.</div><span class="corr-tag">✓ Correct</span></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option D)</summary>
-        <div class="expl-body">
-          <p>Correct Answer: (D) Ẹ̀kọ́ àwọn ipa náà ń ṣiṣẹ́ láti fún Ìpínlẹ̀ ní àṣẹ lórí agbègbè tí ìwà náà ń mú àwọn ipa wá. [Subject: International Law · Medium: EN].</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
-            <span><strong>SHA-256:</strong> <code>0933e8ba6d79952f5b7d...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248387 · SUBLAWCONS_Q508955</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_LAW_CONST — Constitutional &amp; Administrative Law</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Law</span> ·
-          <span><strong>Unit:</strong> International Law (EN Medium)</span> ·
-          <span><strong>Topic:</strong> International Law</span>
-        </div>
-      </div>
-      
-      <div class="q-stem"><p>Kí ni ìṣòro &#x27;ìpínyà&#x27; tó wà nínú òfin àgbáyé?</p></div>
-      
-      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">Ìpínyà òfin àgbáyé ní í ṣe pẹ̀lú ìṣeéṣe àwọn ìjọba òfin ọ̀tọ̀ọ̀tọ̀ lo òfin kan náà ti òfin àgbáyé.</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">Ó ṣe é ṣe fún ọ̀pọ̀lọpọ̀ àwọn ìjọba òfin (ìyẹn òfin ìdókòwò ilẹ̀ òkèèrè àti òfin ẹ̀tọ́ ọmọnìyàn) láti wà kí wọ́n sì ṣe ìdàgbàsókè ní ìyàsọ́tọ̀ ara wọn, nígbẹ̀yìn-gbẹ́yìn ó parí sí ṣíṣe àwọn òfin ìyàtọ̀ òfin àgbáyé.</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">Ìpínyà ni ìgbà tí àwọn ìpínlẹ̀ bá gba ìtumọ̀ ọ̀tọ̀ọ̀tọ̀ nípa òfin àgbáyé kan náà.</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">Ìpínyà ni ìgbà tí àwọn ìpínlẹ̀ kò bá fara mọ́ òfin àgbáyé kan.</div></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option B)</summary>
-        <div class="expl-body">
-          <p>Correct Answer: (B) Ó ṣe é ṣe fún ọ̀pọ̀lọpọ̀ àwọn ìjọba òfin (ìyẹn òfin ìdókòwò ilẹ̀ òkèèrè àti òfin ẹ̀tọ́ ọmọnìyàn) láti wà kí wọ́n sì ṣe ìdàgbàsókè ní ìyàsọ́tọ̀ ara wọn, nígbẹ̀yìn-gbẹ́yìn ó parí sí ṣíṣe àwọn òfin ìyàtọ̀ òfin àgbáyé. [Subject: International Law · Medium: EN].</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
-            <span><strong>SHA-256:</strong> <code>41607cc7ec6ef2311147...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248386 · SUBLAWCONS_Q508952</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_LAW_CONST — Constitutional &amp; Administrative Law</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Law</span> ·
-          <span><strong>Unit:</strong> International Law (EN Medium)</span> ·
-          <span><strong>Topic:</strong> International Law</span>
-        </div>
-      </div>
-      
-      <div class="q-stem"><p>Bawo ni ofin aṣa ṣe le ni ibatan si awọn ipese adehun?</p></div>
-      
-      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">Àwọn àdéhùn lè ṣe àkójọpọ̀ òfin àṣà nìkan.</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">Òfin àṣà jẹ́ orísun ọ̀tọ̀ọ̀tọ̀ fún àgbáyé àti pé a kò lè ṣe é ṣe nínú àdéhùn.</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">Àwọn ìwé àdéhùn lè: 1) ṣètò òfin àṣà ìbílẹ̀, 2) sọ òfin àṣà ìbílẹ̀ di èyí tó ṣe pàtó, 3) mú kí òfin àṣà ìbílẹ̀ di èyí tó ṣe pàtó, tàbí kí wọ́n sọ òfin àṣà ìbílẹ̀ di èyí tó ṣe pàtó.</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">Òfin àṣà lè jáde láti inú àdéhùn ọ̀pọ̀lọpọ̀ ọ̀pọ̀lọpọ̀.</div></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option C)</summary>
-        <div class="expl-body">
-          <p>Correct Answer: (C) Àwọn ìwé àdéhùn lè: 1) ṣètò òfin àṣà ìbílẹ̀, 2) sọ òfin àṣà ìbílẹ̀ di èyí tó ṣe pàtó, 3) mú kí òfin àṣà ìbílẹ̀ di èyí tó ṣe pàtó, tàbí kí wọ́n sọ òfin àṣà ìbílẹ̀ di èyí tó ṣe pàtó. [Subject: International Law · Medium: EN].</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
-            <span><strong>SHA-256:</strong> <code>dba2d59502eb42c716ec...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
-    
   </main>
   <script>
     let curPage = 1;
-    let totalPages = 4969;
+    let totalPages = 4970;
 
     function switchDb(dbVal) {
       document.getElementById('dbFilter').value = dbVal;
