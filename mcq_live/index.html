@@ -190,17 +190,18 @@
 <body>
   <header>
     <h1><span class="live-dot"></span> Live Cloud Dashboard — Verified Sufficient-Explanation MCQs & Staging Queue</h1>
-    <div class="sub-bar">Live Sync: <strong id="liveTs">2026-10-30 05:47:54 · 🟢 LIVE FROM GITHUB CLOUD</strong> · Strict Explanation Gate + Shared Passages (1 Para → Multi Qs) + Figures</div>
-    <div class="log-box" id="liveLogBox">[2026-10-30 05:47:07 UTC] [TURBO-PARQUET+FIGURES] Preloading existing SHA-256 canonical hashes into RAM for O(1) instant deduplication...
-[2026-10-30 05:47:07 UTC] [TURBO-PARQUET+FIGURES] Loaded 246,907 existing hashes (max_seq=495,729).
-[2026-10-30 05:47:13 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm ehovy/race:test] Verified Passages=1585 (2429 Qs) | Staging=269,181</div>
+    <div class="sub-bar">Live Sync: <strong id="liveTs">2026-10-30 05:49:21 · 🟢 LIVE FROM GITHUB CLOUD</strong> · Strict Explanation Gate + Shared Passages (1 Para → Multi Qs) + Figures</div>
+    <div class="log-box" id="liveLogBox">[2026-10-30 05:49:19 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] cais/mmlu: 176 Parquet shards queued...
+[2026-10-30 05:49:20 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] deepmind/aqua_rat: 6 Parquet shards queued...
+[2026-10-30 05:49:20 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] allenai/openbookqa: 6 Parquet shards queued...
+[2026-10-30 05:49:20 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] tau/commonsense_qa: 3 Parquet shards queued...</div>
     <div class="stats-grid">
       <div class="stat-box" onclick="switchDb('')">
-        <div class="stat-val" id="cntMaster" style="color:#22c55e;">246907</div>
+        <div class="stat-val" id="cntMaster" style="color:#22c55e;">246918</div>
         <div class="stat-lbl">✅ Verified Master MCQs (Full Explanation Only)</div>
       </div>
       <div class="stat-box" onclick="switchDb('DB1_SCRAPED_MODIFIED')">
-        <div class="stat-val" id="cntDb1">122819</div>
+        <div class="stat-val" id="cntDb1">122830</div>
         <div class="stat-lbl">DB 1: Verified Scraped MCQs</div>
       </div>
       <div class="stat-box" onclick="switchDb('DB2_PYQ')">
@@ -208,19 +209,19 @@
         <div class="stat-lbl">DB 2: Verified Official PYQs</div>
       </div>
       <div class="stat-box" onclick="switchDb('FIGURES')">
-        <div class="stat-val" id="cntFigures" style="color:#f472b6;">6108</div>
+        <div class="stat-val" id="cntFigures" style="color:#f472b6;">6119</div>
         <div class="stat-lbl">🖼️ Verified Figure MCQs & PYQs</div>
       </div>
       <div class="stat-box" onclick="switchDb('PASSAGES')">
-        <div class="stat-val" id="cntPassages" style="color:#34d399;">2429</div>
-        <div class="stat-lbl">📖 Shared-Passage MCQs (<span id="cntSharedPsg">1585</span> Passages)</div>
+        <div class="stat-val" id="cntPassages" style="color:#34d399;">2440</div>
+        <div class="stat-lbl">📖 Shared-Passage MCQs (<span id="cntSharedPsg">1593</span> Passages)</div>
       </div>
       <div class="stat-box" onclick="switchDb('STAGING')">
-        <div class="stat-val" id="cntStaging" style="color:#fbbf24;">269181</div>
+        <div class="stat-val" id="cntStaging" style="color:#fbbf24;">362157</div>
         <div class="stat-lbl">⏳ Staging Queue (Awaiting AI Check & Explanation)</div>
       </div>
       <div class="stat-box" onclick="switchDb('')">
-        <div class="stat-val" id="cntPromoted" style="color:#a78bfa;">0</div>
+        <div class="stat-val" id="cntPromoted" style="color:#a78bfa;">11</div>
         <div class="stat-lbl">🤖 12 Cloud Agents · AI-Promoted to Verified</div>
       </div>
     </div>
@@ -240,7 +241,7 @@
       <button id="btnFirst" onclick="loadPage(1)">« First</button>
       <button id="btnPrev" onclick="loadPage(curPage - 1)">‹ Prev 50</button>
       <span id="pageInfo" style="font-size:0.9rem; color:#cbd5e1; font-weight:600;">
-        Page 1 of 4939 (Showing 50 of 246907 questions)
+        Page 1 of 4939 (Showing 50 of 246918 questions)
       </span>
       <button id="btnNext" onclick="loadPage(curPage + 1)">Next 50 ›</button>
       <button id="btnLast" onclick="loadPage(totalPages)">Last »</button>
@@ -251,7 +252,7 @@
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246907 · SUBSCIBIOL_Q495729</span>
+          <span class="badge b-id">#246918 · SUBSCIBIOL_Q495729</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_89DFC370C9D7 (Question 1 of 1)</span>
@@ -299,7 +300,7 @@ Acquired traits are gained during a person&#x27;s life. Some acquired traits, su
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246906 · SUBMEDENT_Q495727</span>
+          <span class="badge b-id">#246917 · SUBMEDENT_Q495727</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_980C55CDC99B (Question 1 of 1)</span>
@@ -352,7 +353,7 @@ So, if you have different types of soil and can observe or measure the heights o
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246905 · SUBSCIPHYS_Q495726</span>
+          <span class="badge b-id">#246916 · SUBSCIPHYS_Q495726</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -395,7 +396,7 @@ If you crack open an egg and pour it into a pan, the egg white will change shape
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246904 · SUBMEDPSM_Q495724</span>
+          <span class="badge b-id">#246915 · SUBMEDPSM_Q495724</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_AC00E12F61B2 (Question 1 of 1)</span>
@@ -445,7 +446,7 @@ Sasha wants broccoli. Franco wants tomatoes. They can trade tomatoes for broccol
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246903 · SUBMEDPSM_Q495721</span>
+          <span class="badge b-id">#246914 · SUBMEDPSM_Q495721</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -483,7 +484,7 @@ The north arrow points to the North Pole. On most maps, north is at the top of t
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246902 · SUBSCIPHYS_Q495717</span>
+          <span class="badge b-id">#246913 · SUBSCIPHYS_Q495717</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -525,7 +526,7 @@ The property that all three objects have in common is bumpy.</p>
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246901 · SUBMEDPSM_Q495715</span>
+          <span class="badge b-id">#246912 · SUBMEDPSM_Q495715</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_26227306BE22 (Question 1 of 1)</span>
@@ -575,7 +576,7 @@ Dean wants broccoli. Estelle wants tomatoes. They can trade tomatoes for broccol
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246900 · SUBMEDPSM_Q495713</span>
+          <span class="badge b-id">#246911 · SUBMEDPSM_Q495713</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -613,7 +614,7 @@ The north arrow points to the North Pole. On most maps, north is at the top of t
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246899 · SUBSCIPHYS_Q495711</span>
+          <span class="badge b-id">#246910 · SUBSCIPHYS_Q495711</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_222465E49225 (Question 8 of 8)</span>
@@ -662,7 +663,7 @@ Sunlight, wind, and water are natural resources that can provide energy. Using e
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246898 · SUBSCIPHYS_Q495710</span>
+          <span class="badge b-id">#246909 · SUBSCIPHYS_Q495710</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_F1FEC64BAD10 (Question 100 of 100)</span>
@@ -708,7 +709,7 @@ Temperature measures how hot or cold matter is. If the particles in matter slow 
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246897 · SUBSCIPHYS_Q495705</span>
+          <span class="badge b-id">#246908 · SUBSCIPHYS_Q495705</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -756,7 +757,7 @@ The average precipitation each month between May and October is about 3 inches. 
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246896 · SUBSCIPHYS_Q495703</span>
+          <span class="badge b-id">#246907 · SUBSCIPHYS_Q495703</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -799,7 +800,7 @@ If you pour caramel sauce into a container, the caramel sauce will take the shap
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246895 · SUBMEDPSM_Q495702</span>
+          <span class="badge b-id">#246906 · SUBMEDPSM_Q495702</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -837,7 +838,7 @@ The north arrow points to the North Pole. On most maps, north is at the top of t
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246894 · SUBMEDPSM_Q495700</span>
+          <span class="badge b-id">#246905 · SUBMEDPSM_Q495700</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -875,7 +876,7 @@ The north arrow points to the North Pole. On most maps, north is at the top of t
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246893 · SUBMEDENT_Q495698</span>
+          <span class="badge b-id">#246904 · SUBMEDENT_Q495698</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_9BA0A5DB0548 (Question 5 of 5)</span>
@@ -927,7 +928,7 @@ Falco novaeseelandiae is in the genus Falco. The first word of its scientific na
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246892 · SUBMEDPSM_Q495696</span>
+          <span class="badge b-id">#246903 · SUBMEDPSM_Q495696</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -965,7 +966,7 @@ The north arrow points to the North Pole. On most maps, north is at the top of t
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246891 · SUBSCIPHYS_Q495695</span>
+          <span class="badge b-id">#246902 · SUBSCIPHYS_Q495695</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1007,7 +1008,7 @@ The property that all three objects have in common is translucent.</p>
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246890 · SUBSCIPHYS_Q495692</span>
+          <span class="badge b-id">#246901 · SUBSCIPHYS_Q495692</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_E885D6F6C364 (Question 1 of 1)</span>
@@ -1068,7 +1069,7 @@ Choice &quot;To increase his reproductive success, the male stickleback needs to
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246889 · SUBMEDPSM_Q495691</span>
+          <span class="badge b-id">#246900 · SUBMEDPSM_Q495691</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_EE66684146B6 (Question 1 of 1)</span>
@@ -1115,7 +1116,7 @@ Danny has tomatoes. Peter has broccoli. They can trade tomatoes for broccoli to 
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246888 · SUBMEDENT_Q495690</span>
+          <span class="badge b-id">#246899 · SUBMEDENT_Q495690</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_F4A57AC33A94 (Question 1 of 1)</span>
@@ -1168,7 +1169,7 @@ So, if you have different types of soil and can observe or measure the heights o
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246887 · SUBSCIPHYS_Q495688</span>
+          <span class="badge b-id">#246898 · SUBSCIPHYS_Q495688</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_8E5C92AF2F97 (Question 3 of 3)</span>
@@ -1219,7 +1220,7 @@ The legend tells you that this air mass contained air with specific humidity lev
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246886 · SUBMEDENT_Q495686</span>
+          <span class="badge b-id">#246897 · SUBMEDENT_Q495686</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_85FDBF0EC7B5 (Question 5 of 5)</span>
@@ -1271,7 +1272,7 @@ Equus quagga is in the genus Equus. The first word of its scientific name is Equ
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246885 · SUBMEDPSM_Q495684</span>
+          <span class="badge b-id">#246896 · SUBMEDPSM_Q495684</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1309,7 +1310,7 @@ The north arrow points to the North Pole. On most maps, north is at the top of t
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246884 · SUBSCIBIOL_Q495683</span>
+          <span class="badge b-id">#246895 · SUBSCIBIOL_Q495683</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_21AC7FBABA63 (Question 15 of 15)</span>
@@ -1364,7 +1365,7 @@ The water mold has an arrow pointing to it from the black crappie. The black cra
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246883 · SUBMEDENT_Q495678</span>
+          <span class="badge b-id">#246894 · SUBMEDENT_Q495678</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_14BCB858C822 (Question 1 of 1)</span>
@@ -1416,7 +1417,7 @@ So, if you have different types of soil and can observe or measure the heights o
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246882 · SUBMEDENT_Q495677</span>
+          <span class="badge b-id">#246893 · SUBMEDENT_Q495677</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_294ECCCFB397 (Question 4 of 4)</span>
@@ -1469,7 +1470,7 @@ These organisms are not in the same genus, but part of their scientific names is
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246881 · SUBSCIPHYS_Q495675</span>
+          <span class="badge b-id">#246892 · SUBSCIPHYS_Q495675</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_8BB012168B7C (Question 1 of 1)</span>
@@ -1519,7 +1520,7 @@ When you first see an okapi, you might think it&#x27;s related to a horse or a z
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246880 · SUBSCIPHYS_Q495673</span>
+          <span class="badge b-id">#246891 · SUBSCIPHYS_Q495673</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1561,7 +1562,7 @@ The property that all four objects have in common is soft.</p>
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246879 · SUBMEDPSM_Q495671</span>
+          <span class="badge b-id">#246890 · SUBMEDPSM_Q495671</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1599,7 +1600,7 @@ A column is a line of squares that goes up and down. Columns are marked with num
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246878 · SUBMEDPSM_Q495669</span>
+          <span class="badge b-id">#246889 · SUBMEDPSM_Q495669</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1637,7 +1638,7 @@ A column is a line of squares that goes up and down. Columns are marked with num
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246877 · SUBSCIPHYS_Q495665</span>
+          <span class="badge b-id">#246888 · SUBSCIPHYS_Q495665</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1679,7 +1680,7 @@ The property that all three objects have in common is rough.</p>
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246876 · SUBSCIBIOL_Q495664</span>
+          <span class="badge b-id">#246887 · SUBSCIBIOL_Q495664</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_EBABC2EBFC97 (Question 1 of 1)</span>
@@ -1727,7 +1728,7 @@ Acquired traits are gained during a person&#x27;s life. Some acquired traits, su
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246875 · SUBSCIBIOL_Q495661</span>
+          <span class="badge b-id">#246886 · SUBSCIBIOL_Q495661</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_6EBE08C54FEF (Question 1 of 1)</span>
@@ -1787,7 +1788,7 @@ So, the expected ratio of offspring with a black coat to offspring with a spotte
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246874 · SUBMEDPSM_Q495659</span>
+          <span class="badge b-id">#246885 · SUBMEDPSM_Q495659</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1825,7 +1826,7 @@ The north arrow points to the North Pole. On most maps, north is at the top of t
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246873 · SUBMEDPSM_Q495658</span>
+          <span class="badge b-id">#246884 · SUBMEDPSM_Q495658</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_C3B31D50BD04 (Question 1 of 1)</span>
@@ -1872,7 +1873,7 @@ Riley has tomatoes. Ken has broccoli. They can trade tomatoes for broccoli to bo
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246872 · SUBMEDPSM_Q495657</span>
+          <span class="badge b-id">#246883 · SUBMEDPSM_Q495657</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1911,7 +1912,7 @@ The United States claimed Wake Island in 1899 and has controlled it since then. 
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246871 · SUBMEDPSM_Q495655</span>
+          <span class="badge b-id">#246882 · SUBMEDPSM_Q495655</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_6C926CCF1795 (Question 1 of 1)</span>
@@ -1961,7 +1962,7 @@ Meg wants broccoli. Florence wants tomatoes. They can trade tomatoes for broccol
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246870 · SUBMEDPSM_Q495654</span>
+          <span class="badge b-id">#246881 · SUBMEDPSM_Q495654</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -1999,7 +2000,7 @@ The north arrow points to the North Pole. On most maps, north is at the top of t
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246869 · SUBSCIBIOL_Q495652</span>
+          <span class="badge b-id">#246880 · SUBSCIBIOL_Q495652</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_A590977D30DF (Question 3 of 3)</span>
@@ -2059,7 +2060,7 @@ So, the expected ratio of offspring with straight ears to offspring with curled 
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246868 · SUBMEDENT_Q495651</span>
+          <span class="badge b-id">#246879 · SUBMEDENT_Q495651</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_FC2C7A16DDE1 (Question 9 of 9)</span>
@@ -2111,7 +2112,7 @@ Ardea alba has the same scientific name as a great egret. So, these organisms ar
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246867 · SUBMEDPSM_Q495650</span>
+          <span class="badge b-id">#246878 · SUBMEDPSM_Q495650</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -2149,7 +2150,7 @@ The north arrow points to the North Pole. On most maps, north is at the top of t
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246866 · SUBMEDPSM_Q495649</span>
+          <span class="badge b-id">#246877 · SUBMEDPSM_Q495649</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -2187,7 +2188,7 @@ The north arrow points to the North Pole. On most maps, north is at the top of t
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246865 · SUBSCIBIOL_Q495647</span>
+          <span class="badge b-id">#246876 · SUBSCIBIOL_Q495647</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_F09581021DEA (Question 4 of 4)</span>
@@ -2238,7 +2239,7 @@ A top consumer is the animal at the top of a food chain. Food chains can have di
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246864 · SUBMEDENT_Q495641</span>
+          <span class="badge b-id">#246875 · SUBMEDENT_Q495641</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_D3E1A5503CE3 (Question 1 of 1)</span>
@@ -2291,7 +2292,7 @@ So, if you have different types of soil and can observe or measure the heights o
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246863 · SUBSCIPHYS_Q495640</span>
+          <span class="badge b-id">#246874 · SUBSCIPHYS_Q495640</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -2333,7 +2334,7 @@ The property that all three objects have in common is fuzzy.</p>
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246862 · SUBSCIBIOL_Q495638</span>
+          <span class="badge b-id">#246873 · SUBSCIBIOL_Q495638</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_7037D9067557 (Question 4 of 4)</span>
@@ -2384,7 +2385,7 @@ A top consumer is the animal at the top of a food chain. Food chains can have di
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246861 · SUBMEDENT_Q495636</span>
+          <span class="badge b-id">#246872 · SUBMEDENT_Q495636</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_5D645F773489 (Question 3 of 3)</span>
@@ -2436,7 +2437,7 @@ Halichoeres hortulanus does not have the same scientific name as a maroon clownf
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246860 · SUBMEDPSM_Q495635</span>
+          <span class="badge b-id">#246871 · SUBMEDPSM_Q495635</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -2474,7 +2475,7 @@ The north arrow points to the North Pole. On most maps, north is at the top of t
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246859 · SUBSCIPHYS_Q495634</span>
+          <span class="badge b-id">#246870 · SUBSCIPHYS_Q495634</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           
@@ -2516,7 +2517,7 @@ Many gases are invisible. The oxygen you breathe is a gas. The helium in a ballo
     <article class="q-card">
       <div class="q-head">
         <div class="q-badges">
-          <span class="badge b-id">#246858 · SUBMEENGME_Q495633</span>
+          <span class="badge b-id">#246869 · SUBMEENGME_Q495633</span>
           <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
           
           <span class="badge b-psg">📖 Passage PSG_4770DFAC6D47 (Question 1 of 1)</span>

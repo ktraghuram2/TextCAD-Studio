@@ -1,7 +1,7 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-30 05:48:29 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (12 PARALLEL AI & HARVESTER AGENTS)",
-  "last_updated_utc": "2026-10-30 05:48:29 UTC",
+  "timestamp": "2026-10-30 05:50:06 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (12 PARALLEL AI & HARVESTER AGENTS)",
+  "last_updated_utc": "2026-10-30 05:50:06 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "active_cloud_agents": {
@@ -11,30 +11,30 @@
     "telemetry": {
       "active_ai_agents": 8,
       "active_harvester_agents": 4,
-      "total_promoted_session": 0,
-      "total_rejected_session": 0,
+      "total_promoted_session": 18,
+      "total_rejected_session": 30,
       "providers_succeeded": {
-        "g4f:gpt-4o-mini": 6,
-        "g4f:": 9
+        "g4f:gpt-4o-mini": 23,
+        "g4f:": 42
       },
-      "last_agent_notes": "8 Parallel Cloud AI Agents Initialized"
+      "last_agent_notes": "8 Cloud AI Agents active via g4f:, g4f:gpt-4o-mini"
     }
   },
   "counts": {
-    "db1_scraped_mcqs.sqlite": 122819,
-    "db2_pyq_mcqs.sqlite": 124088,
+    "db1_scraped_mcqs.sqlite": 122836,
+    "db2_pyq_mcqs.sqlite": 124089,
     "db3_textbook_chunk_mcqs.sqlite": 0,
-    "mcq_bank.sqlite (Master)": 246907,
-    "figure_mcqs_count": 6108,
-    "passage_mcqs_count": 2429,
-    "shared_passages_count": 1585,
-    "staging_pending_count": 357013,
-    "staging_promoted_count": 0
+    "mcq_bank.sqlite (Master)": 246925,
+    "figure_mcqs_count": 6125,
+    "passage_mcqs_count": 2447,
+    "shared_passages_count": 1600,
+    "staging_pending_count": 362133,
+    "staging_promoted_count": 18
   },
   "raw_stats": {
     "seed_files": 4449,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83e\udd16 12 PARALLEL CLOUD AGENTS: 8 AI AUDITORS + 4 HARVESTERS]\n[2026-10-30 05:47:07 UTC] [TURBO-PARQUET+FIGURES] Loaded 246,907 existing hashes (max_seq=495,729).\n[2026-10-30 05:47:13 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm ehovy/race:test] Verified Passages=1585 (2429 Qs) | Staging=269,181\n[2026-10-30 05:48:28 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm ehovy/race:train] Verified Passages=1585 (2429 Qs) | Staging=357,013\n[8-AI-AGENT-SWARM] Wave 0: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | Starting 8 AI Agents...",
-  "recent_logs": "[2026-10-30 05:47:07 UTC] [TURBO-PARQUET+FIGURES] Loaded 246,907 existing hashes (max_seq=495,729).\n[2026-10-30 05:47:13 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm ehovy/race:test] Verified Passages=1585 (2429 Qs) | Staging=269,181\n[2026-10-30 05:48:28 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm ehovy/race:train] Verified Passages=1585 (2429 Qs) | Staging=357,013\n[8-AI-AGENT-SWARM] Wave 0: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | Starting 8 AI Agents..."
+  "log_tail": "[\ud83e\udd16 12 PARALLEL CLOUD AGENTS: 8 AI AUDITORS + 4 HARVESTERS]\n[2026-10-30 05:49:20 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] allenai/openbookqa: 6 Parquet shards queued...\n[2026-10-30 05:49:20 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] tau/commonsense_qa: 3 Parquet shards queued...\n[2026-10-30 05:49:32 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] CohereForAI/Global-MMLU: 0 Parquet shards queued...\n[8-AI-AGENT-SWARM] Wave 0: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | Starting 8 AI Agents...",
+  "recent_logs": "[2026-10-30 05:49:20 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] allenai/openbookqa: 6 Parquet shards queued...\n[2026-10-30 05:49:20 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] tau/commonsense_qa: 3 Parquet shards queued...\n[2026-10-30 05:49:32 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] CohereForAI/Global-MMLU: 0 Parquet shards queued...\n[8-AI-AGENT-SWARM] Wave 0: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | Starting 8 AI Agents..."
 }
