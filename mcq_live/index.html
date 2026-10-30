@@ -195,18 +195,15 @@
 <body>
   <header>
     <h1><span class="live-dot"></span> Live Cloud Dashboard — Verified Sufficient-Explanation MCQs & Staging Queue</h1>
-    <div class="sub-bar">Live Sync: <strong id="liveTs">2026-10-30 10:27:53 · 🟢 LIVE FROM GITHUB CLOUD</strong> <span id="livePollBadge" style="color:#4ade80; font-weight:600;">· 🔄 Live Cloud Link Active (5s Auto-Refresh)</span></div>
-    <div class="log-box" id="liveLogBox">[2026-10-30 10:27:35 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1716 (2662 Qs) | Staging=53,093
-[2026-10-30 10:27:44 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1716 (2662 Qs) | Staging=53,993
-[2026-10-30 10:27:49 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1716 (2662 Qs) | Staging=54,893
-[2026-10-30 10:27:51 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1716 (2662 Qs) | Staging=55,793</div>
+    <div class="sub-bar">Live Sync: <strong id="liveTs">2026-10-30 13:17:35 · 🟢 LIVE FROM GITHUB CLOUD</strong> <span id="livePollBadge" style="color:#4ade80; font-weight:600;">· 🔄 Live Cloud Link Active (5s Auto-Refresh)</span></div>
+    <div class="log-box" id="liveLogBox">Staging Queue Gate + Shared-Passage Engine + AI Auditor running...</div>
     <div class="stats-grid">
       <div class="stat-box" onclick="switchDb('')">
-        <div class="stat-val" id="cntMaster" style="color:#22c55e;">248584</div>
+        <div class="stat-val" id="cntMaster" style="color:#22c55e;">248578</div>
         <div class="stat-lbl">✅ Verified Master MCQs (Full Explanation Only)</div>
       </div>
       <div class="stat-box" onclick="switchDb('DB1_SCRAPED_MODIFIED')">
-        <div class="stat-val" id="cntDb1">124268</div>
+        <div class="stat-val" id="cntDb1">124262</div>
         <div class="stat-lbl">DB 1: Verified Scraped MCQs</div>
       </div>
       <div class="stat-box" onclick="switchDb('DB2_PYQ')">
@@ -218,15 +215,15 @@
         <div class="stat-lbl">🖼️ Verified Figure MCQs & PYQs</div>
       </div>
       <div class="stat-box" onclick="switchDb('PASSAGES')">
-        <div class="stat-val" id="cntPassages" style="color:#34d399;">2662</div>
-        <div class="stat-lbl">📖 Shared-Passage MCQs (<span id="cntSharedPsg">1716</span> Passages)</div>
+        <div class="stat-val" id="cntPassages" style="color:#34d399;">2656</div>
+        <div class="stat-lbl">📖 Shared-Passage MCQs (<span id="cntSharedPsg">1712</span> Passages)</div>
       </div>
       <div class="stat-box" onclick="switchDb('STAGING')">
-        <div class="stat-val" id="cntStaging" style="color:#fbbf24;">55793</div>
+        <div class="stat-val" id="cntStaging" style="color:#fbbf24;">0</div>
         <div class="stat-lbl">⏳ Staging Queue (Awaiting AI Check & Explanation)</div>
       </div>
       <div class="stat-box" onclick="switchDb('')">
-        <div class="stat-val" id="cntPromoted" style="color:#a78bfa;">6</div>
+        <div class="stat-val" id="cntPromoted" style="color:#a78bfa;">0</div>
         <div class="stat-lbl">🤖 16 Nonstop Cloud Agents · AI-Promoted</div>
       </div>
     </div>
@@ -246,283 +243,13 @@
       <button id="btnFirst" onclick="loadPage(1)">« First</button>
       <button id="btnPrev" onclick="loadPage(curPage - 1)">‹ Prev 50</button>
       <span id="pageInfo" style="font-size:0.9rem; color:#cbd5e1; font-weight:600;">
-        Page 1 of 4972 (Showing 50 of 248584 questions)
+        Page 1 of 4972 (Showing 50 of 248578 questions)
       </span>
       <button id="btnNext" onclick="loadPage(curPage + 1)">Next 50 ›</button>
       <button id="btnLast" onclick="loadPage(totalPages)">Last »</button>
     </div>
   </header>
   <main id="cardsContainer">
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248584 · SUBGSGK_Q714030</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          <span class="badge b-psg">📖 Passage PSG_FF230D07FBC7 (Question 2 of 2)</span>
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_GS_GK — Multilingual Reading Comprehension &amp; Analytical Verbal Ability</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Multilingual Standardized Reading Comprehension (acm_Arab) (2023-2024)</span><span class="badge b-meta">Body: Open Multilingual Comprehension Benchmark (CC-BY-SA-4.0) · ALL_COUNTRIES</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Aptitude &amp; Comprehension</span> ·
-          <span><strong>Unit:</strong> Shared-Passage Comprehension (acm_Arab)</span> ·
-          <span><strong>Topic:</strong> Multi-Question Reading Comprehension (ACM)</span>
-        </div>
-      </div>
-      
-        <div class="passage-box">
-          <div class="passage-hdr">
-            <span>📖 Shared Comprehension Passage (acm_Arab)</span>
-            <span class="passage-tag">Shared ID: PSG_FF230D07FBC7 · Question 2 of 2</span>
-          </div>
-          <div class="passage-body"><p>يوم الأثنين، أعلن علماء من كلية الطب بجامعة ستانفورد عن اختراع أداة تشخيصية جديدة تكَدر تصنف الخلايا حسب النوع: شريحة زغيرة قابلة للطباعة ممكن تصنيعها باستخدام طابعات نفاثة للحبر قياسية وسعرها حوالي سنت أمريكي واحد لكل وحدة. حسب كلام الباحثين الرئيسيين أنو هذا  ممكن يساعد على الكشف المبكر عن السرطان والسل وفيروس العوز المناعي البشري والملاريا بالبلدان ذات الدخل المنخفض، والي تكون بيها معدلات النجاة من الأمراض مثل سرطان الصدر نص معدلات البلدان الأغنى.</p></div>
-          
-        </div>
-        
-      <div class="q-stem"><p>أي طريقة مستخدمة لاختراع الأداة التشخيصية؟</p></div>
-      
-      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">سنت أمريكي واحد لكل وحدة</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">طابعات قياسية نفاثة للحبر</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">شرايح قابلة للطباعة</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">أدوات تشخيصية ثانية</div></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option B)</summary>
-        <div class="expl-body">
-          <p>The passage says the diagnostic chip is a small printable chip manufactured using standard inkjet printers at about one cent per unit. Therefore the method used to invent the tool is standard inkjet printers, making B correct. Option A is cost, option C is the product, and option D is unrelated to the described invention.</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> Belebele CC-BY-SA-4.0 Multilingual Shared-Passage Bank (acm_Arab) · AI_AUDITED_VERIFIED (g4f:keyless)</span>
-            <span><strong>SHA-256:</strong> <code>c2e651a6e2dbc17c951b...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248583 · SUBGSGK_Q714029</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          <span class="badge b-psg">📖 Passage PSG_FF230D07FBC7 (Question 1 of 2)</span>
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_GS_GK — Multilingual Reading Comprehension &amp; Analytical Verbal Ability</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Multilingual Standardized Reading Comprehension (acm_Arab) (2023-2024)</span><span class="badge b-meta">Body: Open Multilingual Comprehension Benchmark (CC-BY-SA-4.0) · ALL_COUNTRIES</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Aptitude &amp; Comprehension</span> ·
-          <span><strong>Unit:</strong> Shared-Passage Comprehension (acm_Arab)</span> ·
-          <span><strong>Topic:</strong> Multi-Question Reading Comprehension (ACM)</span>
-        </div>
-      </div>
-      
-        <div class="passage-box">
-          <div class="passage-hdr">
-            <span>📖 Shared Comprehension Passage (acm_Arab)</span>
-            <span class="passage-tag">Shared ID: PSG_FF230D07FBC7 · Question 1 of 2</span>
-          </div>
-          <div class="passage-body"><p>يوم الأثنين، أعلن علماء من كلية الطب بجامعة ستانفورد عن اختراع أداة تشخيصية جديدة تكَدر تصنف الخلايا حسب النوع: شريحة زغيرة قابلة للطباعة ممكن تصنيعها باستخدام طابعات نفاثة للحبر قياسية وسعرها حوالي سنت أمريكي واحد لكل وحدة. حسب كلام الباحثين الرئيسيين أنو هذا  ممكن يساعد على الكشف المبكر عن السرطان والسل وفيروس العوز المناعي البشري والملاريا بالبلدان ذات الدخل المنخفض، والي تكون بيها معدلات النجاة من الأمراض مثل سرطان الصدر نص معدلات البلدان الأغنى.</p></div>
-          
-        </div>
-        
-      <div class="q-stem"><p>وين اعتقدوا الباحثين انه الرقاقة راح يكون إلها تأثير أكبر؟</p></div>
-      
-      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">الدول اللي دخلها منخفض</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">الدول الأغنى</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">بالولايات المتحدة</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">بجامعة ستانفورد</div></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option A)</summary>
-        <div class="expl-body">
-          <p>The researchers said the inexpensive printable chip could aid early detection in low-income countries, where survival rates for diseases such as breast cancer are about half those in richer countries. Therefore option A is correct. Option B reverses the stated inequality; option C is not mentioned as the target; option D is only the institution, not the intended impact location.</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> Belebele CC-BY-SA-4.0 Multilingual Shared-Passage Bank (acm_Arab) · AI_AUDITED_VERIFIED (g4f:keyless)</span>
-            <span><strong>SHA-256:</strong> <code>4cffa7cc97c5d6efc57d...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248582 · SUBGSGK_Q714028</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          <span class="badge b-psg">📖 Passage PSG_69F03DC4D8B6 (Question 1 of 1)</span>
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_GS_GK — Multilingual Reading Comprehension &amp; Analytical Verbal Ability</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Multilingual Standardized Reading Comprehension (acm_Arab) (2023-2024)</span><span class="badge b-meta">Body: Open Multilingual Comprehension Benchmark (CC-BY-SA-4.0) · ALL_COUNTRIES</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Aptitude &amp; Comprehension</span> ·
-          <span><strong>Unit:</strong> Shared-Passage Comprehension (acm_Arab)</span> ·
-          <span><strong>Topic:</strong> Multi-Question Reading Comprehension (ACM)</span>
-        </div>
-      </div>
-      
-        <div class="passage-box">
-          <div class="passage-hdr">
-            <span>📖 Shared Comprehension Passage (acm_Arab)</span>
-            <span class="passage-tag">Shared ID: PSG_69F03DC4D8B6 · Question 1 of 1</span>
-          </div>
-          <div class="passage-body"><p>بينما الظاهر أنو أكو  لقاح واحد تجريبي يكَدر يقلل من وفيات الإيبولا، بس لحد الآن، ما لكَو أي عقاقير مناسبة لعلاج العدوى الموجودة. كان  أكو  خليط واحد من الأجسام المضادة، وهو ZMapp، وتأملوا بي خير بالبداية بهذا المجال، بس  الدراسات الرسمية  شافت أنو الفائدة المترتبة على هذا الخليط كانت أقل من الفوائد الي المطلوبة حتى يقللون عدد الوفيات. بتجربة PALM، استخدموا عقار ZMapp كمعيار مراقبة، بمعنى أن العلماء خلوه  كأساس وقارنوا العلاجات الثلاثة الأخرى بي.</p></div>
-          
-        </div>
-        
-      <div class="q-stem"><p>أي من التصاريح التالي يشرح بالضبط تجربة PALM؟</p></div>
-      
-      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">أظهرت الدراسات انو ممكن تكون بيها فوائد اكثر مما جانوا متوقعين</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">علاج تقارن ب3 علاجات ثانية ومن ضمنهم ZMapp</div></div><div class="opt-item correct-opt"><span class="opt-letter">C</span><div class="opt-text">ZMapp استخدم كأساس للتجربة</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">طلع فعال بمعالجة الحالات الموجودة</div></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option C)</summary>
-        <div class="expl-body">
-          <p>The passage states that PALM used ZMapp as the control standard and compared three other treatments against it. Thus option C is correct because ZMapp served as the experimental basis, not as a newly proven cure. Option A is wrong because studies showed benefit below required; option B misstates the comparison; option D is unsupported because no suitable drug for existing infection was available.</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> Belebele CC-BY-SA-4.0 Multilingual Shared-Passage Bank (acm_Arab) · AI_AUDITED_VERIFIED (g4f:keyless)</span>
-            <span><strong>SHA-256:</strong> <code>98514003df9235b2591c...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248581 · SUBGSGK_Q714018</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          <span class="badge b-psg">📖 Passage PSG_3D3B2DDDD2CA (Question 1 of 1)</span>
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_GS_GK — Multilingual Reading Comprehension &amp; Analytical Verbal Ability</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Multilingual Standardized Reading Comprehension (acm_Arab) (2023-2024)</span><span class="badge b-meta">Body: Open Multilingual Comprehension Benchmark (CC-BY-SA-4.0) · ALL_COUNTRIES</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Aptitude &amp; Comprehension</span> ·
-          <span><strong>Unit:</strong> Shared-Passage Comprehension (acm_Arab)</span> ·
-          <span><strong>Topic:</strong> Multi-Question Reading Comprehension (ACM)</span>
-        </div>
-      </div>
-      
-        <div class="passage-box">
-          <div class="passage-hdr">
-            <span>📖 Shared Comprehension Passage (acm_Arab)</span>
-            <span class="passage-tag">Shared ID: PSG_3D3B2DDDD2CA · Question 1 of 1</span>
-          </div>
-          <div class="passage-body"><p>أتجهت السفينة إلى مدينة إيركوتسك وكانت تحت قيادة القوات الداخلية. تم فتح تحقيق للتحري. كانت الطيارة إي إل-76 مكون رئيسي لكل من الجيشين الروسي والسوفيتي من سبعينيات القرن العشرين، وصارلها بالفعل حادث خطير  بروسيا الشهر الماضي. بالسابع من تشرين الأول، انفصل محرك وقت الإقلاع من دون إصابات، أوقفت روسيا استخدام طائرات l-76 لفترة قصيرة بعد الحادث.</p></div>
-          
-        </div>
-        
-      <div class="q-stem"><p>شنو اللي خله روسيا توقف استخدام II-76؟</p></div>
-      
-      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">القوات الداخلية</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">حادث</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">الجيش السوفيتي</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">تحقيق معلق</div></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option B)</summary>
-        <div class="expl-body">
-          <p>The passage states that an Il-76 engine separated during takeoff on October 7 without injuries, and Russia temporarily stopped using Il-76 aircraft after this accident. Thus B is correct. Internal forces and the Soviet army are background details, not the cause; a pending investigation is not identified as the reason for suspension. Option B directly matches the stated causal event.</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> Belebele CC-BY-SA-4.0 Multilingual Shared-Passage Bank (acm_Arab) · AI_AUDITED_VERIFIED (g4f:keyless)</span>
-            <span><strong>SHA-256:</strong> <code>ae44f3fb57469569c39a...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248580 · SUBGSGK_Q714017</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          <span class="badge b-psg">📖 Passage PSG_499E1113D0E3 (Question 2 of 2)</span>
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_GS_GK — Multilingual Reading Comprehension &amp; Analytical Verbal Ability</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Multilingual Standardized Reading Comprehension (acm_Arab) (2023-2024)</span><span class="badge b-meta">Body: Open Multilingual Comprehension Benchmark (CC-BY-SA-4.0) · ALL_COUNTRIES</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Aptitude &amp; Comprehension</span> ·
-          <span><strong>Unit:</strong> Shared-Passage Comprehension (acm_Arab)</span> ·
-          <span><strong>Topic:</strong> Multi-Question Reading Comprehension (ACM)</span>
-        </div>
-      </div>
-      
-        <div class="passage-box">
-          <div class="passage-hdr">
-            <span>📖 Shared Comprehension Passage (acm_Arab)</span>
-            <span class="passage-tag">Shared ID: PSG_499E1113D0E3 · Question 2 of 2</span>
-          </div>
-          <div class="passage-body"><p>الحدث الفني يكون أيضاً جزء من حملة رتبها مجلس مدينة بوخارست اللي  يطمح إلى إعادة إحياء صورة العاصمة الرومانية كعاصمة مبدعة ومزدهرة. راح تكون المدينة الأولى بجنوب شرق أوروبا اللي تستضيف CowParade، أكبر حدث فني عام بالعالم، بين حزيران وآب من هذا العام.</p></div>
-          
-        </div>
-        
-      <div class="q-stem"><p>أي من التصاريح التالية توصف CowParade بشكل دقيق؟</p></div>
-      
-      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">راح تصير بس بالمدن اللي تعتبر مدن ابداعية</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">سواها مجلس مدينة بوخارست</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">هو حدث فني يصير بالصيف عبر جنوب شرق أوروبا</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">هو اكبر حدث فني عام بالعالم</div><span class="corr-tag">✓ Correct</span></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option D)</summary>
-        <div class="expl-body">
-          <p>The passage describes CowParade as the largest public art event in the world, so D is correct. It is held between June and August, but only as a hosted event in Bucharest, not across Southeast Europe, so C is wrong. The city council's campaign is context, not proof that it created CowParade, so B is wrong. Option A adds an unsupported restriction about creative cities.</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> Belebele CC-BY-SA-4.0 Multilingual Shared-Passage Bank (acm_Arab) · AI_AUDITED_VERIFIED (g4f:keyless)</span>
-            <span><strong>SHA-256:</strong> <code>6b0a6960fc3bde812811...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248579 · SUBGSGK_Q714016</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          <span class="badge b-psg">📖 Passage PSG_499E1113D0E3 (Question 1 of 2)</span>
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_GS_GK — Multilingual Reading Comprehension &amp; Analytical Verbal Ability</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Multilingual Standardized Reading Comprehension (acm_Arab) (2023-2024)</span><span class="badge b-meta">Body: Open Multilingual Comprehension Benchmark (CC-BY-SA-4.0) · ALL_COUNTRIES</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Aptitude &amp; Comprehension</span> ·
-          <span><strong>Unit:</strong> Shared-Passage Comprehension (acm_Arab)</span> ·
-          <span><strong>Topic:</strong> Multi-Question Reading Comprehension (ACM)</span>
-        </div>
-      </div>
-      
-        <div class="passage-box">
-          <div class="passage-hdr">
-            <span>📖 Shared Comprehension Passage (acm_Arab)</span>
-            <span class="passage-tag">Shared ID: PSG_499E1113D0E3 · Question 1 of 2</span>
-          </div>
-          <div class="passage-body"><p>الحدث الفني يكون أيضاً جزء من حملة رتبها مجلس مدينة بوخارست اللي  يطمح إلى إعادة إحياء صورة العاصمة الرومانية كعاصمة مبدعة ومزدهرة. راح تكون المدينة الأولى بجنوب شرق أوروبا اللي تستضيف CowParade، أكبر حدث فني عام بالعالم، بين حزيران وآب من هذا العام.</p></div>
-          
-        </div>
-        
-      <div class="q-stem"><p>وين راح يصير CowParade؟</p></div>
-      
-      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">بجم مدينة رومانية</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">بمدينة بوخارست</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">عبر جنوب شرق أوروبا</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">بعدة مدن عواصم أوروبية</div></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option B)</summary>
-        <div class="expl-body">
-          <p>The passage identifies Bucharest as the host city: it will be the first city in Southeast Europe to host CowParade between June and August. Therefore option B is correct. Option A is too vague and unsupported; option C confuses the host city with the broader region; option D introduces multiple capitals not mentioned. The key evidence is the explicit naming of Bucharest and its role as host.</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> Belebele CC-BY-SA-4.0 Multilingual Shared-Passage Bank (acm_Arab) · AI_AUDITED_VERIFIED (g4f:keyless)</span>
-            <span><strong>SHA-256:</strong> <code>ddf1a51a98a9e05fbfe9...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
     
     <article class="q-card">
       <div class="q-head">
@@ -2152,6 +1879,222 @@
           <div class="hash-row">
             <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
             <span><strong>SHA-256:</strong> <code>1b12d6904014cf43673e...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248534 · SUBGENCORE_Q509064</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          
+          
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GEN_CORE — Nutrition</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Multi-Disciplinary</span> ·
+          <span><strong>Unit:</strong> Nutrition (EN Medium)</span> ·
+          <span><strong>Topic:</strong> Nutrition</span>
+        </div>
+      </div>
+      
+      <div class="q-stem"><p>Kini awọn ipa ti agbaye lori aabo ounje?</p></div>
+      
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">Awọn ifunni awọn orilẹ-ede ọlọrọ ati awọn idena iṣowo jẹ ki o ṣoro fun awọn orilẹ-ede to sese ndagbasoke lati lo anfani ti agbara agbaye fun ilọsiwaju aabo ounjẹ.</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">Awọn ofin ti Eto Iṣowo Agbaye ko ni aabo iṣẹ-ogbin, nitorinaa agbaye ko ni ipa lori aabo ounje.</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">Awọn ile itaja nla jẹ ọna kan ṣoṣo ti ounjẹ ati iṣẹ-ogbin ti ni iriri agbaye.</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">Awọn orilẹ-ede to sese ndagbasoke nilo lati ṣẹda awọn ifiṣura ounjẹ ti gbogbo eniyan lati le mọ awọn anfani ti o pọju.</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>Correct Answer: (A) Awọn ifunni awọn orilẹ-ede ọlọrọ ati awọn idena iṣowo jẹ ki o ṣoro fun awọn orilẹ-ede to sese ndagbasoke lati lo anfani ti agbara agbaye fun ilọsiwaju aabo ounjẹ. [Subject: Nutrition · Medium: EN].</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
+            <span><strong>SHA-256:</strong> <code>15e30c7422bc80277dc8...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248533 · SUBGENCORE_Q509057</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          
+          
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GEN_CORE — Nutrition</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Multi-Disciplinary</span> ·
+          <span><strong>Unit:</strong> Nutrition (EN Medium)</span> ·
+          <span><strong>Topic:</strong> Nutrition</span>
+        </div>
+      </div>
+      
+      <div class="q-stem"><p>Gbólóhùn ẹyọkan wo nipa tito nkan lẹsẹsẹ ọra ati gbigba jẹ deede?</p></div>
+      
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">Gbigba awọn asidi fatty ninu ifun waye nipataki nipasẹ FABP ati awọn ọlọjẹ gbigbe FAT/CD36 ninu awọn enterocytes ti duodenum jijin.</div></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">Lẹhin gbigba, alabọde pq triglycerides (MCT) wọ inu eto lymphatic, lakoko ti awọn triglycerides pq gigun wọ inu eto ẹjẹ ẹnu-ọna.</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">Awọn ọja ti tito nkan lẹsẹsẹ ti awọn triglycerides (triacylglycerol) le ṣẹda awọn micelles ti a dapọ pẹlu idaabobo awọ pancreatic ati awọn phospholipids ati pe eyi pọ si gbigba.</div></div><div class="opt-item correct-opt"><span class="opt-letter">D</span><div class="opt-text">Triglycerides (triacylglycerol) gbọdọ jẹ emulsified ati digested ṣaaju ki o to gbe awọn acids fatty le gbe.</div><span class="corr-tag">✓ Correct</span></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option D)</summary>
+        <div class="expl-body">
+          <p>Correct Answer: (D) Triglycerides (triacylglycerol) gbọdọ jẹ emulsified ati digested ṣaaju ki o to gbe awọn acids fatty le gbe. [Subject: Nutrition · Medium: EN].</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
+            <span><strong>SHA-256:</strong> <code>847e9cd97fb6c1f6f58c...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248532 · SUBGENCORE_Q509039</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          
+          
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GEN_CORE — Miscellaneous</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Multi-Disciplinary</span> ·
+          <span><strong>Unit:</strong> Miscellaneous (EN Medium)</span> ·
+          <span><strong>Topic:</strong> Miscellaneous</span>
+        </div>
+      </div>
+      
+      <div class="q-stem"><p>Láti ìgbà ìbẹ̀rẹ̀ pẹ̀pẹ̀, Mo kọwé láti ṣe àlàye ìgbésí ayé mi fún ara mí, tí mo sì pe èyíkéyìi ònkàwé láti dárapọ̀ mọ́ mi lórí okùn tó wà lókè. Mo máa ṣiṣẹ́ láì lo àwọ̀n kankan àti láìsí ariwo àwọn èèrò láti dàmiláàmú. Wíwo ilẹ̀ láti òkè ńmú òòyì kọ́ mi. ó ńtọnisọ́nà. Mi ò ní àkọọ́lẹ̀ àgbáyé ní bí ó ti wá fún mi ní pàtó ṣùgbọ́n mo yíi padà nìpasẹ̀ mímú kí ó gba prísíìmu àwọn ìtàn tó yááyì tí mo ti ṣe àkójọ rẹ̀ ní ọ̀nà tí lepidopterist fí ńtọ́jú àfòpiná alárà inú klórófọ́ọ̀mù rẹ̀ pamọ, tàbí àwọn Beetle láti Costa Rica. Àwọn ìtàn rì bíi ohun èèlò tí mò ńlò láti fi ṣe ìtumọ̀ sí ara mi. ----------Pat Conroy Èwo nínú àwọn wọ̀nyí ló ṣe àpèjúwe títò ti abala yí dáradára jùlọ?</p></div>
+      
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">Ònkọ̀wé náà ńpèsè àwọn àlàyé lóríṣiríṣi fún gbígbé àwọn ìgbésẹ̀ kan nípàtó.</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">Òǹkọ̀wé náà ńlo àwọn àkàwé láti ṣe àlàyé àwọn ìrírí rẹ̀ ní ti ìgbésẹ̀ kan nìpàtó.</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">Ònkọ̀wé náà ńṣe àfiwé láàrin àwọn ìrírí rẹ̀ àti ti àwọn yòókù nínú iṣẹ́ tirẹ̀.</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">Òǹkọ̀wé kan ṣe átòkalẹ̀ àwọn ipele lóríṣiríṣi ti iṣẹ́ rẹ̀ nínú iṣẹ́ kan ní pàtó.</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option B)</summary>
+        <div class="expl-body">
+          <p>Correct Answer: (B) Òǹkọ̀wé náà ńlo àwọn àkàwé láti ṣe àlàyé àwọn ìrírí rẹ̀ ní ti ìgbésẹ̀ kan nìpàtó. [Subject: Miscellaneous · Medium: EN].</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
+            <span><strong>SHA-256:</strong> <code>76936317ea8f88bbd69d...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248531 · SUBGENCORE_Q509018</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          
+          
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GEN_CORE — Miscellaneous</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Multi-Disciplinary</span> ·
+          <span><strong>Unit:</strong> Miscellaneous (EN Medium)</span> ·
+          <span><strong>Topic:</strong> Miscellaneous</span>
+        </div>
+      </div>
+      
+      <div class="q-stem"><p>Èwo nínú àwọn wọ̀nyí ni ó fa ọgbọ́n yọ jùlọ fún òṣèré tí iṣẹ́ rẹ̀ níílò wípé kí ó lo ohun àmúlò tó léwu kan ní pàtó?</p></div>
+      
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">Ṣíṣàwárí ohun àmúlò tí kò léwu láti lò àti ṣíṣe àyípadà ètò ṣíṣe-ọnà gẹ́gẹ́ bí ó ti ṣe kókó</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">Kíka àlẹ̀mọ́ lára ohun àmúlò náà kí á sì tẹ̀síwájú gẹ́gẹ́ bíi ìdarí lára àlẹ̀mọ́ náà</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">Ṣíṣe àrídájú wípé kò sí ọmọdé kankan níbẹ̀ nígbàti a bá ńlo ohun àmúlò náà.</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">Bíbèèrè lọ́wọ́ akọ́ṣẹ́mọṣẹ́ onímọ̀ nípa ewu ṣáájú lílo ohun èèlò náà</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option B)</summary>
+        <div class="expl-body">
+          <p>Correct Answer: (B) Kíka àlẹ̀mọ́ lára ohun àmúlò náà kí á sì tẹ̀síwájú gẹ́gẹ́ bíi ìdarí lára àlẹ̀mọ́ náà [Subject: Miscellaneous · Medium: EN].</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
+            <span><strong>SHA-256:</strong> <code>afed44072404a578b59d...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248530 · SUBGENCORE_Q508969</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          
+          
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GEN_CORE — Logical Fallacies</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Multi-Disciplinary</span> ·
+          <span><strong>Unit:</strong> Logical Fallacies (EN Medium)</span> ·
+          <span><strong>Topic:</strong> Logical Fallacies</span>
+        </div>
+      </div>
+      
+      <div class="q-stem"><p>Fálásì àròkọ ni</p></div>
+      
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">ó ńfi okùnfà ìṣẹ̀lẹ̀ sí okùnfà ìrọ̀rùn kan nígbàtí okùnfà náà ti pẹ̀ka</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">ṣíṣe àríyànjiyàn wípé ohun tó jẹ́ òtítọ́ nípa apá kan ohun kan gbọ́dọ̀ jẹ́ òtítọ́ nípa gbogbo ara nǹkan náà</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">ó parí ọrọ̀ láì ní ẹ̀rí tó péye láti ṣe àtìlẹ́yìn fún ìparí ọ̀rọ̀ náà</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">ó parí ọrọ̀ tó dá lóri ríro èrò àkọlé ìbùwọ́lù nígbàtí kò dìídì ní àjọṣepọ̀ tààrà kankan láàrin ìbùwọ́lù àfẹnujẹ́ àti àkòrí ọrọ̀ ìparí náà</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option B)</summary>
+        <div class="expl-body">
+          <p>Correct Answer: (B) ṣíṣe àríyànjiyàn wípé ohun tó jẹ́ òtítọ́ nípa apá kan ohun kan gbọ́dọ̀ jẹ́ òtítọ́ nípa gbogbo ara nǹkan náà [Subject: Logical Fallacies · Medium: EN].</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
+            <span><strong>SHA-256:</strong> <code>274054f89705704a1ed2...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248529 · SUBGENCORE_Q508967</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          
+          
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GEN_CORE — Jurisprudence</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Multi-Disciplinary</span> ·
+          <span><strong>Unit:</strong> Jurisprudence (EN Medium)</span> ·
+          <span><strong>Topic:</strong> Jurisprudence</span>
+        </div>
+      </div>
+      
+      <div class="q-stem"><p>Kí ló dé tí ọ̀nà &#x27;agbára&#x27; sí ìdájọ́ òdodo kọ ìlànà Rawls?</p></div>
+      
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">Nítorí pé ó kùnà láti yanjú agbára gangan tí àwọn ènìyàn ní láti jàfààní láti inú ìmọ̀ ìdájọ́ òdodo rẹ̀.</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">Nítorí pé ó fojú fo ojúṣe àwọn ènìyàn.</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">Nítorí pé ó kan àwọn àwùjọ ìjọba ìjọba nìkan.</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">Nítorí pé ó fojú fo pàtàkì ilé-ẹjọ́.</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>Correct Answer: (A) Nítorí pé ó kùnà láti yanjú agbára gangan tí àwọn ènìyàn ní láti jàfààní láti inú ìmọ̀ ìdájọ́ òdodo rẹ̀. [Subject: Jurisprudence · Medium: EN].</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
+            <span><strong>SHA-256:</strong> <code>65c37a78798e7109c863...</code></span>
           </div>
         </div>
       </details>
