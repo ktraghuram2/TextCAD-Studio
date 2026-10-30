@@ -43,7 +43,11 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Parquet, Image, Clean MathML & Keyless Multi-Agent AI Swarm Dependencies
+      - name: Install Parquet, Image, Clean MathML & Keyless Multi-Agent Dependencies
         run: |
-          pip install --quiet pyarrow pillow beautifulsoup4 lxml langdetect latex2mathml "g4f[slim]" curl_cffi ddgs
+          sudo apt-get update -qq && sudo apt-get install -y -qq sqlite3 || true
+          pip install --quiet pyarrow pillow beautifulsoup4 lxml langdetect latex2mathml "g4f[slim]" curl_cffi ddgs || pip install --quiet pyarrow pillow beautifulsoup4 lxml langdetect latex2mathml "g4f[slim]" ddgs
+
+      - name: Run 16-Agent Nonstop Cloud Swarm
+        run: |
           python -u _mcq_engine/public_cloud_runner.py

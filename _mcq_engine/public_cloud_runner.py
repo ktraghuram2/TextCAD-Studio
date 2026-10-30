@@ -3,14 +3,10 @@ r"""
 Unlimited 24x7 Multi-Agent Public GitHub Cloud Runner (`public_cloud_runner.py`)
 ================================================================================
 Runs 16 Concurrent Cloud Agents (100% Zero External API Keys):
-  - 8 Parallel Cloud AI Staging Auditor Agents (`ThreadPoolExecutor(max_workers=8)`)
-    continuously auditing `db_staging_queue.sqlite`, verifying answers, writing >= 260-char
-    step-by-step explanations in clean W3C MathML across 8 separate `models.github.ai`
-    model pools + `g4f[slim]` keyless cloud providers (and Google AI Ultra `agy` swarm on self-hosted).
-  - 4 Parallel Cloud Parquet & Figure/Passage Harvester Agents (`ThreadPoolExecutor(max_workers=4)`).
-  - 4 Parallel Continuous Multi-Language Syllabus Web Scraper Agents (`continuous_cloud_web_scraper.py`).
-  - Sweeps all existing SQLite rows on boot via `mathml_sanitizer.retroactive_convert_db_latex_to_mathml()`
-    so 100% of existing & new questions render clean semantic W3C MathML (zero raw LaTeX!).
+  - 8 Parallel Cloud AI Staging Auditor Agents (`Pollinations` HTTP + isolated `g4f` subprocesses + `models.github.ai`).
+  - 4 Parallel Cloud Parquet & Figure/Passage Harvester Agents (`Belebele` 122-lang + `INCLUDE-44` + `RACE` + `MathVista` + `MMMU`).
+  - 4 Parallel Continuous Multi-Language Syllabus Web Scraper Agents (`21,109` granular syllabus subtopics).
+  - Self-healing SQLite WAL verification & `.recover` + atomic `sqlite3.Connection.backup()` hot snapshots.
   - Publishes live progress every 45s to `https://ktraghuram2.github.io/TextCAD-Studio/mcq_live/`.
 """
 
@@ -23,6 +19,7 @@ import subprocess
 import sys
 import threading
 import time
+import traceback
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -43,6 +40,58 @@ MATHML_RETRO_STATS = {
 def log(msg: str) -> None:
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     print(f"[{ts}] [16-AGENT-NONSTOP-CLOUD] {msg}", flush=True)
+
+
+def verify_or_recover_sqlite_db(db_path: Path, is_staging: bool = False) -> None:
+    """Verifies SQLite integrity; if torn WAL pages exist from an interrupted raw copy, runs sqlite3 `.recover`."""
+    if not db_path.exists():
+        return
+    healthy = False
+    try:
+        conn = sqlite3.connect(db_path, timeout=60.0)
+        res = conn.execute("PRAGMA quick_check(1);").fetchone()
+        cnt = conn.execute("SELECT COUNT(*) FROM questions;").fetchone()[0]
+        conn.close()
+        if res and res[0] == "ok" and cnt >= 0:
+            healthy = True
+    except Exception as exc:
+        log(f"[SQLITE-HEAL] {db_path.name} failed quick_check ({exc}); launching automatic recovery...")
+
+    if healthy:
+        return
+
+    rec_path = db_path.with_suffix(".recovered.sqlite")
+    rec_path.unlink(missing_ok=True)
+    if shutil.which("sqlite3"):
+        cmd = f'sqlite3 "{db_path}" ".recover" | sqlite3 "{rec_path}"'
+        subprocess.run(["bash", "-c", cmd], check=False)
+
+    salvaged = 0
+    if rec_path.exists() and rec_path.stat().st_size > 32768:
+        try:
+            rc = sqlite3.connect(rec_path, timeout=60.0)
+            salvaged = rc.execute("SELECT COUNT(*) FROM questions;").fetchone()[0]
+            rc.close()
+        except Exception:
+            salvaged = 0
+
+    if salvaged > 0:
+        log(f"[SQLITE-HEAL] Recovered {salvaged:,} intact rows in {db_path.name} via sqlite3 .recover!")
+        db_path.unlink(missing_ok=True)
+        shutil.move(str(rec_path), str(db_path))
+    else:
+        rec_path.unlink(missing_ok=True)
+        log(f"[SQLITE-HEAL] Reinitializing fresh schema for corrupted {db_path.name}...")
+        db_path.unlink(missing_ok=True)
+
+    import pipeline
+    import staging_and_passage_manager as spm
+    c = sqlite3.connect(db_path, timeout=60.0)
+    if is_staging:
+        spm.ensure_staging_schema(c)
+    else:
+        pipeline.ensure_db_schema(c)
+    c.close()
 
 
 def prepare_workdir() -> None:
@@ -71,10 +120,18 @@ def prepare_workdir() -> None:
         out_name = gz_file.name[:-3]
         out_path = WORK_DIR / out_name
         log(f"Decompressing checkpoint {gz_file.name} -> {out_name} ...")
-        with gzip.open(gz_file, "rb") as f_in, open(out_path, "wb") as f_out:
-            shutil.copyfileobj(f_in, f_out)
+        try:
+            with gzip.open(gz_file, "rb") as f_in, open(out_path, "wb") as f_out:
+                shutil.copyfileobj(f_in, f_out)
+        except Exception as gz_err:
+            log(f"[GZIP-WARN] Truncated archive {gz_file.name} ({gz_err}); keeping partial/fresh file.")
+        finally:
+            gz_file.unlink(missing_ok=True)
 
-    # Sweep DB1, DB2, and Staging Queue BEFORE reconstructing Master so Master inherits 100% Clean W3C MathML
+    verify_or_recover_sqlite_db(WORK_DIR / "db1_scraped_mcqs.sqlite", is_staging=False)
+    verify_or_recover_sqlite_db(WORK_DIR / "db2_pyq_mcqs.sqlite", is_staging=False)
+    verify_or_recover_sqlite_db(WORK_DIR / "db_staging_queue.sqlite", is_staging=True)
+
     import mathml_sanitizer as ms
     c_db1 = ms.retroactive_convert_db_latex_to_mathml(WORK_DIR / "db1_scraped_mcqs.sqlite")
     c_db2 = ms.retroactive_convert_db_latex_to_mathml(WORK_DIR / "db2_pyq_mcqs.sqlite")
@@ -93,6 +150,7 @@ def prepare_workdir() -> None:
     db1_path = WORK_DIR / "db1_scraped_mcqs.sqlite"
     db2_path = WORK_DIR / "db2_pyq_mcqs.sqlite"
     if m_path.exists():
+        verify_or_recover_sqlite_db(m_path, is_staging=False)
         ms.retroactive_convert_db_latex_to_mathml(m_path)
     elif db1_path.exists():
         log("Reconstructing Master mcq_bank.sqlite from Clean-MathML db1 + db2...")
@@ -158,19 +216,6 @@ def build_and_push_live_pages(extra_note: str = "") -> dict:
     docs_dir.mkdir(parents=True, exist_ok=True)
     (docs_dir / "cloud_live_status.json").write_text(json.dumps(status_obj, indent=2), encoding="utf-8")
 
-    idx_path = docs_dir / "index.html"
-    if idx_path.exists():
-        html_txt = idx_path.read_text(encoding="utf-8", errors="ignore")
-        html_txt = html_txt.replace(
-            "fetch('./cloud_live_status.json?t=' + Date.now())",
-            "fetch('https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/main/mcq_live/cloud_live_status.json?t=' + Date.now())",
-        )
-        html_txt = html_txt.replace(
-            "fetch(`./page_${dbKey}_${staticPage}.json?t=${Date.now()}`)",
-            "fetch(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/main/mcq_live/page_${dbKey}_${staticPage}.json?t=${Date.now()}`)",
-        )
-        idx_path.write_text(html_txt, encoding="utf-8")
-
     target_live = REPO_ROOT / "mcq_live"
     target_live.mkdir(parents=True, exist_ok=True)
     (target_live / "CNAME").unlink(missing_ok=True)
@@ -197,28 +242,48 @@ def build_and_push_live_pages(extra_note: str = "") -> dict:
 
 
 def upload_release_checkpoints() -> None:
+    """Uses SQLite online hot-backup API (`src.backup(dst)`) so WAL checkpoints never tear pages."""
     upload_files = []
     for fname in ("db1_scraped_mcqs.sqlite", "db2_pyq_mcqs.sqlite", "db_staging_queue.sqlite", "turbo_parquet_state.json", "cloud_subtopic_scraper_state.json"):
         fp = WORK_DIR / fname
-        if fp.exists():
-            gz_path = WORK_DIR / f"{fname}.gz"
-            with open(fp, "rb") as f_in, gzip.open(gz_path, "wb", 5) as f_out:
-                shutil.copyfileobj(f_in, f_out)
+        if not fp.exists():
+            continue
+        gz_path = WORK_DIR / f"{fname}.gz"
+        try:
+            if fname.endswith(".sqlite"):
+                snap_path = WORK_DIR / f"{fname}.snap"
+                snap_path.unlink(missing_ok=True)
+                src_c = sqlite3.connect(fp, timeout=120.0)
+                dst_c = sqlite3.connect(snap_path, timeout=120.0)
+                src_c.backup(dst_c)
+                dst_c.close()
+                src_c.close()
+                with open(snap_path, "rb") as f_in, gzip.open(gz_path, "wb", 5) as f_out:
+                    shutil.copyfileobj(f_in, f_out)
+                snap_path.unlink(missing_ok=True)
+            else:
+                with open(fp, "rb") as f_in, gzip.open(gz_path, "wb", 5) as f_out:
+                    shutil.copyfileobj(f_in, f_out)
             upload_files.append(str(gz_path))
+        except Exception as exc:
+            log(f"[CHECKPOINT-WARN] Skipping {fname}: {exc}")
+
     if upload_files:
         subprocess.run(
             ["gh", "release", "upload", RELEASE_TAG, *upload_files, "--clobber"],
             cwd=str(REPO_ROOT),
             check=False,
         )
+        for uf in upload_files:
+            Path(uf).unlink(missing_ok=True)
 
 
 def main() -> None:
     log("Booting 16-Agent Nonstop Cloud Swarm (8 AI Staging + 4 Parquet + 4 Web Scrapers, Clean W3C MathML, Zero API Keys)...")
-    prepare_workdir()
-
     subprocess.run(["git", "config", "user.name", "Cloud MCQ Live Bot"], cwd=str(REPO_ROOT), check=False)
     subprocess.run(["git", "config", "user.email", "ktraghuram2@gmail.com"], cwd=str(REPO_ROOT), check=False)
+
+    prepare_workdir()
 
     import staging_and_passage_manager as spm
 
@@ -228,15 +293,9 @@ def main() -> None:
         f"Verified: {sweep['kept_verified']:,} | Staging Pending: {sweep['staging_pending']:,}"
     )
 
-    tot_mml = MATHML_RETRO_STATS["total_unique_converted"]
     build_and_push_live_pages(
-        extra_note=(
-            f"[CLEAN-MATHML-SWEEP] Converted {tot_mml:,} existing DB rows (DB1={MATHML_RETRO_STATS['db1_converted']:,}, "
-            f"DB2={MATHML_RETRO_STATS['db2_converted']:,}, Staging={MATHML_RETRO_STATS['staging_converted']:,}) -> 100% pure W3C MathML!"
-        )
+        extra_note="[BOOT-OK] 16 Nonstop Cloud Agents Online (Belebele 122-Lang + INCLUDE-44 + Pollinations/Subprocess AI Swarm)!"
     )
-    if tot_mml > 0:
-        upload_release_checkpoints()
 
     harvester_proc = subprocess.Popen(
         [sys.executable, "-u", str(WORK_DIR / "turbo_parquet_and_figure_harvester.py")],
@@ -259,12 +318,12 @@ def main() -> None:
                 swarm_state["waves"] += 1
                 swarm_state["last_note"] = res.get("note", "")
                 if res.get("promoted", 0) == 0:
-                    time.sleep(6.0)
+                    time.sleep(4.0)
                 else:
                     time.sleep(0.5)
             except Exception as exc:
                 swarm_state["last_note"] = f"Swarm retry: {type(exc).__name__}"
-                time.sleep(5.0)
+                time.sleep(4.0)
 
     swarm_thread = threading.Thread(target=continuous_8_agent_ai_swarm, daemon=True)
     swarm_thread.start()
@@ -288,7 +347,6 @@ def main() -> None:
         if cycle % 4 == 0:
             upload_release_checkpoints()
 
-        # Restart web scraper if it ever exits so internet scraping NEVER stops!
         if web_scraper_proc.poll() is not None:
             web_scraper_proc = subprocess.Popen(
                 [sys.executable, "-u", str(WORK_DIR / "continuous_cloud_web_scraper.py")],
@@ -305,4 +363,16 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception:
+        tb = traceback.format_exc()
+        log(f"[FATAL-RECOVER] {tb}")
+        err_file = REPO_ROOT / "mcq_live" / "cloud_last_diag.txt"
+        err_file.parent.mkdir(parents=True, exist_ok=True)
+        err_file.write_text(tb, encoding="utf-8")
+        subprocess.run(["git", "pull", "--rebase", "--autostash", "-X", "theirs", "origin", "main"], cwd=str(REPO_ROOT), check=False)
+        subprocess.run(["git", "add", "mcq_live/cloud_last_diag.txt"], cwd=str(REPO_ROOT), check=False)
+        subprocess.run(["git", "commit", "-m", "diag(cloud): capture runner exception"], cwd=str(REPO_ROOT), check=False)
+        subprocess.run(["git", "push", "origin", "main"], cwd=str(REPO_ROOT), check=False)
+        raise
