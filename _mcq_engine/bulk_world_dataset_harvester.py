@@ -240,17 +240,11 @@ def log(msg: str) -> None:
         f.write(line + "\n")
 
 
+import mathml_sanitizer as _mathml_sanitizer
+
+
 def sanitize_to_mathml_html(text: str) -> str:
-    if not text:
-        return ""
-    s = html.escape(str(text).strip())
-    # Convert any $...$ inline math into valid MathML <math> blocks
-    s = re.sub(
-        r"\$([^$]+)\$",
-        lambda m: f'<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>{m.group(1)}</mi></mrow></math>',
-        s,
-    )
-    return s.replace("$", "USD ")
+    return _mathml_sanitizer.sanitize_plain_text_to_clean_mathml_html(text)
 
 
 def fetch_hf_rows(dataset: str, config: str, split: str, offset: int, length: int = 100) -> tuple[list[dict] | None, bool]:

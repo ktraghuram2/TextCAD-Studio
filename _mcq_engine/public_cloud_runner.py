@@ -2,12 +2,15 @@
 r"""
 Unlimited 24x7 Multi-Agent Public GitHub Cloud Runner (`public_cloud_runner.py`)
 ================================================================================
-Runs 12 Concurrent Cloud Agents (100% Zero External API Keys):
+Runs 16 Concurrent Cloud Agents (100% Zero External API Keys):
   - 8 Parallel Cloud AI Staging Auditor Agents (`ThreadPoolExecutor(max_workers=8)`)
     continuously auditing `db_staging_queue.sqlite`, verifying answers, writing >= 260-char
-    step-by-step explanations across 8 separate `models.github.ai` model pools + `g4f[slim]`
-    keyless cloud providers (and Google AI Ultra `agy` multi-model swarm on self-hosted runners).
+    step-by-step explanations in clean W3C MathML across 8 separate `models.github.ai`
+    model pools + `g4f[slim]` keyless cloud providers (and Google AI Ultra `agy` swarm on self-hosted).
   - 4 Parallel Cloud Parquet & Figure/Passage Harvester Agents (`ThreadPoolExecutor(max_workers=4)`).
+  - 4 Parallel Continuous Multi-Language Syllabus Web Scraper Agents (`continuous_cloud_web_scraper.py`).
+  - Sweeps all existing SQLite rows on boot via `mathml_sanitizer.retroactive_convert_db_latex_to_mathml()`
+    so 100% of existing & new questions render clean semantic W3C MathML (zero raw LaTeX!).
   - Publishes live progress every 45s to `https://ktraghuram2.github.io/TextCAD-Studio/mcq_live/`.
 """
 
@@ -27,6 +30,14 @@ ENGINE_SRC = Path(__file__).resolve().parent
 REPO_ROOT = ENGINE_SRC.parent
 WORK_DIR = Path(os.environ.get("MCQ_WORK_DIR", "/tmp/mcq_work"))
 RELEASE_TAG = "v1.0-mcq-live-db"
+
+MATHML_RETRO_STATS = {
+    "db1_converted": 0,
+    "db2_converted": 0,
+    "staging_converted": 0,
+    "total_unique_converted": 0,
+    "clean_mathml_enforced": True,
+}
 
 
 def log(msg: str) -> None:
@@ -63,12 +74,28 @@ def prepare_workdir() -> None:
         with gzip.open(gz_file, "rb") as f_in, open(out_path, "wb") as f_out:
             shutil.copyfileobj(f_in, f_out)
 
+    # Sweep DB1, DB2, and Staging Queue BEFORE reconstructing Master so Master inherits 100% Clean W3C MathML
+    import mathml_sanitizer as ms
+    c_db1 = ms.retroactive_convert_db_latex_to_mathml(WORK_DIR / "db1_scraped_mcqs.sqlite")
+    c_db2 = ms.retroactive_convert_db_latex_to_mathml(WORK_DIR / "db2_pyq_mcqs.sqlite")
+    c_stg = ms.retroactive_convert_db_latex_to_mathml(WORK_DIR / "db_staging_queue.sqlite")
+    MATHML_RETRO_STATS["db1_converted"] = c_db1
+    MATHML_RETRO_STATS["db2_converted"] = c_db2
+    MATHML_RETRO_STATS["staging_converted"] = c_stg
+    MATHML_RETRO_STATS["total_unique_converted"] = c_db1 + c_db2 + c_stg
+    log(
+        f"[CLEAN-MATHML-SWEEP] Converted raw LaTeX -> W3C MathML: "
+        f"DB1={c_db1:,} | DB2={c_db2:,} | Staging={c_stg:,} | Total={c_db1 + c_db2 + c_stg:,}"
+    )
+
     import pipeline
     m_path = WORK_DIR / "mcq_bank.sqlite"
     db1_path = WORK_DIR / "db1_scraped_mcqs.sqlite"
     db2_path = WORK_DIR / "db2_pyq_mcqs.sqlite"
-    if not m_path.exists() and db1_path.exists():
-        log("Reconstructing Master mcq_bank.sqlite from db1 + db2...")
+    if m_path.exists():
+        ms.retroactive_convert_db_latex_to_mathml(m_path)
+    elif db1_path.exists():
+        log("Reconstructing Master mcq_bank.sqlite from Clean-MathML db1 + db2...")
         shutil.copyfile(db1_path, m_path)
         c = sqlite3.connect(m_path, timeout=90.0)
         pipeline.ensure_db_schema(c)
@@ -105,14 +132,15 @@ def build_and_push_live_pages(extra_note: str = "") -> dict:
             pass
     if extra_note:
         log_lines.append(extra_note)
-    log_tail = "\n".join(log_lines) if log_lines else "12-Agent Cloud Swarm Active..."
+    log_tail = "\n".join(log_lines) if log_lines else "16-Agent Cloud Swarm Active (Clean W3C MathML)..."
 
     status_obj = {
         "status": "RUNNING_IN_GITHUB_CLOUD",
-        "timestamp": f"{now_utc} · 🟢 LIVE 24x7 CLOUD (16 NONSTOP CLOUD AGENTS: SCRAPERS + AI STAGING)",
+        "timestamp": f"{now_utc} · 🟢 LIVE 24x7 CLOUD (16 NONSTOP AGENTS · 100% CLEAN W3C MATHML)",
         "last_updated_utc": now_utc,
         "worldwide_exams_count": 19060,
         "countries_covered": 31,
+        "mathml_status": MATHML_RETRO_STATS,
         "active_cloud_agents": {
             "ai_staging_agents": 8,
             "parquet_harvester_agents": 4,
@@ -122,7 +150,7 @@ def build_and_push_live_pages(extra_note: str = "") -> dict:
         },
         "counts": counts,
         "raw_stats": raw_stats,
-        "log_tail": f"[🤖 16 NONSTOP CLOUD AGENTS: 8 AI STAGING + 4 PARQUET + 4 WEB SCRAPERS]\n{log_tail}",
+        "log_tail": f"[🤖 16 NONSTOP CLOUD AGENTS · 100% CLEAN W3C MATHML]\n{log_tail}",
         "recent_logs": log_tail,
     }
 
@@ -159,7 +187,7 @@ def build_and_push_live_pages(extra_note: str = "") -> dict:
         prom_cnt = counts.get("staging_promoted_count", 0)
         p_cnt = counts.get("passage_mcqs_count", 0)
         subprocess.run(
-            ["git", "commit", "-m", f"chore(mcq-live): {m_cnt:,} Verified (+{prom_cnt:,} AI-Promoted) | {s_cnt:,} Staging | {p_cnt:,} Passage Qs"],
+            ["git", "commit", "-m", f"chore(mcq-live): {m_cnt:,} Verified (+{prom_cnt:,} AI-Promoted) | {s_cnt:,} Staging | {p_cnt:,} Passage Qs [Clean MathML]"],
             cwd=str(REPO_ROOT),
             check=False,
         )
@@ -186,7 +214,7 @@ def upload_release_checkpoints() -> None:
 
 
 def main() -> None:
-    log("Booting 12-Agent Cloud Swarm (8 AI Staging Agents + 4 Parallel Harvester Agents, Zero API Keys)...")
+    log("Booting 16-Agent Nonstop Cloud Swarm (8 AI Staging + 4 Parquet + 4 Web Scrapers, Clean W3C MathML, Zero API Keys)...")
     prepare_workdir()
 
     subprocess.run(["git", "config", "user.name", "Cloud MCQ Live Bot"], cwd=str(REPO_ROOT), check=False)
@@ -199,6 +227,16 @@ def main() -> None:
         f"[AUDIT-GATE] Moved {sweep['moved_to_staging']:,} short -> Staging | "
         f"Verified: {sweep['kept_verified']:,} | Staging Pending: {sweep['staging_pending']:,}"
     )
+
+    tot_mml = MATHML_RETRO_STATS["total_unique_converted"]
+    build_and_push_live_pages(
+        extra_note=(
+            f"[CLEAN-MATHML-SWEEP] Converted {tot_mml:,} existing DB rows (DB1={MATHML_RETRO_STATS['db1_converted']:,}, "
+            f"DB2={MATHML_RETRO_STATS['db2_converted']:,}, Staging={MATHML_RETRO_STATS['staging_converted']:,}) -> 100% pure W3C MathML!"
+        )
+    )
+    if tot_mml > 0:
+        upload_release_checkpoints()
 
     harvester_proc = subprocess.Popen(
         [sys.executable, "-u", str(WORK_DIR / "turbo_parquet_and_figure_harvester.py")],
@@ -252,15 +290,18 @@ def main() -> None:
 
         # Restart web scraper if it ever exits so internet scraping NEVER stops!
         if web_scraper_proc.poll() is not None:
-            web_scraper_proc = subprocess.Popen([sys.executable, '-u', str(WORK_DIR / 'continuous_cloud_web_scraper.py')], cwd=str(WORK_DIR))
+            web_scraper_proc = subprocess.Popen(
+                [sys.executable, "-u", str(WORK_DIR / "continuous_cloud_web_scraper.py")],
+                cwd=str(WORK_DIR),
+            )
 
     stop_swarm.set()
     for proc in (harvester_proc, web_scraper_proc):
         if proc.poll() is None:
             proc.terminate()
     upload_release_checkpoints()
-    log('Uploading complete! Self-chaining next 24x7 nonstop cloud run immediately...')
-    subprocess.run(['gh', 'workflow', 'run', 'mcq_unlimited_cloud.yml'], cwd=str(REPO_ROOT), check=False)
+    log("Uploading complete! Self-chaining next 24x7 nonstop cloud run immediately...")
+    subprocess.run(["gh", "workflow", "run", "mcq_unlimited_cloud.yml"], cwd=str(REPO_ROOT), check=False)
 
 
 if __name__ == "__main__":

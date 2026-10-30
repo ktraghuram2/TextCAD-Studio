@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       runner_mode:
-        description: "Cloud VM ('ubuntu-latest' keyless 12-agent swarm) or 'self-hosted' (Google AI Ultra agy swarm)"
+        description: "Cloud VM ('ubuntu-latest' keyless 16-agent swarm) or 'self-hosted' (Google AI Ultra agy swarm)"
         required: false
         default: "ubuntu-latest"
   schedule:
@@ -43,7 +43,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Parquet, Image & Keyless Multi-Agent AI Swarm Dependencies
+      - name: Install Parquet, Image, Clean MathML & Keyless Multi-Agent AI Swarm Dependencies
         run: |
-          pip install --quiet pyarrow pillow beautifulsoup4 lxml langdetect "g4f[slim]" curl_cffi ddgs
+          pip install --quiet pyarrow pillow beautifulsoup4 lxml langdetect latex2mathml "g4f[slim]" curl_cffi ddgs
           python -u _mcq_engine/public_cloud_runner.py

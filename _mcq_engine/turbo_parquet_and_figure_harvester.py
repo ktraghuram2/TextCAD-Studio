@@ -39,6 +39,7 @@ from PIL import Image
 
 import bulk_world_dataset_harvester as bwh
 import global_exams_and_locality_manager as gelm
+import mathml_sanitizer as ms
 import multi_db_manager
 import pipeline
 import staging_and_passage_manager as spm
@@ -191,9 +192,10 @@ def bulk_insert_items(
     for q in items:
         sid = q["subject_id"]
         subj = q["subject"]
-        opts = q["options"]
-        q_html = q["question_html"]
-        expl_html = q["explanation_html"]
+        raw_opts = q["options"]
+        opts = {k: ms.ensure_clean_mathml_html(str(raw_opts.get(k) or "")) for k in ("A", "B", "C", "D")}
+        q_html = ms.ensure_clean_mathml_html(q["question_html"])
+        expl_html = ms.ensure_clean_mathml_html(q["explanation_html"])
         q_svg = (q.get("question_diagram_svg") or "").strip()
         e_svg = (q.get("explanation_diagram_svg") or "").strip()
         has_q_diag = 1 if q_svg else 0
@@ -203,6 +205,7 @@ def bulk_insert_items(
         p_id = ""
         has_psg = 0
         if isinstance(p_meta, dict) and p_meta.get("passage_html"):
+            p_meta["passage_html"] = ms.ensure_clean_mathml_html(p_meta["passage_html"])
             p_id, _ = spm.compute_passage_id(p_meta["passage_html"])
             has_psg = 1
 

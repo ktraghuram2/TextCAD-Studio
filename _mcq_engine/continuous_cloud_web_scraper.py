@@ -26,6 +26,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 
+import mathml_sanitizer as ms
 import multi_db_manager
 import pipeline
 import staging_and_passage_manager as spm
@@ -139,9 +140,13 @@ def normalize_ai_web_item(subtopic_row: dict, q: dict) -> dict | None:
         ans = "A"
     expl = str(q.get("explanation") or q.get("explanation_html") or "").strip()
     if expl and not expl.startswith("<"):
-        expl = f"<p>{expl}</p>"
+        expl = f"<p>{ms.sanitize_plain_text_to_clean_mathml_html(expl)}</p>"
+    elif expl:
+        expl = ms.ensure_clean_mathml_html(expl)
     if not q_txt.startswith("<"):
-        q_txt = f"<p>{q_txt}</p>"
+        q_txt = f"<p>{ms.sanitize_plain_text_to_clean_mathml_html(q_txt)}</p>"
+    else:
+        q_txt = ms.ensure_clean_mathml_html(q_txt)
     src_db = str(q.get("source_db") or "DB1_SCRAPED_MODIFIED").strip()
     if src_db not in ("DB1_SCRAPED_MODIFIED", "DB2_PYQ"):
         src_db = "DB1_SCRAPED_MODIFIED"
@@ -178,10 +183,10 @@ def normalize_ai_web_item(subtopic_row: dict, q: dict) -> dict | None:
         "question_diagram_svg": str(q.get("question_svg") or q.get("question_diagram_svg") or "").strip(),
         "explanation_diagram_svg": str(q.get("explanation_svg") or q.get("explanation_diagram_svg") or "").strip(),
         "options": {
-            "A": str(opts["A"]),
-            "B": str(opts["B"]),
-            "C": str(opts["C"]),
-            "D": str(opts["D"]),
+            "A": ms.ensure_clean_mathml_html(str(opts["A"])),
+            "B": ms.ensure_clean_mathml_html(str(opts["B"])),
+            "C": ms.ensure_clean_mathml_html(str(opts["C"])),
+            "D": ms.ensure_clean_mathml_html(str(opts["D"])),
         },
         "correct_option": ans,
         "explanation_html": expl,

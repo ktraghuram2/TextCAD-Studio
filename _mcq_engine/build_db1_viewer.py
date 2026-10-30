@@ -18,6 +18,7 @@ import sqlite3
 from datetime import datetime
 from pathlib import Path
 
+import mathml_sanitizer as ms
 import multi_db_manager
 import pipeline
 
@@ -91,7 +92,7 @@ def render_question_card(display_num: int, q: dict, is_staging_view: bool = Fals
     fig_badge = '<span class="badge b-fig">🖼️ Figure / Diagram</span>' if has_fig else ""
 
     psg_id = (q.get("passage_id") or "").strip()
-    psg_html = (q.get("p_html") or "").strip()
+    psg_html = ms.ensure_clean_mathml_html((q.get("p_html") or "").strip())
     psg_title = (q.get("p_title") or "Shared Comprehension / Common-Data Passage").strip()
     p_qnum = int(q.get("passage_question_num") or 0)
     p_qtot = int(q.get("passage_total_questions") or q.get("p_qcount") or 0)
@@ -136,10 +137,11 @@ def render_question_card(display_num: int, q: dict, is_staging_view: bool = Fals
     for opt_key, col in [("A", "option_a"), ("B", "option_b"), ("C", "option_c"), ("D", "option_d")]:
         is_corr = "correct-opt" if opt_key == ans else ""
         badge = '<span class="corr-tag">✓ Correct</span>' if opt_key == ans else ""
+        opt_clean = ms.ensure_clean_mathml_html(q.get(col) or "")
         opts_html.append(
             f'<div class="opt-item {is_corr}">'
             f'<span class="opt-letter">{opt_key}</span>'
-            f'<div class="opt-text">{q.get(col) or ""}</div>'
+            f'<div class="opt-text">{opt_clean}</div>'
             f'{badge}</div>'
         )
 
@@ -164,13 +166,13 @@ def render_question_card(display_num: int, q: dict, is_staging_view: bool = Fals
         </div>
       </div>
       {psg_block}
-      <div class="q-stem">{q.get('question_html') or ''}</div>
+      <div class="q-stem">{ms.ensure_clean_mathml_html(q.get('question_html') or '')}</div>
       {q_fig_block}
       <div class="opts-grid">{''.join(opts_html)}</div>
       <details class="expl-box">
         <summary>View Explanation & Provenance (Answer: Option {ans})</summary>
         <div class="expl-body">
-          {q.get('explanation_html') or ''}
+          {ms.ensure_clean_mathml_html(q.get('explanation_html') or '')}
           {e_fig_block}
           <div class="hash-row">
             <span><strong>Source/License:</strong> {html.escape(q.get('scraped_source_url') or '')}</span>

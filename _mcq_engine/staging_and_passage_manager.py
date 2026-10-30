@@ -35,10 +35,11 @@ import urllib.error
 import threading
 import time
 import urllib.request
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed, wait
 from datetime import datetime, timezone
 from pathlib import Path
 
+import mathml_sanitizer as ms
 import pipeline
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -821,29 +822,33 @@ def run_ai_staging_enrichment_batch(
 
         combined_results: dict[str, tuple[dict, str]] = {}
         err_samples = []
-        with ThreadPoolExecutor(max_workers=min(num_agents, len(agent_slices))) as pool:
-            fut_map = {
-                pool.submit(
-                    call_cloud_ai_for_staging_audit,
-                    slc,
-                    passage_map,
-                    ag_idx,
-                    prefer_ultra_agy,
-                ): ag_idx
-                for ag_idx, slc in enumerate(agent_slices)
-            }
-            for fut in as_completed(fut_map):
-                try:
-                    parsed_arr, prov_lbl = fut.result()
-                    if parsed_arr:
-                        providers_hit.append(prov_lbl)
-                        _record_provider_hit(prov_lbl, len(parsed_arr))
-                        for item_obj in parsed_arr:
-                            combined_results[str(item_obj.get("question_id"))] = (item_obj, prov_lbl)
-                    elif prov_lbl:
-                        err_samples.append(prov_lbl)
-                except Exception as exc:
-                    err_samples.append(type(exc).__name__)
+        pool = ThreadPoolExecutor(max_workers=min(num_agents, len(agent_slices)))
+        fut_map = {
+            pool.submit(
+                call_cloud_ai_for_staging_audit,
+                slc,
+                passage_map,
+                ag_idx,
+                prefer_ultra_agy,
+            ): ag_idx
+            for ag_idx, slc in enumerate(agent_slices)
+        }
+        done_futs, not_done_futs = wait(list(fut_map.keys()), timeout=48.0)
+        for fut in done_futs:
+            try:
+                parsed_arr, prov_lbl = fut.result()
+                if parsed_arr:
+                    providers_hit.append(prov_lbl)
+                    _record_provider_hit(prov_lbl, len(parsed_arr))
+                    for item_obj in parsed_arr:
+                        combined_results[str(item_obj.get("question_id"))] = (item_obj, prov_lbl)
+                elif prov_lbl:
+                    err_samples.append(prov_lbl)
+            except Exception as exc:
+                err_samples.append(type(exc).__name__)
+        if not_done_futs:
+            err_samples.append(f"timeout_{len(not_done_futs)}")
+        pool.shutdown(wait=False, cancel_futures=True)
 
         if not combined_results:
             with _COOLDOWN_LOCK:
@@ -884,7 +889,9 @@ def run_ai_staging_enrichment_batch(
 
             new_expl = str(ai_obj.get("explanation_html") or "").strip()
             if not new_expl.startswith("<"):
-                new_expl = f"<p>{html.escape(new_expl)}</p>"
+                new_expl = f"<p>{ms.sanitize_plain_text_to_clean_mathml_html(new_expl)}</p>"
+            else:
+                new_expl = ms.ensure_clean_mathml_html(new_expl)
             new_ans = str(ai_obj.get("correct_option") or r_dict.get("correct_option") or "A").strip().upper()
             if new_ans not in ("A", "B", "C", "D"):
                 new_ans = r_dict.get("correct_option") or "A"
@@ -894,6 +901,9 @@ def run_ai_staging_enrichment_batch(
             if not ok:
                 continue
 
+            r_dict["question_html"] = ms.ensure_clean_mathml_html(r_dict.get("question_html") or "")
+            for opt_col in ("option_a", "option_b", "option_c", "option_d"):
+                r_dict[opt_col] = ms.ensure_clean_mathml_html(r_dict.get(opt_col) or "")
             r_dict["explanation_html"] = new_expl
             r_dict["correct_option"] = new_ans
             r_dict["scraped_source_url"] = new_src
