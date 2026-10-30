@@ -1,7 +1,7 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-30 10:25:02 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP AGENTS \u00b7 100% CLEAN W3C MATHML)",
-  "last_updated_utc": "2026-10-30 10:25:02 UTC",
+  "timestamp": "2026-10-30 10:26:41 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP AGENTS \u00b7 100% CLEAN W3C MATHML)",
+  "last_updated_utc": "2026-10-30 10:26:41 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "mathml_status": {
@@ -22,7 +22,7 @@
       "total_promoted_session": 0,
       "total_rejected_session": 0,
       "providers_succeeded": {},
-      "last_agent_notes": "8 Parallel Cloud AI Agents Initialized"
+      "last_agent_notes": "8 Agents probing (timeout_1)"
     }
   },
   "counts": {
@@ -33,13 +33,13 @@
     "figure_mcqs_count": 6127,
     "passage_mcqs_count": 2656,
     "shared_passages_count": 1712,
-    "staging_pending_count": 20699,
+    "staging_pending_count": 40499,
     "staging_promoted_count": 0
   },
   "raw_stats": {
-    "seed_files": 4477,
+    "seed_files": 4485,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83e\udd16 16 NONSTOP CLOUD AGENTS \u00b7 100% CLEAN W3C MATHML]\n[2026-10-30 10:24:57 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=17,999\n[2026-10-30 10:24:59 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=18,899\n[2026-10-30 10:25:01 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=19,799\n[8-AI-AGENT-SWARM] Wave 1: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Parallel Cloud AI Agents Initialized",
-  "recent_logs": "[2026-10-30 10:24:57 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=17,999\n[2026-10-30 10:24:59 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=18,899\n[2026-10-30 10:25:01 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=19,799\n[8-AI-AGENT-SWARM] Wave 1: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Parallel Cloud AI Agents Initialized"
+  "log_tail": "[\ud83e\udd16 16 NONSTOP CLOUD AGENTS \u00b7 100% CLEAN W3C MATHML]\n[2026-10-30 10:26:30 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=37,799\n[2026-10-30 10:26:34 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=38,699\n[2026-10-30 10:26:38 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=39,599\n[8-AI-AGENT-SWARM] Wave 2: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Agents probing (openai/gpt-4o-mini->JSONDecodeError, microsoft/Phi-3-medium-128k-instruct->JSONDecodeError, openai/gpt-4o-mini->JSONDecodeError)",
+  "recent_logs": "[2026-10-30 10:26:30 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=37,799\n[2026-10-30 10:26:34 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=38,699\n[2026-10-30 10:26:38 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=39,599\n[8-AI-AGENT-SWARM] Wave 2: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Agents probing (openai/gpt-4o-mini->JSONDecodeError, microsoft/Phi-3-medium-128k-instruct->JSONDecodeError, openai/gpt-4o-mini->JSONDecodeError)"
 }
