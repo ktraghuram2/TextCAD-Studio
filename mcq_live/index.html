@@ -61,7 +61,8 @@
       padding: 10px 14px;
       cursor: pointer;
     }
-    .stat-val { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+    .stat-val { font-size: 1.4rem; font-weight: 700; color: var(--accent); transition: transform 0.28s ease, text-shadow 0.28s ease; display: inline-block; }
+    .stat-val.live-bump { transform: scale(1.11); text-shadow: 0 0 14px #22c55e; }
     .stat-lbl { font-size: 0.75rem; color: var(--muted); }
     .controls, .pager {
       display: flex;
@@ -194,7 +195,7 @@
 <body>
   <header>
     <h1><span class="live-dot"></span> Live Cloud Dashboard — Verified Sufficient-Explanation MCQs & Staging Queue</h1>
-    <div class="sub-bar">Live Sync: <strong id="liveTs">2026-10-30 09:59:52 · 🟢 LIVE FROM GITHUB CLOUD</strong> · Strict Explanation Gate + Shared Passages (1 Para → Multi Qs) + Figures</div>
+    <div class="sub-bar">Live Sync: <strong id="liveTs">2026-10-30 09:59:52 · 🟢 LIVE FROM GITHUB CLOUD</strong> <span id="livePollBadge" style="color:#4ade80; font-weight:600;">· 🔄 Live Cloud Link Active (5s Auto-Refresh)</span></div>
     <div class="log-box" id="liveLogBox">[2026-10-30 09:59:37 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,493/21,109] +10 web seeds -&gt; +0 Verified (+0 Staged, +0 SVG Figures)
 [2026-10-30 09:59:38 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1716 (2662 Qs) | Staging=39,593
 [2026-10-30 09:59:43 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1716 (2662 Qs) | Staging=40,493
@@ -2159,16 +2160,19 @@
   </main>
   <script>
     let curPage = 1;
-    let totalPages = 4972;
+    let totalPages = 1332;
     let latestGitSha = 'main';
     let lastShaCheckMs = 0;
+    let bestCloudScore = 0;
+    let bestCloudUtc = '';
+    let latestCloudCounts = null;
+    let pollTickCount = 0;
 
     async function refreshLatestGitSha() {
       if (Date.now() - lastShaCheckMs < 62000 && latestGitSha !== 'main') return latestGitSha;
       lastShaCheckMs = Date.now();
       try {
-        const r = await fetch('https://api.github.com/repos/ktraghuram2/TextCAD-Studio/commits/main', {
-          headers: { 'Accept': 'application/vnd.github+json' },
+        const r = await fetch('https://api.github.com/repos/ktraghuram2/TextCAD-Studio/commits/main?cb=' + Date.now(), {
           cache: 'no-store'
         });
         if (r && r.ok) {
@@ -2177,6 +2181,35 @@
         }
       } catch (e) {}
       return latestGitSha;
+    }
+
+    function setLiveNumber(elId, newNum) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      const formatted = Number(newNum || 0).toLocaleString();
+      if (el.innerText !== formatted) {
+        el.innerText = formatted;
+        el.classList.add('live-bump');
+        setTimeout(() => el.classList.remove('live-bump'), 650);
+      }
+    }
+
+    function updatePageMatchingFromCounts(counts) {
+      if (!counts) return;
+      const rawDb = document.getElementById('dbFilter').value || '';
+      const q = (document.getElementById('qSearch').value || '').trim();
+      if (q) return;
+      let matchCnt = counts['mcq_bank.sqlite (Master)'] || 0;
+      if (rawDb === 'STAGING') matchCnt = counts['staging_pending_count'] || 0;
+      else if (rawDb === 'FIGURES') matchCnt = counts['figure_mcqs_count'] || 0;
+      else if (rawDb === 'PASSAGES') matchCnt = counts['passage_mcqs_count'] || 0;
+      else if (rawDb === 'DB1_SCRAPED_MODIFIED') matchCnt = counts['db1_scraped_mcqs.sqlite'] || 0;
+      else if (rawDb === 'DB2_PYQ') matchCnt = counts['db2_pyq_mcqs.sqlite'] || 0;
+      totalPages = Math.max(1, Math.ceil(matchCnt / 50));
+      const pInfo = document.getElementById('pageInfo');
+      if (pInfo) {
+        pInfo.innerText = `Page ${curPage} of ${totalPages.toLocaleString()} (Showing 50 per page · ${Number(matchCnt).toLocaleString()} live matching questions)`;
+      }
     }
 
     function switchDb(dbVal) {
@@ -2191,62 +2224,101 @@
       const db = encodeURIComponent(rawDb);
       const q = encodeURIComponent(document.getElementById('qSearch').value);
       try {
-        let resp = await fetch(`/api/page?page=${p}&db=${db}&q=${q}&t=${Date.now()}`).catch(() => null);
+        await refreshLatestGitSha();
+        const dbKey = rawDb || 'ALL';
+        const staticPage = Math.min(5, Math.max(1, p));
+        let resp = null;
+        if (!q && p <= 5) {
+          resp = await fetch(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/${latestGitSha}/mcq_live/page_${dbKey}_${staticPage}.json?cb=${Date.now()}`, { cache: 'no-store' }).catch(() => null);
+          if (!resp || !resp.ok) {
+            resp = await fetch(`https://ktraghuram2.github.io/TextCAD-Studio/mcq_live/page_${dbKey}_${staticPage}.json?cb=${Date.now()}`, { cache: 'no-store' }).catch(() => null);
+          }
+        }
         if (!resp || !resp.ok) {
-          await refreshLatestGitSha();
-          const dbKey = rawDb || 'ALL';
-          const staticPage = Math.min(5, Math.max(1, p));
-          resp = await fetch(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/${latestGitSha}/mcq_live/page_${dbKey}_${staticPage}.json?t=${Date.now()}`);
+          resp = await fetch(`/api/page?page=${p}&db=${db}&q=${q}&t=${Date.now()}`).catch(() => null);
         }
         if (!resp || !resp.ok) return;
         const data = await resp.json();
         curPage = data.page;
-        totalPages = data.total_pages;
+        totalPages = Math.max(totalPages, data.total_pages || 1);
         document.getElementById('cardsContainer').innerHTML = data.cards_html;
         document.getElementById('pageInfo').innerText =
-          `Page ${data.page} of ${data.total_pages} (Showing 50 per page · ${Number(data.total_matching || 0).toLocaleString()} matching questions)`;
+          `Page ${data.page} of ${Number(data.total_pages || 1).toLocaleString()} (Showing 50 per page · ${Number(data.total_matching || 0).toLocaleString()} live matching questions)`;
+        if (latestCloudCounts) updatePageMatchingFromCounts(latestCloudCounts);
         document.getElementById('btnFirst').disabled = (curPage <= 1);
         document.getElementById('btnPrev').disabled = (curPage <= 1);
         document.getElementById('btnNext').disabled = (curPage >= totalPages);
         document.getElementById('btnLast').disabled = (curPage >= totalPages);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (e) {}
     }
 
-    async function pollCountersOnly() {
+    function scoreSnapshot(d) {
+      if (!d || !d.counts) return -1;
+      const c = d.counts;
+      return (Number(c['mcq_bank.sqlite (Master)'] || 0) * 1000000) +
+             (Number(c['staging_promoted_count'] || 0) * 10000) +
+             Number(c['staging_pending_count'] || 0);
+    }
+
+    async function fetchJsonNoCache(url) {
       try {
-        let resp = await fetch('/api/db1_live?t=' + Date.now()).catch(() => null);
-        if (!resp || !resp.ok) {
-          await refreshLatestGitSha();
-          resp = await fetch(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/${latestGitSha}/mcq_live/cloud_live_status.json?t=${Date.now()}`);
+        const r = await fetch(url, { cache: 'no-store' });
+        if (r && r.ok) return await r.json();
+      } catch (e) {}
+      return null;
+    }
+
+    async function pollCountersOnly() {
+      pollTickCount += 1;
+      try {
+        await refreshLatestGitSha();
+        const cb = Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+        const candidates = await Promise.all([
+          fetchJsonNoCache(`https://ktraghuram2.github.io/TextCAD-Studio/mcq_live/cloud_live_status.json?cb=${cb}`),
+          fetchJsonNoCache(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/${latestGitSha}/mcq_live/cloud_live_status.json?cb=${cb}`)
+        ]);
+        let best = null;
+        for (const cand of candidates) {
+          if (!cand || !cand.counts) continue;
+          const utc = String(cand.last_updated_utc || '');
+          const sc = scoreSnapshot(cand);
+          if (!best || utc > String(best.last_updated_utc || '') || (utc === String(best.last_updated_utc || '') && sc > scoreSnapshot(best))) {
+            best = cand;
+          }
         }
-        if (!resp || !resp.ok) return;
-        const data = await resp.json();
-        document.getElementById('liveTs').innerText = data.timestamp || data.last_updated_utc || '';
-        const logTxt = data.log_tail || data.recent_logs;
+        if (!best) return;
+        const bestUtc = String(best.last_updated_utc || '');
+        const bestSc = scoreSnapshot(best);
+        if (bestUtc < bestCloudUtc && bestSc < bestCloudScore) return;
+        bestCloudUtc = bestUtc;
+        bestCloudScore = Math.max(bestCloudScore, bestSc);
+        latestCloudCounts = best.counts;
+
+        document.getElementById('liveTs').innerText = best.timestamp || best.last_updated_utc || '';
+        const badge = document.getElementById('livePollBadge');
+        if (badge) {
+          const nowLocal = new Date().toLocaleTimeString();
+          badge.innerText = `· 🔄 Live Cloud Link Synced (${nowLocal} · SHA ${String(latestGitSha).slice(0, 7)})`;
+        }
+        const logTxt = best.log_tail || best.recent_logs;
         if (logTxt) document.getElementById('liveLogBox').innerText = logTxt;
-        if (data.counts) {
-          const d1 = data.counts['db1_scraped_mcqs.sqlite'] || 0;
-          const d2 = data.counts['db2_pyq_mcqs.sqlite'] || 0;
-          const m = data.counts['mcq_bank.sqlite (Master)'] || (d1 + d2);
-          document.getElementById('cntDb1').innerText = Number(d1).toLocaleString();
-          document.getElementById('cntDb2').innerText = Number(d2).toLocaleString();
-          const elM = document.getElementById('cntMaster');
-          if (elM) elM.innerText = Number(m).toLocaleString();
-          const elF = document.getElementById('cntFigures');
-          if (elF) elF.innerText = Number(data.counts['figure_mcqs_count'] || 0).toLocaleString();
-          const elP = document.getElementById('cntPassages');
-          if (elP) elP.innerText = Number(data.counts['passage_mcqs_count'] || 0).toLocaleString();
-          const elSP = document.getElementById('cntSharedPsg');
-          if (elSP) elSP.innerText = Number(data.counts['shared_passages_count'] || 0).toLocaleString();
-          const elS = document.getElementById('cntStaging');
-          if (elS) elS.innerText = Number(data.counts['staging_pending_count'] || 0).toLocaleString();
-          const elPr = document.getElementById('cntPromoted');
-          if (elPr) elPr.innerText = Number(data.counts['staging_promoted_count'] || 0).toLocaleString();
+        if (best.counts) {
+          const d1 = best.counts['db1_scraped_mcqs.sqlite'] || 0;
+          const d2 = best.counts['db2_pyq_mcqs.sqlite'] || 0;
+          const m = best.counts['mcq_bank.sqlite (Master)'] || (d1 + d2);
+          setLiveNumber('cntDb1', d1);
+          setLiveNumber('cntDb2', d2);
+          setLiveNumber('cntMaster', m);
+          setLiveNumber('cntFigures', best.counts['figure_mcqs_count'] || 0);
+          setLiveNumber('cntPassages', best.counts['passage_mcqs_count'] || 0);
+          setLiveNumber('cntSharedPsg', best.counts['shared_passages_count'] || 0);
+          setLiveNumber('cntStaging', best.counts['staging_pending_count'] || 0);
+          setLiveNumber('cntPromoted', best.counts['staging_promoted_count'] || 0);
+          updatePageMatchingFromCounts(best.counts);
         }
       } catch (e) {}
     }
-    setInterval(pollCountersOnly, 15000);
+    setInterval(pollCountersOnly, 5000);
     pollCountersOnly();
     loadPage(1);
   </script>

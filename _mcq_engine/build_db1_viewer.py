@@ -78,6 +78,14 @@ def get_raw_scrape_stats() -> dict:
     }
 
 
+def _fast_clean(text: str) -> str:
+    if not text:
+        return ""
+    if "\\" in text or "$" in text or "<mi>(" in text:
+        return ms.ensure_clean_mathml_html(text)
+    return text
+
+
 def render_question_card(display_num: int, q: dict, is_staging_view: bool = False) -> str:
     diff = q.get("difficulty_level") or "Medium"
     diff_cls = diff.lower().replace(" ", "-")
@@ -92,7 +100,7 @@ def render_question_card(display_num: int, q: dict, is_staging_view: bool = Fals
     fig_badge = '<span class="badge b-fig">🖼️ Figure / Diagram</span>' if has_fig else ""
 
     psg_id = (q.get("passage_id") or "").strip()
-    psg_html = ms.ensure_clean_mathml_html((q.get("p_html") or "").strip())
+    psg_html = _fast_clean((q.get("p_html") or "").strip())
     psg_title = (q.get("p_title") or "Shared Comprehension / Common-Data Passage").strip()
     p_qnum = int(q.get("passage_question_num") or 0)
     p_qtot = int(q.get("passage_total_questions") or q.get("p_qcount") or 0)
@@ -137,7 +145,7 @@ def render_question_card(display_num: int, q: dict, is_staging_view: bool = Fals
     for opt_key, col in [("A", "option_a"), ("B", "option_b"), ("C", "option_c"), ("D", "option_d")]:
         is_corr = "correct-opt" if opt_key == ans else ""
         badge = '<span class="corr-tag">✓ Correct</span>' if opt_key == ans else ""
-        opt_clean = ms.ensure_clean_mathml_html(q.get(col) or "")
+        opt_clean = _fast_clean(q.get(col) or "")
         opts_html.append(
             f'<div class="opt-item {is_corr}">'
             f'<span class="opt-letter">{opt_key}</span>'
@@ -166,13 +174,13 @@ def render_question_card(display_num: int, q: dict, is_staging_view: bool = Fals
         </div>
       </div>
       {psg_block}
-      <div class="q-stem">{ms.ensure_clean_mathml_html(q.get('question_html') or '')}</div>
+      <div class="q-stem">{_fast_clean(q.get('question_html') or '')}</div>
       {q_fig_block}
       <div class="opts-grid">{''.join(opts_html)}</div>
       <details class="expl-box">
         <summary>View Explanation & Provenance (Answer: Option {ans})</summary>
         <div class="expl-body">
-          {ms.ensure_clean_mathml_html(q.get('explanation_html') or '')}
+          {_fast_clean(q.get('explanation_html') or '')}
           {e_fig_block}
           <div class="hash-row">
             <span><strong>Source/License:</strong> {html.escape(q.get('scraped_source_url') or '')}</span>
@@ -233,49 +241,53 @@ def query_paginated_questions(page: int = 1, page_size: int = PAGE_SIZE, db_filt
         params.extend([q_like, q_like, q_like, q_like])
 
     where_sql = " AND ".join(where_clauses)
-    conn = sqlite3.connect(target_db, timeout=15.0)
-    pipeline.ensure_db_schema(conn)
-    if is_staging:
-        conn.execute(
-            "CREATE TABLE IF NOT EXISTS staging_meta (question_id TEXT PRIMARY KEY, staging_status TEXT DEFAULT 'PENDING_AI_AUDIT', staging_reason TEXT DEFAULT '', ai_audit_notes TEXT DEFAULT '', staged_at TEXT, audited_at TEXT)"
+    try:
+        conn = sqlite3.connect(f"file:{target_db.as_posix()}?mode=ro", uri=True, timeout=30.0)
+        conn.execute("PRAGMA query_only=ON;")
+        conn.row_factory = sqlite3.Row
+        has_passages = bool(
+            conn.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='passages'").fetchone()
         )
-    conn.row_factory = sqlite3.Row
+        p_select = (
+            ", p.passage_title AS p_title, p.passage_html AS p_html, p.passage_diagram_svg AS p_diagram_svg, p.question_count AS p_qcount"
+            if has_passages
+            else ""
+        )
+        p_join = "LEFT JOIN passages p ON q.passage_id = p.passage_id" if has_passages else ""
 
-    if is_staging:
-        total_matching = conn.execute(
-            f"SELECT COUNT(*) FROM questions q JOIN staging_meta sm ON q.question_id = sm.question_id WHERE {where_sql}",
-            params,
-        ).fetchone()[0]
-        rows = conn.execute(
-            f"""
-            SELECT q.*, sm.staging_reason,
-                   p.passage_title AS p_title, p.passage_html AS p_html,
-                   p.passage_diagram_svg AS p_diagram_svg, p.question_count AS p_qcount
-            FROM questions q
-            JOIN staging_meta sm ON q.question_id = sm.question_id
-            LEFT JOIN passages p ON q.passage_id = p.passage_id
-            WHERE {where_sql}
-            ORDER BY {order_sql}
-            LIMIT ? OFFSET ?
-            """,
-            [*params, page_size, offset],
-        ).fetchall()
-    else:
-        total_matching = conn.execute(f"SELECT COUNT(*) FROM questions q WHERE {where_sql}", params).fetchone()[0]
-        rows = conn.execute(
-            f"""
-            SELECT q.*,
-                   p.passage_title AS p_title, p.passage_html AS p_html,
-                   p.passage_diagram_svg AS p_diagram_svg, p.question_count AS p_qcount
-            FROM questions q
-            LEFT JOIN passages p ON q.passage_id = p.passage_id
-            WHERE {where_sql}
-            ORDER BY {order_sql}
-            LIMIT ? OFFSET ?
-            """,
-            [*params, page_size, offset],
-        ).fetchall()
-    conn.close()
+        if is_staging:
+            total_matching = conn.execute(
+                f"SELECT COUNT(*) FROM questions q JOIN staging_meta sm ON q.question_id = sm.question_id WHERE {where_sql}",
+                params,
+            ).fetchone()[0]
+            rows = conn.execute(
+                f"""
+                SELECT q.*, sm.staging_reason{p_select}
+                FROM questions q
+                JOIN staging_meta sm ON q.question_id = sm.question_id
+                {p_join}
+                WHERE {where_sql}
+                ORDER BY {order_sql}
+                LIMIT ? OFFSET ?
+                """,
+                [*params, page_size, offset],
+            ).fetchall()
+        else:
+            total_matching = conn.execute(f"SELECT COUNT(*) FROM questions q WHERE {where_sql}", params).fetchone()[0]
+            rows = conn.execute(
+                f"""
+                SELECT q.*{p_select}
+                FROM questions q
+                {p_join}
+                WHERE {where_sql}
+                ORDER BY {order_sql}
+                LIMIT ? OFFSET ?
+                """,
+                [*params, page_size, offset],
+            ).fetchall()
+        conn.close()
+    except Exception:
+        return {"page": 1, "page_size": page_size, "total_matching": 0, "total_pages": 1, "cards_html": ""}
 
     total_pages = max(1, (total_matching + page_size - 1) // page_size)
     cards = [
@@ -369,7 +381,8 @@ def generate_db1_html() -> int:
       padding: 10px 14px;
       cursor: pointer;
     }}
-    .stat-val {{ font-size: 1.4rem; font-weight: 700; color: var(--accent); }}
+    .stat-val {{ font-size: 1.4rem; font-weight: 700; color: var(--accent); transition: transform 0.28s ease, text-shadow 0.28s ease; display: inline-block; }}
+    .stat-val.live-bump {{ transform: scale(1.11); text-shadow: 0 0 14px #22c55e; }}
     .stat-lbl {{ font-size: 0.75rem; color: var(--muted); }}
     .controls, .pager {{
       display: flex;
@@ -502,7 +515,7 @@ def generate_db1_html() -> int:
 <body>
   <header>
     <h1><span class="live-dot"></span> Live Cloud Dashboard — Verified Sufficient-Explanation MCQs & Staging Queue</h1>
-    <div class="sub-bar">Live Sync: <strong id="liveTs">{now_str} · 🟢 LIVE FROM GITHUB CLOUD</strong> · Strict Explanation Gate + Shared Passages (1 Para → Multi Qs) + Figures</div>
+    <div class="sub-bar">Live Sync: <strong id="liveTs">{now_str} · 🟢 LIVE FROM GITHUB CLOUD</strong> <span id="livePollBadge" style="color:#4ade80; font-weight:600;">· 🔄 Live Cloud Link Active (5s Auto-Refresh)</span></div>
     <div class="log-box" id="liveLogBox">{log_tail}</div>
     <div class="stats-grid">
       <div class="stat-box" onclick="switchDb('')">
@@ -564,13 +577,16 @@ def generate_db1_html() -> int:
     let totalPages = {page_data['total_pages']};
     let latestGitSha = 'main';
     let lastShaCheckMs = 0;
+    let bestCloudScore = 0;
+    let bestCloudUtc = '';
+    let latestCloudCounts = null;
+    let pollTickCount = 0;
 
     async function refreshLatestGitSha() {{
       if (Date.now() - lastShaCheckMs < 62000 && latestGitSha !== 'main') return latestGitSha;
       lastShaCheckMs = Date.now();
       try {{
-        const r = await fetch('https://api.github.com/repos/ktraghuram2/TextCAD-Studio/commits/main', {{
-          headers: {{ 'Accept': 'application/vnd.github+json' }},
+        const r = await fetch('https://api.github.com/repos/ktraghuram2/TextCAD-Studio/commits/main?cb=' + Date.now(), {{
           cache: 'no-store'
         }});
         if (r && r.ok) {{
@@ -579,6 +595,35 @@ def generate_db1_html() -> int:
         }}
       }} catch (e) {{}}
       return latestGitSha;
+    }}
+
+    function setLiveNumber(elId, newNum) {{
+      const el = document.getElementById(elId);
+      if (!el) return;
+      const formatted = Number(newNum || 0).toLocaleString();
+      if (el.innerText !== formatted) {{
+        el.innerText = formatted;
+        el.classList.add('live-bump');
+        setTimeout(() => el.classList.remove('live-bump'), 650);
+      }}
+    }}
+
+    function updatePageMatchingFromCounts(counts) {{
+      if (!counts) return;
+      const rawDb = document.getElementById('dbFilter').value || '';
+      const q = (document.getElementById('qSearch').value || '').trim();
+      if (q) return;
+      let matchCnt = counts['mcq_bank.sqlite (Master)'] || 0;
+      if (rawDb === 'STAGING') matchCnt = counts['staging_pending_count'] || 0;
+      else if (rawDb === 'FIGURES') matchCnt = counts['figure_mcqs_count'] || 0;
+      else if (rawDb === 'PASSAGES') matchCnt = counts['passage_mcqs_count'] || 0;
+      else if (rawDb === 'DB1_SCRAPED_MODIFIED') matchCnt = counts['db1_scraped_mcqs.sqlite'] || 0;
+      else if (rawDb === 'DB2_PYQ') matchCnt = counts['db2_pyq_mcqs.sqlite'] || 0;
+      totalPages = Math.max(1, Math.ceil(matchCnt / 50));
+      const pInfo = document.getElementById('pageInfo');
+      if (pInfo) {{
+        pInfo.innerText = `Page ${{curPage}} of ${{totalPages.toLocaleString()}} (Showing 50 per page · ${{Number(matchCnt).toLocaleString()}} live matching questions)`;
+      }}
     }}
 
     function switchDb(dbVal) {{
@@ -593,62 +638,101 @@ def generate_db1_html() -> int:
       const db = encodeURIComponent(rawDb);
       const q = encodeURIComponent(document.getElementById('qSearch').value);
       try {{
-        let resp = await fetch(`/api/page?page=${{p}}&db=${{db}}&q=${{q}}&t=${{Date.now()}}`).catch(() => null);
+        await refreshLatestGitSha();
+        const dbKey = rawDb || 'ALL';
+        const staticPage = Math.min(5, Math.max(1, p));
+        let resp = null;
+        if (!q && p <= 5) {{
+          resp = await fetch(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/${{latestGitSha}}/mcq_live/page_${{dbKey}}_${{staticPage}}.json?cb=${{Date.now()}}`, {{ cache: 'no-store' }}).catch(() => null);
+          if (!resp || !resp.ok) {{
+            resp = await fetch(`https://ktraghuram2.github.io/TextCAD-Studio/mcq_live/page_${{dbKey}}_${{staticPage}}.json?cb=${{Date.now()}}`, {{ cache: 'no-store' }}).catch(() => null);
+          }}
+        }}
         if (!resp || !resp.ok) {{
-          await refreshLatestGitSha();
-          const dbKey = rawDb || 'ALL';
-          const staticPage = Math.min(5, Math.max(1, p));
-          resp = await fetch(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/${{latestGitSha}}/mcq_live/page_${{dbKey}}_${{staticPage}}.json?t=${{Date.now()}}`);
+          resp = await fetch(`/api/page?page=${{p}}&db=${{db}}&q=${{q}}&t=${{Date.now()}}`).catch(() => null);
         }}
         if (!resp || !resp.ok) return;
         const data = await resp.json();
         curPage = data.page;
-        totalPages = data.total_pages;
+        totalPages = Math.max(totalPages, data.total_pages || 1);
         document.getElementById('cardsContainer').innerHTML = data.cards_html;
         document.getElementById('pageInfo').innerText =
-          `Page ${{data.page}} of ${{data.total_pages}} (Showing 50 per page · ${{Number(data.total_matching || 0).toLocaleString()}} matching questions)`;
+          `Page ${{data.page}} of ${{Number(data.total_pages || 1).toLocaleString()}} (Showing 50 per page · ${{Number(data.total_matching || 0).toLocaleString()}} live matching questions)`;
+        if (latestCloudCounts) updatePageMatchingFromCounts(latestCloudCounts);
         document.getElementById('btnFirst').disabled = (curPage <= 1);
         document.getElementById('btnPrev').disabled = (curPage <= 1);
         document.getElementById('btnNext').disabled = (curPage >= totalPages);
         document.getElementById('btnLast').disabled = (curPage >= totalPages);
-        window.scrollTo({{ top: 0, behavior: 'smooth' }});
       }} catch (e) {{}}
     }}
 
-    async function pollCountersOnly() {{
+    function scoreSnapshot(d) {{
+      if (!d || !d.counts) return -1;
+      const c = d.counts;
+      return (Number(c['mcq_bank.sqlite (Master)'] || 0) * 1000000) +
+             (Number(c['staging_promoted_count'] || 0) * 10000) +
+             Number(c['staging_pending_count'] || 0);
+    }}
+
+    async function fetchJsonNoCache(url) {{
       try {{
-        let resp = await fetch('/api/db1_live?t=' + Date.now()).catch(() => null);
-        if (!resp || !resp.ok) {{
-          await refreshLatestGitSha();
-          resp = await fetch(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/${{latestGitSha}}/mcq_live/cloud_live_status.json?t=${{Date.now()}}`);
+        const r = await fetch(url, {{ cache: 'no-store' }});
+        if (r && r.ok) return await r.json();
+      }} catch (e) {{}}
+      return null;
+    }}
+
+    async function pollCountersOnly() {{
+      pollTickCount += 1;
+      try {{
+        await refreshLatestGitSha();
+        const cb = Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+        const candidates = await Promise.all([
+          fetchJsonNoCache(`https://ktraghuram2.github.io/TextCAD-Studio/mcq_live/cloud_live_status.json?cb=${{cb}}`),
+          fetchJsonNoCache(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/${{latestGitSha}}/mcq_live/cloud_live_status.json?cb=${{cb}}`)
+        ]);
+        let best = null;
+        for (const cand of candidates) {{
+          if (!cand || !cand.counts) continue;
+          const utc = String(cand.last_updated_utc || '');
+          const sc = scoreSnapshot(cand);
+          if (!best || utc > String(best.last_updated_utc || '') || (utc === String(best.last_updated_utc || '') && sc > scoreSnapshot(best))) {{
+            best = cand;
+          }}
         }}
-        if (!resp || !resp.ok) return;
-        const data = await resp.json();
-        document.getElementById('liveTs').innerText = data.timestamp || data.last_updated_utc || '';
-        const logTxt = data.log_tail || data.recent_logs;
+        if (!best) return;
+        const bestUtc = String(best.last_updated_utc || '');
+        const bestSc = scoreSnapshot(best);
+        if (bestUtc < bestCloudUtc && bestSc < bestCloudScore) return;
+        bestCloudUtc = bestUtc;
+        bestCloudScore = Math.max(bestCloudScore, bestSc);
+        latestCloudCounts = best.counts;
+
+        document.getElementById('liveTs').innerText = best.timestamp || best.last_updated_utc || '';
+        const badge = document.getElementById('livePollBadge');
+        if (badge) {{
+          const nowLocal = new Date().toLocaleTimeString();
+          badge.innerText = `· 🔄 Live Cloud Link Synced (${{nowLocal}} · SHA ${{String(latestGitSha).slice(0, 7)}})`;
+        }}
+        const logTxt = best.log_tail || best.recent_logs;
         if (logTxt) document.getElementById('liveLogBox').innerText = logTxt;
-        if (data.counts) {{
-          const d1 = data.counts['db1_scraped_mcqs.sqlite'] || 0;
-          const d2 = data.counts['db2_pyq_mcqs.sqlite'] || 0;
-          const m = data.counts['mcq_bank.sqlite (Master)'] || (d1 + d2);
-          document.getElementById('cntDb1').innerText = Number(d1).toLocaleString();
-          document.getElementById('cntDb2').innerText = Number(d2).toLocaleString();
-          const elM = document.getElementById('cntMaster');
-          if (elM) elM.innerText = Number(m).toLocaleString();
-          const elF = document.getElementById('cntFigures');
-          if (elF) elF.innerText = Number(data.counts['figure_mcqs_count'] || 0).toLocaleString();
-          const elP = document.getElementById('cntPassages');
-          if (elP) elP.innerText = Number(data.counts['passage_mcqs_count'] || 0).toLocaleString();
-          const elSP = document.getElementById('cntSharedPsg');
-          if (elSP) elSP.innerText = Number(data.counts['shared_passages_count'] || 0).toLocaleString();
-          const elS = document.getElementById('cntStaging');
-          if (elS) elS.innerText = Number(data.counts['staging_pending_count'] || 0).toLocaleString();
-          const elPr = document.getElementById('cntPromoted');
-          if (elPr) elPr.innerText = Number(data.counts['staging_promoted_count'] || 0).toLocaleString();
+        if (best.counts) {{
+          const d1 = best.counts['db1_scraped_mcqs.sqlite'] || 0;
+          const d2 = best.counts['db2_pyq_mcqs.sqlite'] || 0;
+          const m = best.counts['mcq_bank.sqlite (Master)'] || (d1 + d2);
+          setLiveNumber('cntDb1', d1);
+          setLiveNumber('cntDb2', d2);
+          setLiveNumber('cntMaster', m);
+          setLiveNumber('cntFigures', best.counts['figure_mcqs_count'] || 0);
+          setLiveNumber('cntPassages', best.counts['passage_mcqs_count'] || 0);
+          setLiveNumber('cntSharedPsg', best.counts['shared_passages_count'] || 0);
+          setLiveNumber('cntStaging', best.counts['staging_pending_count'] || 0);
+          setLiveNumber('cntPromoted', best.counts['staging_promoted_count'] || 0);
+          updatePageMatchingFromCounts(best.counts);
         }}
       }} catch (e) {{}}
     }}
-    setInterval(pollCountersOnly, 15000);
+    setInterval(pollCountersOnly, 5000);
     pollCountersOnly();
     loadPage(1);
   </script>

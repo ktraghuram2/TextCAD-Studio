@@ -651,10 +651,12 @@ def _call_g4f_keyless_fallback(prompt: str, agent_id: int) -> tuple[str, str]:
         )
         out = res.stdout or ""
         if res.returncode == 0 and "@@PROV@@" in out:
-            first_nl = out.find("\n")
+            idx = out.find("@@PROV@@")
+            sub = out[idx:]
+            first_nl = sub.find("\n")
             if first_nl != -1:
-                prov = out[:first_nl].replace("@@PROV@@", "").strip()
-                payload = out[first_nl + 1 :].strip()
+                prov = sub[:first_nl].replace("@@PROV@@", "").strip()
+                payload = sub[first_nl + 1 :].strip()
                 if "[" in payload:
                     return payload, prov
     except subprocess.TimeoutExpired:
@@ -782,8 +784,11 @@ def call_cloud_ai_for_staging_audit(
                     _set_cooldown(f"gh:{mdl}", 65.0)
                 elif he.code in (401, 403, 404, 422):
                     _set_cooldown(f"gh:{mdl}", 300.0)
+                else:
+                    _set_cooldown(f"gh:{mdl}", 180.0)
             except Exception as ex:
                 last_err = f"{mdl}->{type(ex).__name__}"
+                _set_cooldown(f"gh:{mdl}", 300.0)
 
     # TIER 3: Keyless Multi-Provider Cloud AI Pool (`g4f[slim]`)
     raw_g4f, g4f_lbl = _call_g4f_keyless_fallback(prompt, agent_id)

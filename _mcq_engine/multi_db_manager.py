@@ -230,6 +230,12 @@ def init_all_databases() -> dict:
     return get_db_counts()
 
 
+def _open_ro_sqlite(path: Path) -> sqlite3.Connection:
+    conn = sqlite3.connect(f"file:{path.as_posix()}?mode=ro", uri=True, timeout=30.0)
+    conn.execute("PRAGMA query_only=ON;")
+    return conn
+
+
 def get_db_counts() -> dict:
     stats = {}
     for name, path in [
@@ -239,20 +245,23 @@ def get_db_counts() -> dict:
         ("mcq_bank.sqlite (Master)", MASTER_DB_PATH),
     ]:
         if path.exists():
-            c = sqlite3.connect(path)
-            pipeline.ensure_db_schema(c)
-            cnt = c.execute("SELECT COUNT(*) FROM questions").fetchone()[0]
-            c.close()
-            stats[name] = cnt
+            try:
+                c = _open_ro_sqlite(path)
+                cnt = c.execute("SELECT COUNT(*) FROM questions").fetchone()[0]
+                c.close()
+                stats[name] = cnt
+            except Exception:
+                stats[name] = 0
         else:
             stats[name] = 0
+    if stats.get("mcq_bank.sqlite (Master)", 0) == 0:
+        stats["mcq_bank.sqlite (Master)"] = stats.get("db1_scraped_mcqs.sqlite", 0) + stats.get("db2_pyq_mcqs.sqlite", 0)
     fig_cnt = 0
     psg_q_cnt = 0
     psg_cnt = 0
     if MASTER_DB_PATH.exists():
         try:
-            c = sqlite3.connect(MASTER_DB_PATH)
-            pipeline.ensure_db_schema(c)
+            c = _open_ro_sqlite(MASTER_DB_PATH)
             fig_cnt = c.execute(
                 "SELECT COUNT(*) FROM questions WHERE has_question_diagram = 1 OR (question_diagram_svg IS NOT NULL AND question_diagram_svg != '')"
             ).fetchone()[0]
@@ -268,7 +277,7 @@ def get_db_counts() -> dict:
     st_path = BASE_DIR / "db_staging_queue.sqlite"
     if st_path.exists():
         try:
-            sc = sqlite3.connect(st_path)
+            sc = _open_ro_sqlite(st_path)
             staging_pending = sc.execute(
                 "SELECT COUNT(*) FROM staging_meta WHERE staging_status = 'PENDING_AI_AUDIT'"
             ).fetchone()[0]
