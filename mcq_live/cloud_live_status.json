@@ -1,7 +1,7 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-30 06:45:08 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP CLOUD AGENTS: SCRAPERS + AI STAGING)",
-  "last_updated_utc": "2026-10-30 06:45:08 UTC",
+  "timestamp": "2026-10-30 06:46:18 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP CLOUD AGENTS: SCRAPERS + AI STAGING)",
+  "last_updated_utc": "2026-10-30 06:46:18 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "active_cloud_agents": {
@@ -15,7 +15,7 @@
       "total_promoted_session": 57,
       "total_rejected_session": 31,
       "providers_succeeded": {
-        "g4f:": 101,
+        "g4f:": 116,
         "g4f:gpt-4o-mini": 3
       },
       "last_agent_notes": "8 Cloud AI Agents active via g4f:, g4f:gpt-4o-mini"
@@ -23,14 +23,14 @@
   },
   "counts": {
     "db1_scraped_mcqs.sqlite": 124298,
-    "db2_pyq_mcqs.sqlite": 124197,
+    "db2_pyq_mcqs.sqlite": 124207,
     "db3_textbook_chunk_mcqs.sqlite": 0,
-    "mcq_bank.sqlite (Master)": 248495,
+    "mcq_bank.sqlite (Master)": 248505,
     "figure_mcqs_count": 6125,
-    "passage_mcqs_count": 2537,
-    "shared_passages_count": 1641,
-    "staging_pending_count": 578639,
-    "staging_promoted_count": 108
+    "passage_mcqs_count": 2547,
+    "shared_passages_count": 1647,
+    "staging_pending_count": 578615,
+    "staging_promoted_count": 118
   },
   "raw_stats": {
     "seed_files": 4457,
