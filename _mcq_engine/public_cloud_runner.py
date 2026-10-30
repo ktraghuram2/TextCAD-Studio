@@ -2,18 +2,21 @@
 r"""
 Unlimited 24x7 Multi-Agent Public GitHub Cloud Runner (`public_cloud_runner.py`)
 ================================================================================
-Runs 16 Concurrent Cloud Agents (100% Zero External API Keys):
-  - 8 Parallel Cloud AI Staging Auditor Agents (`Pollinations` HTTP + isolated `g4f` subprocesses + `models.github.ai`).
+Runs 20 Concurrent Cloud Agents (100% Zero External API Keys):
+  - 12 Parallel Cloud AI Staging Auditor Agents (`Pollinations` HTTP + isolated `g4f` subprocesses).
   - 4 Parallel Cloud Parquet & Figure/Passage Harvester Agents (`Belebele` 122-lang + `INCLUDE-44` + `RACE` + `MathVista` + `MMMU`).
   - 4 Parallel Continuous Multi-Language Syllabus Web Scraper Agents (`21,109` granular syllabus subtopics).
-  - Non-blocking Read-Only (`?mode=ro`) live status heartbeat pushed every 20 seconds + 60-second full paginated HTML refresh.
-  - Background Read-Only MVCC `VACUUM INTO` hot checkpoints uploaded asynchronously without pausing live HTML counter ticks.
+  - Pushes 25-second live JSON telemetry to dedicated `live-data` branch (0 GitHub Pages build spam!)
+    and syncs `main` every 15 minutes (<= 4 Pages builds/hour).
+  - Saves Read-Only MVCC `VACUUM INTO` hot checkpoints at Tick 2 (50s), every 4 minutes, and on SIGTERM/exit
+    so counts NEVER reset backward.
 """
 
 import gzip
 import json
 import os
 import shutil
+import signal
 import sqlite3
 import subprocess
 import sys
@@ -26,6 +29,7 @@ from pathlib import Path
 ENGINE_SRC = Path(__file__).resolve().parent
 REPO_ROOT = ENGINE_SRC.parent
 WORK_DIR = Path(os.environ.get("MCQ_WORK_DIR", "/tmp/mcq_work"))
+LIVE_BRANCH_DIR = Path(os.environ.get("MCQ_LIVE_BRANCH_DIR", "/tmp/mcq_live_branch"))
 RELEASE_TAG = "v1.0-mcq-live-db"
 
 MATHML_RETRO_STATS = {
@@ -37,11 +41,38 @@ MATHML_RETRO_STATS = {
 }
 
 _CHECKPOINT_LOCK = threading.Lock()
+_SHUTDOWN_EVENT = threading.Event()
 
 
 def log(msg: str) -> None:
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
-    print(f"[{ts}] [16-AGENT-NONSTOP-CLOUD] {msg}", flush=True)
+    print(f"[{ts}] [20-AGENT-NONSTOP-CLOUD] {msg}", flush=True)
+
+
+def _handle_sigterm(signum, frame) -> None:
+    log(f"[SIGNAL-{signum}] Graceful shutdown requested; saving latest checkpoints before exit...")
+    _SHUTDOWN_EVENT.set()
+
+
+signal.signal(signal.SIGTERM, _handle_sigterm)
+signal.signal(signal.SIGINT, _handle_sigterm)
+
+
+def ensure_fast_query_indexes(db_path: Path, is_staging: bool = False) -> None:
+    if not db_path.exists():
+        return
+    try:
+        c = sqlite3.connect(db_path, timeout=60.0)
+        c.execute("PRAGMA journal_mode=WAL;")
+        c.execute("CREATE INDEX IF NOT EXISTS idx_q_source_db ON questions(source_db);")
+        c.execute("CREATE INDEX IF NOT EXISTS idx_q_has_diag ON questions(has_question_diagram);")
+        c.execute("CREATE INDEX IF NOT EXISTS idx_q_psg_grp ON questions(has_passage, passage_id, passage_question_num);")
+        if is_staging:
+            c.execute("CREATE INDEX IF NOT EXISTS idx_sm_status ON staging_meta(staging_status, audited_at);")
+        c.commit()
+        c.close()
+    except Exception:
+        pass
 
 
 def verify_or_recover_sqlite_db(db_path: Path, is_staging: bool = False) -> None:
@@ -60,6 +91,7 @@ def verify_or_recover_sqlite_db(db_path: Path, is_staging: bool = False) -> None
         log(f"[SQLITE-HEAL] {db_path.name} failed quick_check ({exc}); launching automatic recovery...")
 
     if healthy:
+        ensure_fast_query_indexes(db_path, is_staging=is_staging)
         return
 
     rec_path = db_path.with_suffix(".recovered.sqlite")
@@ -94,6 +126,65 @@ def verify_or_recover_sqlite_db(db_path: Path, is_staging: bool = False) -> None
     else:
         pipeline.ensure_db_schema(c)
     c.close()
+    ensure_fast_query_indexes(db_path, is_staging=is_staging)
+
+
+def init_live_data_branch_repo() -> None:
+    """Initializes a tiny standalone orphan git directory pushing ONLY to `origin/live-data` (0 Pages builds!)."""
+    shutil.rmtree(LIVE_BRANCH_DIR, ignore_errors=True)
+    LIVE_BRANCH_DIR.mkdir(parents=True, exist_ok=True)
+    remote_url = subprocess.check_output(
+        ["git", "remote", "get-url", "origin"], cwd=str(REPO_ROOT), text=True
+    ).strip()
+    subprocess.run(["git", "init"], cwd=str(LIVE_BRANCH_DIR), check=False, stdout=subprocess.DEVNULL)
+    subprocess.run(["git", "config", "user.name", "Cloud MCQ Live Bot"], cwd=str(LIVE_BRANCH_DIR), check=False)
+    subprocess.run(["git", "config", "user.email", "ktraghuram2@gmail.com"], cwd=str(LIVE_BRANCH_DIR), check=False)
+    subprocess.run(["git", "remote", "add", "origin", remote_url], cwd=str(LIVE_BRANCH_DIR), check=False)
+    # Propagate GitHub Actions checkout extraheader auth config if present
+    try:
+        cfg_out = subprocess.check_output(
+            ["git", "config", "--local", "--get-all", "http.https://github.com/.extraheader"],
+            cwd=str(REPO_ROOT),
+            text=True,
+        ).strip()
+        for line in cfg_out.splitlines():
+            if line.strip():
+                subprocess.run(
+                    ["git", "config", "--local", "--add", "http.https://github.com/.extraheader", line.strip()],
+                    cwd=str(LIVE_BRANCH_DIR),
+                    check=False,
+                )
+    except Exception:
+        pass
+
+
+def push_to_live_data_branch(docs_dir: Path, commit_msg: str) -> None:
+    """Force-pushes a single clean commit to `refs/heads/live-data` (triggers 0 workflows & 0 Pages builds!)."""
+    target = LIVE_BRANCH_DIR / "mcq_live"
+    target.mkdir(parents=True, exist_ok=True)
+    for item in docs_dir.glob("*"):
+        if item.is_file() and item.name != "CNAME":
+            shutil.copyfile(item, target / item.name)
+    subprocess.run(["git", "checkout", "-B", "live_snap"], cwd=str(LIVE_BRANCH_DIR), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    subprocess.run(["git", "add", "-A", "mcq_live/"], cwd=str(LIVE_BRANCH_DIR), check=False, timeout=20)
+    subprocess.run(
+        ["git", "commit", "--amend", "-m", commit_msg],
+        cwd=str(LIVE_BRANCH_DIR),
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        timeout=20,
+    )
+    # Ensure initial commit exists if --amend had no parent commit yet
+    has_head = subprocess.run(["git", "rev-parse", "--verify", "HEAD"], cwd=str(LIVE_BRANCH_DIR), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    if has_head.returncode != 0:
+        subprocess.run(["git", "commit", "-m", commit_msg], cwd=str(LIVE_BRANCH_DIR), check=False, stdout=subprocess.DEVNULL, timeout=20)
+    subprocess.run(
+        ["git", "push", "-f", "origin", "HEAD:refs/heads/live-data"],
+        cwd=str(LIVE_BRANCH_DIR),
+        check=False,
+        timeout=45,
+    )
 
 
 def prepare_workdir() -> None:
@@ -104,6 +195,7 @@ def prepare_workdir() -> None:
 
     os.chdir(WORK_DIR)
     sys.path.insert(0, str(WORK_DIR))
+    init_live_data_branch_repo()
 
     subprocess.run(
         ["gh", "release", "create", RELEASE_TAG, "--title", "Live Cloud MCQ, Passage & Staging SQLite Checkpoints", "--notes", "Auto-updated 24x7 SQLite checkpoints"],
@@ -172,10 +264,11 @@ def prepare_workdir() -> None:
             c.execute(f"INSERT OR IGNORE INTO main.passages ({p_cols}) SELECT {p_cols} FROM db2.passages")
             c.commit()
         c.close()
+        ensure_fast_query_indexes(m_path, is_staging=False)
 
 
-def _safe_git_sync_and_push(commit_msg: str) -> None:
-    """Commits and pushes `mcq_live/` with hard timeouts and automatic rebase recovery."""
+def _safe_git_sync_and_push_main(commit_msg: str) -> None:
+    """Syncs `mcq_live/` to `main` at low frequency (<= 4 times/hr) so GitHub Pages is never throttled."""
     pull_res = subprocess.run(
         ["git", "pull", "--rebase", "--autostash", "-X", "theirs", "origin", "main"],
         cwd=str(REPO_ROOT),
@@ -191,13 +284,10 @@ def _safe_git_sync_and_push(commit_msg: str) -> None:
     diff = subprocess.run(["git", "diff", "--staged", "--quiet"], cwd=str(REPO_ROOT), timeout=15)
     if diff.returncode != 0:
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=str(REPO_ROOT), check=False, timeout=25)
-        push_res = subprocess.run(["git", "push", "origin", "main"], cwd=str(REPO_ROOT), check=False, timeout=45)
-        if push_res.returncode != 0:
-            subprocess.run(["git", "pull", "--rebase", "-X", "theirs", "origin", "main"], cwd=str(REPO_ROOT), check=False, timeout=45)
-            subprocess.run(["git", "push", "origin", "main"], cwd=str(REPO_ROOT), check=False, timeout=45)
+        subprocess.run(["git", "push", "origin", "main"], cwd=str(REPO_ROOT), check=False, timeout=45)
 
 
-def build_and_push_live_pages(extra_note: str = "", rebuild_full_pages: bool = True) -> dict:
+def build_and_push_live_pages(extra_note: str = "", rebuild_full_pages: bool = True, push_main_pages: bool = False) -> dict:
     sys.path.insert(0, str(WORK_DIR))
     import build_db1_viewer
     import multi_db_manager
@@ -222,25 +312,25 @@ def build_and_push_live_pages(extra_note: str = "", rebuild_full_pages: bool = T
             pass
     if extra_note:
         log_lines.append(extra_note)
-    log_tail = "\n".join(log_lines) if log_lines else "16-Agent Cloud Swarm Active (Clean W3C MathML)..."
+    log_tail = "\n".join(log_lines) if log_lines else "20-Agent Cloud Swarm Active (Clean W3C MathML)..."
 
     status_obj = {
         "status": "RUNNING_IN_GITHUB_CLOUD",
-        "timestamp": f"{now_utc} · 🟢 LIVE 24x7 CLOUD (16 NONSTOP AGENTS · 100% CLEAN W3C MATHML)",
+        "timestamp": f"{now_utc} · 🟢 LIVE 24x7 CLOUD (20 NONSTOP AGENTS · 100% CLEAN W3C MATHML)",
         "last_updated_utc": now_utc,
         "worldwide_exams_count": 19060,
         "countries_covered": 31,
         "mathml_status": MATHML_RETRO_STATS,
         "active_cloud_agents": {
-            "ai_staging_agents": 8,
+            "ai_staging_agents": 12,
             "parquet_harvester_agents": 4,
             "web_subtopic_scraper_agents": 4,
-            "total_parallel_agents": 16,
+            "total_parallel_agents": 20,
             "telemetry": spm.SWARM_TELEMETRY,
         },
         "counts": counts,
         "raw_stats": raw_stats,
-        "log_tail": f"[🤖 16 NONSTOP CLOUD AGENTS · 100% CLEAN W3C MATHML]\n{log_tail}",
+        "log_tail": f"[🤖 20 NONSTOP CLOUD AGENTS · 100% CLEAN W3C MATHML]\n{log_tail}",
         "recent_logs": log_tail,
     }
 
@@ -248,35 +338,36 @@ def build_and_push_live_pages(extra_note: str = "", rebuild_full_pages: bool = T
     docs_dir.mkdir(parents=True, exist_ok=True)
     (docs_dir / "cloud_live_status.json").write_text(json.dumps(status_obj, indent=2), encoding="utf-8")
 
-    target_live = REPO_ROOT / "mcq_live"
-    target_live.mkdir(parents=True, exist_ok=True)
-    (target_live / "CNAME").unlink(missing_ok=True)
-    if rebuild_full_pages:
-        for item in docs_dir.glob("*"):
-            if item.is_file() and item.name != "CNAME":
-                shutil.copyfile(item, target_live / item.name)
-    else:
-        shutil.copyfile(docs_dir / "cloud_live_status.json", target_live / "cloud_live_status.json")
-
     m_cnt = counts.get("mcq_bank.sqlite (Master)", 0)
     s_cnt = counts.get("staging_pending_count", 0)
     prom_cnt = counts.get("staging_promoted_count", 0)
     p_cnt = counts.get("passage_mcqs_count", 0)
-    commit_msg = f"chore(mcq-live): {m_cnt:,} Verified (+{prom_cnt:,} AI-Promoted) | {s_cnt:,} Staging | {p_cnt:,} Passage Qs [Clean MathML]"
-    _safe_git_sync_and_push(commit_msg)
+    commit_msg = f"chore(mcq-live): {m_cnt:,} Ready (+{prom_cnt:,} AI-Upgraded) | {s_cnt:,} Staging | {p_cnt:,} Passage Qs"
+
+    # Always push instant live telemetry to `live-data` branch (0 Pages builds triggered!)
+    push_to_live_data_branch(docs_dir, commit_msg)
+
+    # Only sync `main` at boot and every 15 minutes (<= 4 Pages builds/hour)
+    if push_main_pages:
+        target_live = REPO_ROOT / "mcq_live"
+        target_live.mkdir(parents=True, exist_ok=True)
+        (target_live / "CNAME").unlink(missing_ok=True)
+        for item in docs_dir.glob("*"):
+            if item.is_file() and item.name != "CNAME":
+                shutil.copyfile(item, target_live / item.name)
+        _safe_git_sync_and_push_main(commit_msg)
 
     return status_obj
 
 
 def upload_release_checkpoints() -> None:
     """
-    Uses Read-Only MVCC `VACUUM INTO` (`?mode=ro`) so hot snapshots NEVER block active writers,
-    NEVER livelock-restart on concurrent commits, and NEVER tear WAL pages.
+    Uses Read-Only MVCC `VACUUM INTO` (`?mode=ro`) one DB at a time (deleting each `.snap`/`.gz`
+    immediately after upload so `/tmp` disk & RAM stay feather-light!).
     """
     if not _CHECKPOINT_LOCK.acquire(blocking=False):
         return
     try:
-        upload_files = []
         for fname in ("db1_scraped_mcqs.sqlite", "db2_pyq_mcqs.sqlite", "db_staging_queue.sqlite", "turbo_parquet_state.json", "cloud_subtopic_scraper_state.json"):
             fp = WORK_DIR / fname
             if not fp.exists():
@@ -289,25 +380,23 @@ def upload_release_checkpoints() -> None:
                     ro_c = sqlite3.connect(f"file:{fp.as_posix()}?mode=ro", uri=True, timeout=60.0)
                     ro_c.execute("VACUUM INTO ?", (str(snap_path),))
                     ro_c.close()
-                    with open(snap_path, "rb") as f_in, gzip.open(gz_path, "wb", 4) as f_out:
+                    with open(snap_path, "rb") as f_in, gzip.open(gz_path, "wb", 3) as f_out:
                         shutil.copyfileobj(f_in, f_out)
                     snap_path.unlink(missing_ok=True)
                 else:
                     with open(fp, "rb") as f_in, gzip.open(gz_path, "wb", 5) as f_out:
                         shutil.copyfileobj(f_in, f_out)
-                upload_files.append(str(gz_path))
+                subprocess.run(
+                    ["gh", "release", "upload", RELEASE_TAG, str(gz_path), "--clobber"],
+                    cwd=str(REPO_ROOT),
+                    check=False,
+                    timeout=180,
+                )
             except Exception as exc:
                 log(f"[CHECKPOINT-WARN] Skipping {fname}: {exc}")
-
-        if upload_files:
-            subprocess.run(
-                ["gh", "release", "upload", RELEASE_TAG, *upload_files, "--clobber"],
-                cwd=str(REPO_ROOT),
-                check=False,
-                timeout=300,
-            )
-            for uf in upload_files:
-                Path(uf).unlink(missing_ok=True)
+            finally:
+                gz_path.unlink(missing_ok=True)
+        log("[CHECKPOINT-OK] Persisted atomic SQLite checkpoints to v1.0-mcq-live-db!")
     finally:
         _CHECKPOINT_LOCK.release()
 
@@ -318,7 +407,7 @@ def trigger_async_checkpoint() -> None:
 
 
 def main() -> None:
-    log("Booting 16-Agent Nonstop Cloud Swarm (20s Fast Live Counter Stream + Read-Only MVCC SQLite + Zero API Keys)...")
+    log("Booting 20-Agent Nonstop Cloud Swarm (12 AI Agents + O(1) RowID Pagination + Zero-Throttle live-data Stream)...")
     subprocess.run(["git", "config", "user.name", "Cloud MCQ Live Bot"], cwd=str(REPO_ROOT), check=False)
     subprocess.run(["git", "config", "user.email", "ktraghuram2@gmail.com"], cwd=str(REPO_ROOT), check=False)
 
@@ -333,8 +422,9 @@ def main() -> None:
     )
 
     build_and_push_live_pages(
-        extra_note="[BOOT-OK] 16 Nonstop Cloud Agents Online (20s Live HTML Counter Link Active)!",
+        extra_note="[BOOT-OK] 20 Nonstop Cloud Agents Online (12 AI Agents + 25s Live Stream Active)!",
         rebuild_full_pages=True,
+        push_main_pages=True,
     )
 
     harvester_proc = subprocess.Popen(
@@ -347,53 +437,60 @@ def main() -> None:
     )
 
     stop_swarm = threading.Event()
-    swarm_state = {"promoted_run": 0, "rejected_run": 0, "waves": 0, "last_note": "Starting 8 AI Agents..."}
+    swarm_state = {"promoted_run": 0, "rejected_run": 0, "waves": 0, "last_note": "Starting 12 AI Agents..."}
 
-    def continuous_8_agent_ai_swarm() -> None:
-        while not stop_swarm.is_set():
+    def continuous_12_agent_ai_swarm() -> None:
+        while not stop_swarm.is_set() and not _SHUTDOWN_EVENT.is_set():
             try:
-                res = spm.run_ai_staging_enrichment_batch(batch_size=3, max_batches=2, num_agents=8)
+                res = spm.run_ai_staging_enrichment_batch(batch_size=4, max_batches=2, num_agents=12)
                 swarm_state["promoted_run"] += res.get("promoted", 0)
                 swarm_state["rejected_run"] += res.get("rejected", 0)
                 swarm_state["waves"] += 1
                 swarm_state["last_note"] = res.get("note", "")
                 if res.get("promoted", 0) == 0:
-                    time.sleep(3.0)
+                    time.sleep(2.5)
                 else:
-                    time.sleep(0.4)
+                    time.sleep(0.3)
             except Exception as exc:
                 swarm_state["last_note"] = f"Swarm retry: {type(exc).__name__}"
-                time.sleep(3.0)
+                time.sleep(2.5)
 
-    swarm_thread = threading.Thread(target=continuous_8_agent_ai_swarm, daemon=True)
+    swarm_thread = threading.Thread(target=continuous_12_agent_ai_swarm, daemon=True)
     swarm_thread.start()
 
     try:
-        # 900 ticks * 20s = 300 minutes per chained 24x7 run
-        for cycle in range(1, 901):
-            time.sleep(20)
+        # 720 ticks * 25s = 300 minutes per chained 24x7 run
+        for cycle in range(1, 721):
+            if _SHUTDOWN_EVENT.wait(timeout=25.0):
+                break
             try:
                 note = (
-                    f"[8-AI-AGENT-SWARM] Wave {swarm_state['waves']}: +{swarm_state['promoted_run']:,} AI-Verified & Promoted this run "
+                    f"[12-AI-AGENT-SWARM] Wave {swarm_state['waves']}: +{swarm_state['promoted_run']:,} AI-Upgraded this run "
                     f"(Rejected low-quality: {swarm_state['rejected_run']:,}) | {swarm_state['last_note']}"
                 )
                 rebuild_full = (cycle % 3 == 0)
-                status_obj = build_and_push_live_pages(extra_note=note, rebuild_full_pages=rebuild_full)
+                push_main = (cycle % 36 == 0)
+                status_obj = build_and_push_live_pages(
+                    extra_note=note,
+                    rebuild_full_pages=rebuild_full,
+                    push_main_pages=push_main,
+                )
                 m_cnt = status_obj["counts"].get("mcq_bank.sqlite (Master)", 0)
                 s_cnt = status_obj["counts"].get("staging_pending_count", 0)
                 prom_cnt = status_obj["counts"].get("staging_promoted_count", 0)
                 p_cnt = status_obj["counts"].get("passage_mcqs_count", 0)
                 log(
-                    f"Tick {cycle} ({'FULL' if rebuild_full else 'FAST-20S'}): Verified={m_cnt:,} (+{prom_cnt:,} AI-Promoted) | "
-                    f"Staging={s_cnt:,} | Passage Qs={p_cnt:,} | {swarm_state['last_note']}"
+                    f"Tick {cycle} ({'MAIN+LIVE' if push_main else ('FULL-LIVE' if rebuild_full else 'FAST-25S')}): "
+                    f"Ready={m_cnt:,} (+{prom_cnt:,} AI-Upgraded) | Staging={s_cnt:,} | Passage Qs={p_cnt:,} | {swarm_state['last_note']}"
                 )
             except Exception as tick_err:
                 log(f"[TICK-RECOVER] Tick {cycle} push warning: {tick_err}")
 
-            if cycle % 9 == 0:
+            # Save checkpoint immediately at Tick 2 (~50s after boot) and every 10 ticks (~4 minutes)
+            if cycle == 2 or cycle % 10 == 0:
                 trigger_async_checkpoint()
 
-            if web_scraper_proc.poll() is not None:
+            if web_scraper_proc.poll() is not None and not _SHUTDOWN_EVENT.is_set():
                 web_scraper_proc = subprocess.Popen(
                     [sys.executable, "-u", str(WORK_DIR / "continuous_cloud_web_scraper.py")],
                     cwd=str(WORK_DIR),
@@ -415,11 +512,5 @@ if __name__ == "__main__":
     except Exception:
         tb = traceback.format_exc()
         log(f"[FATAL-RECOVER] {tb}")
-        err_file = REPO_ROOT / "mcq_live" / "cloud_last_diag.txt"
-        err_file.parent.mkdir(parents=True, exist_ok=True)
-        err_file.write_text(tb, encoding="utf-8")
-        subprocess.run(["git", "pull", "--rebase", "--autostash", "-X", "theirs", "origin", "main"], cwd=str(REPO_ROOT), check=False)
-        subprocess.run(["git", "add", "mcq_live/cloud_last_diag.txt"], cwd=str(REPO_ROOT), check=False)
-        subprocess.run(["git", "commit", "-m", "diag(cloud): capture runner exception"], cwd=str(REPO_ROOT), check=False)
-        subprocess.run(["git", "push", "origin", "main"], cwd=str(REPO_ROOT), check=False)
+        upload_release_checkpoints()
         raise
