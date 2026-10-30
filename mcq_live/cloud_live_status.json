@@ -1,7 +1,7 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-30 08:48:06 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP AGENTS \u00b7 100% CLEAN W3C MATHML)",
-  "last_updated_utc": "2026-10-30 08:48:06 UTC",
+  "timestamp": "2026-10-30 08:49:51 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP AGENTS \u00b7 100% CLEAN W3C MATHML)",
+  "last_updated_utc": "2026-10-30 08:49:51 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "mathml_status": {
@@ -19,10 +19,10 @@
     "telemetry": {
       "active_ai_agents": 8,
       "active_harvester_agents": 4,
-      "total_promoted_session": 16,
-      "total_rejected_session": 17,
+      "total_promoted_session": 21,
+      "total_rejected_session": 21,
       "providers_succeeded": {
-        "g4f:": 33,
+        "g4f:": 51,
         "g4f:gpt-4o-mini": 6
       },
       "last_agent_notes": "8 Cloud AI Agents active via g4f:"
@@ -30,19 +30,19 @@
   },
   "counts": {
     "db1_scraped_mcqs.sqlite": 124259,
-    "db2_pyq_mcqs.sqlite": 124248,
+    "db2_pyq_mcqs.sqlite": 124259,
     "db3_textbook_chunk_mcqs.sqlite": 0,
-    "mcq_bank.sqlite (Master)": 248507,
+    "mcq_bank.sqlite (Master)": 248518,
     "figure_mcqs_count": 6125,
-    "passage_mcqs_count": 2589,
-    "shared_passages_count": 1673,
-    "staging_pending_count": 578550,
-    "staging_promoted_count": 171
+    "passage_mcqs_count": 2600,
+    "shared_passages_count": 1679,
+    "staging_pending_count": 578532,
+    "staging_promoted_count": 182
   },
   "raw_stats": {
     "seed_files": 4461,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83e\udd16 16 NONSTOP CLOUD AGENTS \u00b7 100% CLEAN W3C MATHML]\n[2026-10-30 08:42:53 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] openai/MMMLU: 15 Parquet shards queued...\n[2026-10-30 08:42:53 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] ceval/ceval-exam: 156 Parquet shards queued...\n[2026-10-30 08:43:05 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] haonan-li/cmmlu: 0 Parquet shards queued...\n[8-AI-AGENT-SWARM] Wave 3: +16 AI-Verified & Promoted this run (Rejected low-quality: 17) | 8 Cloud AI Agents active via g4f:",
-  "recent_logs": "[2026-10-30 08:42:53 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] openai/MMMLU: 15 Parquet shards queued...\n[2026-10-30 08:42:53 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] ceval/ceval-exam: 156 Parquet shards queued...\n[2026-10-30 08:43:05 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] haonan-li/cmmlu: 0 Parquet shards queued...\n[8-AI-AGENT-SWARM] Wave 3: +16 AI-Verified & Promoted this run (Rejected low-quality: 17) | 8 Cloud AI Agents active via g4f:"
+  "log_tail": "[\ud83e\udd16 16 NONSTOP CLOUD AGENTS \u00b7 100% CLEAN W3C MATHML]\n[2026-10-30 08:42:53 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] openai/MMMLU: 15 Parquet shards queued...\n[2026-10-30 08:42:53 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] ceval/ceval-exam: 156 Parquet shards queued...\n[2026-10-30 08:43:05 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] haonan-li/cmmlu: 0 Parquet shards queued...\n[8-AI-AGENT-SWARM] Wave 4: +21 AI-Verified & Promoted this run (Rejected low-quality: 21) | 8 Cloud AI Agents active via g4f:",
+  "recent_logs": "[2026-10-30 08:42:53 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] openai/MMMLU: 15 Parquet shards queued...\n[2026-10-30 08:42:53 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] ceval/ceval-exam: 156 Parquet shards queued...\n[2026-10-30 08:43:05 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] haonan-li/cmmlu: 0 Parquet shards queued...\n[8-AI-AGENT-SWARM] Wave 4: +21 AI-Verified & Promoted this run (Rejected low-quality: 21) | 8 Cloud AI Agents active via g4f:"
 }
