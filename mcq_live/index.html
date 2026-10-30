@@ -201,33 +201,33 @@
 [2026-10-30 13:19:01 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1714 (2659 Qs) | Staging=31,496
 [2026-10-30 13:19:03 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1714 (2659 Qs) | Staging=32,396</div>
     <div class="stats-grid">
-      <div class="stat-box" onclick="switchDb('')">
-        <div class="stat-val" id="cntMaster" style="color:#22c55e;">248581</div>
-        <div class="stat-lbl">✅ Verified Master MCQs (Full Explanation Only)</div>
+      <div class="stat-box" onclick="switchDb('')" title="DB 1 + DB 2 combined: every MCQ here is 100% ready with a full explanation">
+        <div class="stat-val" id="cntMaster" style="color:#22c55e;">67,583</div>
+        <div class="stat-lbl">1️⃣ Total Ready MCQs (DB 1 + DB 2 Combined)</div>
       </div>
-      <div class="stat-box" onclick="switchDb('DB1_SCRAPED_MODIFIED')">
-        <div class="stat-val" id="cntDb1">124265</div>
-        <div class="stat-lbl">DB 1: Verified Scraped MCQs</div>
+      <div class="stat-box" onclick="switchDb('DB1_SCRAPED_MODIFIED')" title="Part 1 of Total Ready: Topic-wise & Multi-Language Exam MCQs">
+        <div class="stat-val" id="cntDb1">46,250</div>
+        <div class="stat-lbl">2️⃣ DB 1: Ready Topic & Web MCQs</div>
       </div>
-      <div class="stat-box" onclick="switchDb('DB2_PYQ')">
-        <div class="stat-val" id="cntDb2" style="color:#f59e0b;">124316</div>
-        <div class="stat-lbl">DB 2: Verified Official PYQs</div>
+      <div class="stat-box" onclick="switchDb('DB2_PYQ')" title="Part 2 of Total Ready: Official Past Exam Papers (PYQs)">
+        <div class="stat-val" id="cntDb2" style="color:#f59e0b;">20,347</div>
+        <div class="stat-lbl">3️⃣ DB 2: Ready Official Past Exam PYQs</div>
       </div>
-      <div class="stat-box" onclick="switchDb('FIGURES')">
-        <div class="stat-val" id="cntFigures" style="color:#f472b6;">6127</div>
-        <div class="stat-lbl">🖼️ Verified Figure MCQs & PYQs</div>
+      <div class="stat-box" onclick="switchDb('FIGURES')" title="Included inside Total Ready: MCQs that contain a Diagram, SVG, or Image">
+        <div class="stat-val" id="cntFigures" style="color:#f472b6;">356</div>
+        <div class="stat-lbl">4️⃣ With Diagrams/Figures (Inside Total Ready)</div>
       </div>
-      <div class="stat-box" onclick="switchDb('PASSAGES')">
-        <div class="stat-val" id="cntPassages" style="color:#34d399;">2659</div>
-        <div class="stat-lbl">📖 Shared-Passage MCQs (<span id="cntSharedPsg">1714</span> Passages)</div>
+      <div class="stat-box" onclick="switchDb('PASSAGES')" title="Included inside Total Ready: 1 Shared Paragraph linked to multiple questions">
+        <div class="stat-val" id="cntPassages" style="color:#34d399;">0</div>
+        <div class="stat-lbl">5️⃣ Shared-Passage Qs (<span id="cntSharedPsg">0</span> Paragraphs · Inside Ready)</div>
       </div>
-      <div class="stat-box" onclick="switchDb('STAGING')">
-        <div class="stat-val" id="cntStaging" style="color:#fbbf24;">31496</div>
-        <div class="stat-lbl">⏳ Staging Queue (Awaiting AI Check & Explanation)</div>
+      <div class="stat-box" onclick="switchDb('STAGING')" title="Separate Waiting Room: Scraped MCQs waiting for Cloud AI to write full explanations">
+        <div class="stat-val" id="cntStaging" style="color:#fbbf24;">0</div>
+        <div class="stat-lbl">6️⃣ Waiting Room / Staging (Scraped, Needs AI Explanation)</div>
       </div>
-      <div class="stat-box" onclick="switchDb('')">
-        <div class="stat-val" id="cntPromoted" style="color:#a78bfa;">3</div>
-        <div class="stat-lbl">🤖 16 Nonstop Cloud Agents · AI-Promoted</div>
+      <div class="stat-box" onclick="switchDb('')" title="MCQs upgraded by the Cloud AI Agents from Waiting Room into Total Ready">
+        <div class="stat-val" id="cntPromoted" style="color:#a78bfa;">0</div>
+        <div class="stat-lbl">7️⃣ AI-Upgraded (Moved Waiting Room → Ready)</div>
       </div>
     </div>
     <div class="controls">
@@ -2133,8 +2133,8 @@
   </main>
   <script>
     let curPage = 1;
-    let totalPages = 4972;
-    let latestGitSha = 'main';
+    let totalPages = 1332;
+    let latestGitSha = 'live-data';
     let lastShaCheckMs = 0;
     let bestCloudScore = 0;
     let bestCloudUtc = '';
@@ -2142,15 +2142,15 @@
     let pollTickCount = 0;
 
     async function refreshLatestGitSha() {
-      if (Date.now() - lastShaCheckMs < 62000 && latestGitSha !== 'main') return latestGitSha;
+      if (Date.now() - lastShaCheckMs < 95000 && latestGitSha !== 'live-data') return latestGitSha;
       lastShaCheckMs = Date.now();
       try {
-        const r = await fetch('https://api.github.com/repos/ktraghuram2/TextCAD-Studio/commits/main?cb=' + Date.now(), {
+        const r = await fetch('https://api.github.com/repos/ktraghuram2/TextCAD-Studio/git/ref/heads/live-data?cb=' + Date.now(), {
           cache: 'no-store'
         });
         if (r && r.ok) {
           const j = await r.json();
-          if (j && j.sha) latestGitSha = j.sha;
+          if (j && j.object && j.object.sha) latestGitSha = j.object.sha;
         }
       } catch (e) {}
       return latestGitSha;
@@ -2204,6 +2204,9 @@
         if (!q && p <= 5) {
           resp = await fetch(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/${latestGitSha}/mcq_live/page_${dbKey}_${staticPage}.json?cb=${Date.now()}`, { cache: 'no-store' }).catch(() => null);
           if (!resp || !resp.ok) {
+            resp = await fetch(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/live-data/mcq_live/page_${dbKey}_${staticPage}.json?cb=${Date.now()}`, { cache: 'no-store' }).catch(() => null);
+          }
+          if (!resp || !resp.ok) {
             resp = await fetch(`https://ktraghuram2.github.io/TextCAD-Studio/mcq_live/page_${dbKey}_${staticPage}.json?cb=${Date.now()}`, { cache: 'no-store' }).catch(() => null);
           }
         }
@@ -2247,8 +2250,9 @@
         await refreshLatestGitSha();
         const cb = Date.now() + '_' + Math.random().toString(36).slice(2, 7);
         const candidates = await Promise.all([
-          fetchJsonNoCache(`https://ktraghuram2.github.io/TextCAD-Studio/mcq_live/cloud_live_status.json?cb=${cb}`),
-          fetchJsonNoCache(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/${latestGitSha}/mcq_live/cloud_live_status.json?cb=${cb}`)
+          fetchJsonNoCache(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/${latestGitSha}/mcq_live/cloud_live_status.json?cb=${cb}`),
+          fetchJsonNoCache(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/live-data/mcq_live/cloud_live_status.json?cb=${cb}`),
+          fetchJsonNoCache(`https://ktraghuram2.github.io/TextCAD-Studio/mcq_live/cloud_live_status.json?cb=${cb}`)
         ]);
         let best = null;
         for (const cand of candidates) {
