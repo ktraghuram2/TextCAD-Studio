@@ -575,27 +575,10 @@ def generate_db1_html() -> int:
   <script>
     let curPage = 1;
     let totalPages = {page_data['total_pages']};
-    let latestGitSha = 'live-data';
-    let lastShaCheckMs = 0;
     let bestCloudScore = 0;
     let bestCloudUtc = '';
     let latestCloudCounts = null;
     let pollTickCount = 0;
-
-    async function refreshLatestGitSha() {{
-      if (Date.now() - lastShaCheckMs < 95000 && latestGitSha !== 'live-data') return latestGitSha;
-      lastShaCheckMs = Date.now();
-      try {{
-        const r = await fetch('https://api.github.com/repos/ktraghuram2/TextCAD-Studio/git/ref/heads/live-data?cb=' + Date.now(), {{
-          cache: 'no-store'
-        }});
-        if (r && r.ok) {{
-          const j = await r.json();
-          if (j && j.object && j.object.sha) latestGitSha = j.object.sha;
-        }}
-      }} catch (e) {{}}
-      return latestGitSha;
-    }}
 
     function setLiveNumber(elId, newNum) {{
       const el = document.getElementById(elId);
@@ -638,12 +621,11 @@ def generate_db1_html() -> int:
       const db = encodeURIComponent(rawDb);
       const q = encodeURIComponent(document.getElementById('qSearch').value);
       try {{
-        await refreshLatestGitSha();
         const dbKey = rawDb || 'ALL';
         const staticPage = Math.min(5, Math.max(1, p));
         let resp = null;
         if (!q && p <= 5) {{
-          resp = await fetch(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/${{latestGitSha}}/mcq_live/page_${{dbKey}}_${{staticPage}}.json?cb=${{Date.now()}}`, {{ cache: 'no-store' }}).catch(() => null);
+          resp = await fetch(`https://raw.githack.com/ktraghuram2/TextCAD-Studio/live-data/mcq_live/page_${{dbKey}}_${{staticPage}}.json?cb=${{Date.now()}}`, {{ cache: 'no-store' }}).catch(() => null);
           if (!resp || !resp.ok) {{
             resp = await fetch(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/live-data/mcq_live/page_${{dbKey}}_${{staticPage}}.json?cb=${{Date.now()}}`, {{ cache: 'no-store' }}).catch(() => null);
           }}
@@ -688,12 +670,15 @@ def generate_db1_html() -> int:
     async function pollCountersOnly() {{
       pollTickCount += 1;
       try {{
-        await refreshLatestGitSha();
-        const cb = Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+        const rawSlot = Math.floor(Date.now() / 20000);
+        const laggedSlot = ((rawSlot - 1) % 30 + 30) % 30;
+        const prevSlot = ((rawSlot - 2) % 30 + 30) % 30;
+        const cb = Date.now();
         const candidates = await Promise.all([
-          fetchJsonNoCache(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/${{latestGitSha}}/mcq_live/cloud_live_status.json?cb=${{cb}}`),
-          fetchJsonNoCache(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/live-data/mcq_live/cloud_live_status.json?cb=${{cb}}`),
-          fetchJsonNoCache(`https://ktraghuram2.github.io/TextCAD-Studio/mcq_live/cloud_live_status.json?cb=${{cb}}`)
+          fetchJsonNoCache(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/live-data/mcq_live/status_slot_${{laggedSlot}}.json?cb=${{cb}}`),
+          fetchJsonNoCache(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/live-data/mcq_live/status_slot_${{prevSlot}}.json?cb=${{cb}}`),
+          fetchJsonNoCache(`https://raw.githack.com/ktraghuram2/TextCAD-Studio/live-data/mcq_live/cloud_live_status.json?cb=${{cb}}`),
+          fetchJsonNoCache(`https://raw.githubusercontent.com/ktraghuram2/TextCAD-Studio/live-data/mcq_live/cloud_live_status.json?cb=${{cb}}`)
         ]);
         let best = null;
         for (const cand of candidates) {{
@@ -716,7 +701,7 @@ def generate_db1_html() -> int:
         const badge = document.getElementById('livePollBadge');
         if (badge) {{
           const nowLocal = new Date().toLocaleTimeString();
-          badge.innerText = `· 🔄 Live Cloud Link Synced (${{nowLocal}} · SHA ${{String(latestGitSha).slice(0, 7)}})`;
+          badge.innerText = `· 🔄 Live Cloud Link Synced (${{nowLocal}} · Slot #${{laggedSlot}})`;
         }}
         const logTxt = best.log_tail || best.recent_logs;
         if (logTxt) document.getElementById('liveLogBox').innerText = logTxt;
@@ -736,7 +721,7 @@ def generate_db1_html() -> int:
         }}
       }} catch (e) {{}}
     }}
-    setInterval(pollCountersOnly, 5000);
+    setInterval(pollCountersOnly, 7000);
     pollCountersOnly();
     loadPage(1);
   </script>

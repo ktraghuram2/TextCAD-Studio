@@ -43,17 +43,19 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Parquet, Image, Clean MathML & Keyless Multi-Agent Dependencies
+      - name: Install Parquet, Image, Clean MathML & Pure-HTTPS Dependencies
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq sqlite3 || true
-          pip install --quiet pyarrow pillow beautifulsoup4 lxml langdetect latex2mathml "g4f[slim]" curl_cffi ddgs || pip install --quiet pyarrow pillow beautifulsoup4 lxml langdetect latex2mathml "g4f[slim]" ddgs
+          pip install --quiet pyarrow pillow beautifulsoup4 lxml langdetect latex2mathml ddgs
 
-      - name: Run 20-Agent Nonstop Cloud Swarm
+      - name: Run 24x7 Nonstop Cloud Swarm
         run: |
           python -u _mcq_engine/public_cloud_runner.py
 
       - name: Guarantee 24x7 Checkpoint Persistence & Immediate Auto-Restart
-        if: always() && job.status != 'cancelled'
+        if: always()
         run: |
           python -c "import _mcq_engine.public_cloud_runner as r; r.upload_release_checkpoints()" || true
-          gh workflow run mcq_unlimited_cloud.yml || true
+          if [ "${{ job.status }}" != "cancelled" ]; then
+            gh workflow run mcq_unlimited_cloud.yml || true
+          fi

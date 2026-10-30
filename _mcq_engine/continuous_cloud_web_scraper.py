@@ -260,8 +260,8 @@ def main() -> None:
             log(f"Completed Pass {pass_num - 1} across all 21,109 sub-topics! Advancing nonstop to Deep Pass {pass_num}...")
             continue
 
-        for i in range(0, len(pending), 4):
-            wave = pending[i : i + 4]
+        for i in range(0, len(pending), 2):
+            wave = pending[i : i + 2]
             results = []
             with ThreadPoolExecutor(max_workers=len(wave)) as pool:
                 futs = {
@@ -324,7 +324,7 @@ def main() -> None:
                 f"[Pass {pass_num} | Subtopics Scraped: {len(done_keys):,}/21,109] "
                 f"+{len(raw_cands_batch)} web seeds -> +{a1+a2} Verified (+{len(all_new_mcqs)-(a1+a2)} Staged, +{f_cnt} SVG Figures)"
             )
-            time.sleep(1.0)
+            time.sleep(3.5)
 
 
 if __name__ == "__main__":

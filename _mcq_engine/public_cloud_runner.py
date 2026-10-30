@@ -158,10 +158,15 @@ def init_live_data_branch_repo() -> None:
         pass
 
 
-def push_to_live_data_branch(docs_dir: Path, commit_msg: str) -> None:
+def push_to_live_data_branch(docs_dir: Path, commit_msg: str, active_slots: set[int] | None = None) -> None:
     """Force-pushes a single clean commit to `refs/heads/live-data` (triggers 0 workflows & 0 Pages builds!)."""
     target = LIVE_BRANCH_DIR / "mcq_live"
     target.mkdir(parents=True, exist_ok=True)
+    if active_slots is not None:
+        keep_names = {f"status_slot_{s}.json" for s in active_slots}
+        for old_slot in list(target.glob("status_slot_*.json")):
+            if old_slot.name not in keep_names:
+                old_slot.unlink(missing_ok=True)
     for item in docs_dir.glob("*"):
         if item.is_file() and item.name != "CNAME":
             shutil.copyfile(item, target / item.name)
@@ -316,27 +321,39 @@ def build_and_push_live_pages(extra_note: str = "", rebuild_full_pages: bool = T
 
     status_obj = {
         "status": "RUNNING_IN_GITHUB_CLOUD",
-        "timestamp": f"{now_utc} · 🟢 LIVE 24x7 CLOUD (20 NONSTOP AGENTS · 100% CLEAN W3C MATHML)",
+        "timestamp": f"{now_utc} · 🟢 LIVE 24x7 CLOUD (NONSTOP MULTI-AGENT SWARM · 100% CLEAN W3C MATHML)",
         "last_updated_utc": now_utc,
         "worldwide_exams_count": 19060,
         "countries_covered": 31,
         "mathml_status": MATHML_RETRO_STATS,
         "active_cloud_agents": {
-            "ai_staging_agents": 12,
+            "ai_staging_agents": 4,
             "parquet_harvester_agents": 4,
-            "web_subtopic_scraper_agents": 4,
-            "total_parallel_agents": 20,
+            "web_subtopic_scraper_agents": 2,
+            "total_parallel_agents": 10,
             "telemetry": spm.SWARM_TELEMETRY,
         },
         "counts": counts,
         "raw_stats": raw_stats,
-        "log_tail": f"[🤖 20 NONSTOP CLOUD AGENTS · 100% CLEAN W3C MATHML]\n{log_tail}",
+        "log_tail": f"[🤖 LIVE 24x7 CLOUD SWARM · 100% CLEAN W3C MATHML]\n{log_tail}",
         "recent_logs": log_tail,
     }
 
     docs_dir = WORK_DIR / "docs"
     docs_dir.mkdir(parents=True, exist_ok=True)
-    (docs_dir / "cloud_live_status.json").write_text(json.dumps(status_obj, indent=2), encoding="utf-8")
+    status_json = json.dumps(status_obj, indent=2)
+    (docs_dir / "cloud_live_status.json").write_text(status_json, encoding="utf-8")
+
+    # 30-Slot Zero-Cache Ring Buffer (`20s` per slot => `600s` cycle > `300s` Fastly TTL; 0 api.github.com calls!)
+    cur_slot = int(time.time() // 20) % 30
+    write_slots = {((cur_slot + d) % 30) for d in (-1, 0, 1, 2, 3)}
+    active_slots = write_slots | {((cur_slot - 2) % 30)}
+    keep_slot_names = {f"status_slot_{s}.json" for s in active_slots}
+    for old_slot in list(docs_dir.glob("status_slot_*.json")):
+        if old_slot.name not in keep_slot_names:
+            old_slot.unlink(missing_ok=True)
+    for s in write_slots:
+        (docs_dir / f"status_slot_{s}.json").write_text(status_json, encoding="utf-8")
 
     m_cnt = counts.get("mcq_bank.sqlite (Master)", 0)
     s_cnt = counts.get("staging_pending_count", 0)
@@ -345,15 +362,17 @@ def build_and_push_live_pages(extra_note: str = "", rebuild_full_pages: bool = T
     commit_msg = f"chore(mcq-live): {m_cnt:,} Ready (+{prom_cnt:,} AI-Upgraded) | {s_cnt:,} Staging | {p_cnt:,} Passage Qs"
 
     # Always push instant live telemetry to `live-data` branch (0 Pages builds triggered!)
-    push_to_live_data_branch(docs_dir, commit_msg)
+    push_to_live_data_branch(docs_dir, commit_msg, active_slots=active_slots)
 
     # Only sync `main` at boot and every 15 minutes (<= 4 Pages builds/hour)
     if push_main_pages:
         target_live = REPO_ROOT / "mcq_live"
         target_live.mkdir(parents=True, exist_ok=True)
         (target_live / "CNAME").unlink(missing_ok=True)
+        for old_slot in list(target_live.glob("status_slot_*.json")):
+            old_slot.unlink(missing_ok=True)
         for item in docs_dir.glob("*"):
-            if item.is_file() and item.name != "CNAME":
+            if item.is_file() and item.name != "CNAME" and not item.name.startswith("status_slot_"):
                 shutil.copyfile(item, target_live / item.name)
         _safe_git_sync_and_push_main(commit_msg)
 
@@ -437,12 +456,12 @@ def main() -> None:
     )
 
     stop_swarm = threading.Event()
-    swarm_state = {"promoted_run": 0, "rejected_run": 0, "waves": 0, "last_note": "Starting 12 AI Agents..."}
+    swarm_state = {"promoted_run": 0, "rejected_run": 0, "waves": 0, "last_note": "Starting Polite Pure-HTTPS AI Swarm..."}
 
     def continuous_12_agent_ai_swarm() -> None:
         while not stop_swarm.is_set() and not _SHUTDOWN_EVENT.is_set():
             try:
-                res = spm.run_ai_staging_enrichment_batch(batch_size=4, max_batches=2, num_agents=12)
+                res = spm.run_ai_staging_enrichment_batch(batch_size=6, max_batches=2, num_agents=4)
                 swarm_state["promoted_run"] += res.get("promoted", 0)
                 swarm_state["rejected_run"] += res.get("rejected", 0)
                 swarm_state["waves"] += 1
@@ -450,7 +469,7 @@ def main() -> None:
                 if res.get("promoted", 0) == 0:
                     time.sleep(2.5)
                 else:
-                    time.sleep(0.3)
+                    time.sleep(0.4)
             except Exception as exc:
                 swarm_state["last_note"] = f"Swarm retry: {type(exc).__name__}"
                 time.sleep(2.5)
@@ -459,17 +478,17 @@ def main() -> None:
     swarm_thread.start()
 
     try:
-        # 720 ticks * 25s = 300 minutes per chained 24x7 run
-        for cycle in range(1, 721):
-            if _SHUTDOWN_EVENT.wait(timeout=25.0):
+        # 900 ticks * 20s = 300 minutes (5 hours) per chained 24x7 run
+        for cycle in range(1, 901):
+            if _SHUTDOWN_EVENT.wait(timeout=20.0):
                 break
             try:
                 note = (
-                    f"[12-AI-AGENT-SWARM] Wave {swarm_state['waves']}: +{swarm_state['promoted_run']:,} AI-Upgraded this run "
+                    f"[AI-STAGING-SWARM] Wave {swarm_state['waves']}: +{swarm_state['promoted_run']:,} AI-Upgraded this run "
                     f"(Rejected low-quality: {swarm_state['rejected_run']:,}) | {swarm_state['last_note']}"
                 )
                 rebuild_full = (cycle % 3 == 0)
-                push_main = (cycle % 36 == 0)
+                push_main = (cycle % 45 == 0)
                 status_obj = build_and_push_live_pages(
                     extra_note=note,
                     rebuild_full_pages=rebuild_full,
@@ -480,14 +499,14 @@ def main() -> None:
                 prom_cnt = status_obj["counts"].get("staging_promoted_count", 0)
                 p_cnt = status_obj["counts"].get("passage_mcqs_count", 0)
                 log(
-                    f"Tick {cycle} ({'MAIN+LIVE' if push_main else ('FULL-LIVE' if rebuild_full else 'FAST-25S')}): "
+                    f"Tick {cycle} ({'MAIN+LIVE' if push_main else ('FULL-LIVE' if rebuild_full else 'FAST-20S')}): "
                     f"Ready={m_cnt:,} (+{prom_cnt:,} AI-Upgraded) | Staging={s_cnt:,} | Passage Qs={p_cnt:,} | {swarm_state['last_note']}"
                 )
             except Exception as tick_err:
                 log(f"[TICK-RECOVER] Tick {cycle} push warning: {tick_err}")
 
-            # Save checkpoint immediately at Tick 2 (~50s after boot) and every 10 ticks (~4 minutes)
-            if cycle == 2 or cycle % 10 == 0:
+            # Save checkpoint immediately at Tick 2 (~40s after boot) and every 12 ticks (~4 minutes)
+            if cycle == 2 or cycle % 12 == 0:
                 trigger_async_checkpoint()
 
             if web_scraper_proc.poll() is not None and not _SHUTDOWN_EVENT.is_set():

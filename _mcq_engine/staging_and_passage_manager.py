@@ -570,99 +570,59 @@ def _parse_ai_json_items(raw_resp: str) -> list[dict]:
     return recovered
 
 
-_G4F_CHILD_SCRIPT = r"""
-import sys, g4f
-prompt = sys.stdin.read()
-ag = int(sys.argv[1])
-cands = [
-    getattr(g4f.models, "gpt_4o_mini", g4f.models.default),
-    getattr(g4f.models, "deepseek_v3", g4f.models.default),
-    g4f.models.default,
-]
-for step in range(len(cands)):
-    mdl = cands[(ag + step) % len(cands)]
-    try:
-        r = g4f.ChatCompletion.create(
-            model=mdl,
-            messages=[
-                {"role": "system", "content": "You are an academic exam professor. Output ONLY a raw valid JSON array."},
-                {"role": "user", "content": prompt},
-            ],
-            timeout=22,
-        )
-        if isinstance(r, str) and "[" in r and "question_id" in r:
-            sys.stdout.write("@@PROV@@g4f:" + str(getattr(mdl, "name", "keyless") or "keyless") + "\n" + r)
-            sys.exit(0)
-    except Exception:
-        continue
-sys.exit(1)
-"""
+_POLLINATIONS_SEM = threading.Semaphore(2)
+_POLLINATIONS_PACE_LOCK = threading.Lock()
+_LAST_POLLINATIONS_REQ_TS = 0.0
 
 
 def _call_pollinations_keyless_http(prompt: str, agent_id: int) -> tuple[str, str]:
-    """Fast keyless OpenAI-compatible HTTP JSON endpoint (zero API keys, hard 25s socket timeout)."""
+    """Rate-paced pure-HTTPS keyless OpenAI-compatible JSON completion (zero API keys, zero proxy subprocesses)."""
+    global _LAST_POLLINATIONS_REQ_TS
     if _is_cooled_down("pollinations_openai"):
         return "", ""
-    try:
-        body = json.dumps({
-            "model": "openai",
-            "seed": (agent_id * 997 + int(time.time())) % 100000,
-            "messages": [
-                {"role": "system", "content": "You are an academic exam professor. Output ONLY a raw valid JSON array. No markdown."},
-                {"role": "user", "content": prompt},
-            ],
-            "temperature": 0.2,
-        }).encode("utf-8")
-        req = urllib.request.Request(
-            "https://text.pollinations.ai/openai",
-            data=body,
-            headers={"Content-Type": "application/json", "User-Agent": "Mozilla/5.0"},
-            method="POST",
-        )
-        with urllib.request.urlopen(req, timeout=26, context=ctx) as resp:
-            data = json.loads(resp.read().decode("utf-8", errors="ignore"))
-        content = data["choices"][0]["message"]["content"]
-        if isinstance(content, str) and "[" in content:
-            return content, "pollinations:openai"
-    except urllib.error.HTTPError as he:
-        if he.code == 429:
-            _set_cooldown("pollinations_openai", 25.0)
-    except Exception:
-        pass
+    with _POLLINATIONS_SEM:
+        with _POLLINATIONS_PACE_LOCK:
+            now = time.time()
+            wait_s = max(0.0, 0.85 - (now - _LAST_POLLINATIONS_REQ_TS))
+            if wait_s > 0:
+                time.sleep(wait_s)
+            _LAST_POLLINATIONS_REQ_TS = time.time()
+        try:
+            body = json.dumps({
+                "model": "openai",
+                "seed": (agent_id * 997 + int(time.time())) % 100000,
+                "messages": [
+                    {"role": "system", "content": "You are an academic exam professor. Output ONLY a raw valid JSON array. No markdown."},
+                    {"role": "user", "content": prompt},
+                ],
+                "temperature": 0.2,
+            }).encode("utf-8")
+            req = urllib.request.Request(
+                "https://text.pollinations.ai/openai",
+                data=body,
+                headers={"Content-Type": "application/json", "User-Agent": "Mozilla/5.0"},
+                method="POST",
+            )
+            with urllib.request.urlopen(req, timeout=28, context=ctx) as resp:
+                data = json.loads(resp.read().decode("utf-8", errors="ignore"))
+            content = data["choices"][0]["message"]["content"]
+            if isinstance(content, str) and "[" in content:
+                return content, "pollinations:openai"
+        except urllib.error.HTTPError as he:
+            if he.code == 429:
+                _set_cooldown("pollinations_openai", 8.0)
+        except Exception:
+            pass
     return "", ""
 
 
 def _call_g4f_keyless_fallback(prompt: str, agent_id: int) -> tuple[str, str]:
-    # 1. Fast pure-HTTP keyless JSON completion (~7s, zero hung sockets)
-    p_raw, p_lbl = _call_pollinations_keyless_http(prompt, agent_id)
-    if p_raw:
-        return p_raw, p_lbl
-
-    # 2. Isolated OS child subprocess for g4f (SIGKILLs hung provider sockets at 30s so 0 threads ever pile up!)
-    try:
-        res = subprocess.run(
-            [sys.executable, "-c", _G4F_CHILD_SCRIPT, str(agent_id)],
-            input=prompt,
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            errors="ignore",
-            timeout=30,
-        )
-        out = res.stdout or ""
-        if res.returncode == 0 and "@@PROV@@" in out:
-            idx = out.find("@@PROV@@")
-            sub = out[idx:]
-            first_nl = sub.find("\n")
-            if first_nl != -1:
-                prov = sub[:first_nl].replace("@@PROV@@", "").strip()
-                payload = sub[first_nl + 1 :].strip()
-                if "[" in payload:
-                    return payload, prov
-    except subprocess.TimeoutExpired:
-        pass
-    except Exception:
-        pass
+    # Pure-HTTPS rate-paced Pollinations completion (0 forked proxy processes so GitHub Cloud VMs run 5h nonstop!)
+    for _retry in range(2):
+        p_raw, p_lbl = _call_pollinations_keyless_http(prompt, agent_id)
+        if p_raw:
+            return p_raw, p_lbl
+        time.sleep(1.2)
     return "", ""
 
 
