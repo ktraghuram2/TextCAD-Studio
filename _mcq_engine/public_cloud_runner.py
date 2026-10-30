@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 r"""
-Unlimited 24x7 Public GitHub Cloud Runner (`public_cloud_runner.py`)
-====================================================================
-1. Restores compressed SQLite checkpoints (`db1`, `db2`, `db_staging_queue`) into `/tmp/mcq_work`.
-2. Runs `staging_and_passage_manager.audit_existing_dbs_and_move_short_to_staging()` so 100% of
-   short/low/no-explanation items move OUT of `DB1`/`DB2` into `db_staging_queue.sqlite`!
-3. Runs `turbo_parquet_and_figure_harvester.py` (Shared Passages `1 Para -> Multi Qs` + Figures +
-   Strict Explanation Gate) AND `run_ai_staging_enrichment_batch()` (AI quality check + rich
-   explanation generation before promoting from Staging Queue to Verified DBs).
-4. Publishes live stats & paginated views (`ALL`, `FIGURES`, `PASSAGES`, `DB1`, `DB2`, `STAGING`)
-   directly to `https://ktraghuram2.github.io/TextCAD-Studio/mcq_live/` every 60 seconds!
+Unlimited 24x7 Multi-Agent Public GitHub Cloud Runner (`public_cloud_runner.py`)
+================================================================================
+Runs 12 Concurrent Cloud Agents (100% Zero External API Keys):
+  - 8 Parallel Cloud AI Staging Auditor Agents (`ThreadPoolExecutor(max_workers=8)`)
+    continuously auditing `db_staging_queue.sqlite`, verifying answers, writing >= 260-char
+    step-by-step explanations across 8 separate `models.github.ai` model pools + `g4f[slim]`
+    keyless cloud providers (and Google AI Ultra `agy` multi-model swarm on self-hosted runners).
+  - 4 Parallel Cloud Parquet & Figure/Passage Harvester Agents (`ThreadPoolExecutor(max_workers=4)`).
+  - Publishes live progress every 45s to `https://ktraghuram2.github.io/TextCAD-Studio/mcq_live/`.
 """
 
 import gzip
@@ -19,6 +18,7 @@ import shutil
 import sqlite3
 import subprocess
 import sys
+import threading
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -31,7 +31,7 @@ RELEASE_TAG = "v1.0-mcq-live-db"
 
 def log(msg: str) -> None:
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
-    print(f"[{ts}] [UNLIMITED-CLOUD] {msg}", flush=True)
+    print(f"[{ts}] [12-AGENT-CLOUD-SWARM] {msg}", flush=True)
 
 
 def prepare_workdir() -> None:
@@ -70,10 +70,10 @@ def prepare_workdir() -> None:
     if not m_path.exists() and db1_path.exists():
         log("Reconstructing Master mcq_bank.sqlite from db1 + db2...")
         shutil.copyfile(db1_path, m_path)
-        c = sqlite3.connect(m_path, timeout=60.0)
+        c = sqlite3.connect(m_path, timeout=90.0)
         pipeline.ensure_db_schema(c)
         if db2_path.exists():
-            c2 = sqlite3.connect(db2_path, timeout=60.0)
+            c2 = sqlite3.connect(db2_path, timeout=90.0)
             pipeline.ensure_db_schema(c2)
             c2.close()
             c.execute("ATTACH DATABASE 'db2_pyq_mcqs.sqlite' AS db2")
@@ -89,6 +89,7 @@ def build_and_push_live_pages(extra_note: str = "") -> dict:
     sys.path.insert(0, str(WORK_DIR))
     import build_db1_viewer
     import multi_db_manager
+    import staging_and_passage_manager as spm
 
     build_db1_viewer.generate_db1_html()
     counts = multi_db_manager.get_db_counts()
@@ -99,22 +100,28 @@ def build_and_push_live_pages(extra_note: str = "") -> dict:
     lp = WORK_DIR / "turbo_parquet_and_figure_harvester.log"
     if lp.exists():
         try:
-            log_lines = lp.read_text(encoding="utf-8", errors="ignore").strip().splitlines()[-4:]
+            log_lines = lp.read_text(encoding="utf-8", errors="ignore").strip().splitlines()[-3:]
         except Exception:
             pass
     if extra_note:
         log_lines.append(extra_note)
-    log_tail = "\n".join(log_lines) if log_lines else "Strict Explanation Gate + Shared Passages + AI Staging Auditor Active..."
+    log_tail = "\n".join(log_lines) if log_lines else "12-Agent Cloud Swarm Active..."
 
     status_obj = {
         "status": "RUNNING_IN_GITHUB_CLOUD",
-        "timestamp": f"{now_utc} · 🟢 LIVE 24x7 CLOUD (VERIFIED + STAGING QUEUE + PASSAGES)",
+        "timestamp": f"{now_utc} · 🟢 LIVE 24x7 CLOUD (12 PARALLEL AI & HARVESTER AGENTS)",
         "last_updated_utc": now_utc,
         "worldwide_exams_count": 19060,
         "countries_covered": 31,
+        "active_cloud_agents": {
+            "ai_staging_agents": 8,
+            "harvester_agents": 4,
+            "total_parallel_agents": 12,
+            "telemetry": spm.SWARM_TELEMETRY,
+        },
         "counts": counts,
         "raw_stats": raw_stats,
-        "log_tail": f"[🟢 STRICT EXPLANATION GATE + STAGING QUEUE + SHARED PASSAGES]\n{log_tail}",
+        "log_tail": f"[🤖 12 PARALLEL CLOUD AGENTS: 8 AI AUDITORS + 4 HARVESTERS]\n{log_tail}",
         "recent_logs": log_tail,
     }
 
@@ -148,10 +155,10 @@ def build_and_push_live_pages(extra_note: str = "") -> dict:
     if diff.returncode != 0:
         m_cnt = counts.get("mcq_bank.sqlite (Master)", 0)
         s_cnt = counts.get("staging_pending_count", 0)
+        prom_cnt = counts.get("staging_promoted_count", 0)
         p_cnt = counts.get("passage_mcqs_count", 0)
-        f_cnt = counts.get("figure_mcqs_count", 0)
         subprocess.run(
-            ["git", "commit", "-m", f"chore(mcq-live): {m_cnt:,} Verified | {s_cnt:,} Staging | {p_cnt:,} Passage Qs | {f_cnt:,} Figures"],
+            ["git", "commit", "-m", f"chore(mcq-live): {m_cnt:,} Verified (+{prom_cnt:,} AI-Promoted) | {s_cnt:,} Staging | {p_cnt:,} Passage Qs"],
             cwd=str(REPO_ROOT),
             check=False,
         )
@@ -178,7 +185,7 @@ def upload_release_checkpoints() -> None:
 
 
 def main() -> None:
-    log("Initializing Strict Explanation Gate + Shared-Passage + AI Staging Cloud Engine...")
+    log("Booting 12-Agent Cloud Swarm (8 AI Staging Agents + 4 Parallel Harvester Agents, Zero API Keys)...")
     prepare_workdir()
 
     subprocess.run(["git", "config", "user.name", "Cloud MCQ Live Bot"], cwd=str(REPO_ROOT), check=False)
@@ -186,48 +193,62 @@ def main() -> None:
 
     import staging_and_passage_manager as spm
 
-    log("Running retroactive audit: moving all short/low/no-explanation rows to Staging Queue...")
     sweep = spm.audit_existing_dbs_and_move_short_to_staging()
-    sweep_msg = (
-        f"[STAGING-AUDIT-SWEEP] Moved {sweep['moved_to_staging']:,} short/low/no-explanation items -> Staging Queue | "
-        f"Kept {sweep['kept_verified']:,} Full-Explanation Verified MCQs | Staging Pending: {sweep['staging_pending']:,}"
+    log(
+        f"[AUDIT-GATE] Moved {sweep['moved_to_staging']:,} short -> Staging | "
+        f"Verified: {sweep['kept_verified']:,} | Staging Pending: {sweep['staging_pending']:,}"
     )
-    log(sweep_msg)
-    build_and_push_live_pages(extra_note=sweep_msg)
-    upload_release_checkpoints()
 
     harvester_proc = subprocess.Popen(
         [sys.executable, "-u", str(WORK_DIR / "turbo_parquet_and_figure_harvester.py")],
         cwd=str(WORK_DIR),
     )
 
-    total_ai_promoted = 0
-    for cycle in range(1, 201):
-        time.sleep(45)
-        ai_res = {"promoted": 0, "rejected": 0}
-        # Once initial Parquet pass settles or concurrently in small batches, run AI Staging Auditor!
-        if harvester_proc.poll() is not None or cycle % 2 == 0:
-            ai_res = spm.run_ai_staging_enrichment_batch(batch_size=8, max_batches=3)
-            total_ai_promoted += ai_res["promoted"]
+    stop_swarm = threading.Event()
+    swarm_state = {"promoted_run": 0, "rejected_run": 0, "waves": 0, "last_note": "Starting 8 AI Agents..."}
 
+    def continuous_8_agent_ai_swarm() -> None:
+        while not stop_swarm.is_set():
+            try:
+                res = spm.run_ai_staging_enrichment_batch(batch_size=3, max_batches=2, num_agents=8)
+                swarm_state["promoted_run"] += res.get("promoted", 0)
+                swarm_state["rejected_run"] += res.get("rejected", 0)
+                swarm_state["waves"] += 1
+                swarm_state["last_note"] = res.get("note", "")
+                if res.get("promoted", 0) == 0:
+                    time.sleep(6.0)
+                else:
+                    time.sleep(0.5)
+            except Exception as exc:
+                swarm_state["last_note"] = f"Swarm retry: {type(exc).__name__}"
+                time.sleep(5.0)
+
+    swarm_thread = threading.Thread(target=continuous_8_agent_ai_swarm, daemon=True)
+    swarm_thread.start()
+
+    for cycle in range(1, 350):
+        time.sleep(45)
         note = (
-            f"[AI-STAGING-AUDITOR] Cycle {cycle}: +{ai_res['promoted']} AI-Verified & Promoted "
-            f"(Total AI-Promoted this run: {total_ai_promoted:,}, Rejected low-quality: {ai_res['rejected']})"
+            f"[8-AI-AGENT-SWARM] Wave {swarm_state['waves']}: +{swarm_state['promoted_run']:,} AI-Verified & Promoted this run "
+            f"(Rejected low-quality: {swarm_state['rejected_run']:,}) | {swarm_state['last_note']}"
         )
         status_obj = build_and_push_live_pages(extra_note=note)
         m_cnt = status_obj["counts"].get("mcq_bank.sqlite (Master)", 0)
         s_cnt = status_obj["counts"].get("staging_pending_count", 0)
+        prom_cnt = status_obj["counts"].get("staging_promoted_count", 0)
         p_cnt = status_obj["counts"].get("passage_mcqs_count", 0)
-        log(f"Cycle {cycle}/200: Verified = {m_cnt:,} | Staging = {s_cnt:,} | Passage Qs = {p_cnt:,} | +{ai_res['promoted']} AI-Promoted")
+        log(
+            f"Cycle {cycle}: Verified={m_cnt:,} (+{prom_cnt:,} AI-Promoted) | "
+            f"Staging={s_cnt:,} | Passage Qs={p_cnt:,} | {swarm_state['last_note']}"
+        )
 
         if cycle % 4 == 0:
             upload_release_checkpoints()
 
-        # Keep running AI Staging Auditor continuously while staging_pending_count > 0!
         if harvester_proc.poll() is not None and s_cnt == 0:
-            upload_release_checkpoints()
             break
 
+    stop_swarm.set()
     if harvester_proc.poll() is None:
         harvester_proc.terminate()
     upload_release_checkpoints()

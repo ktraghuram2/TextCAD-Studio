@@ -1,4 +1,4 @@
-name: Unlimited 24x7 Cloud MCQ, Passage, Figure & AI Staging Factory
+name: Unlimited 24x7 Cloud 12-Agent MCQ, Passage, Figure & AI Staging Swarm
 
 on:
   push:
@@ -8,6 +8,11 @@ on:
       - "_mcq_engine/**"
       - ".github/workflows/mcq_unlimited_cloud.yml"
   workflow_dispatch:
+    inputs:
+      runner_mode:
+        description: "Cloud VM ('ubuntu-latest' keyless 12-agent swarm) or 'self-hosted' (Google AI Ultra agy swarm)"
+        required: false
+        default: "ubuntu-latest"
   schedule:
     - cron: "0 */4 * * *"
 
@@ -20,11 +25,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  harvest-audit-and-publish:
-    runs-on: ubuntu-latest
+  multi-agent-cloud-swarm:
+    runs-on: ${{ github.event.inputs.runner_mode || 'ubuntu-latest' }}
     timeout-minutes: 330
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -36,7 +42,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Parquet, Image & AI Staging Engine and Run 24x7 Pipeline
+      - name: Install Parquet, Image & Keyless Multi-Agent AI Swarm Dependencies
         run: |
-          pip install pyarrow pillow beautifulsoup4 lxml langdetect
+          pip install --quiet pyarrow pillow beautifulsoup4 lxml langdetect "g4f[slim]" curl_cffi ddgs
           python -u _mcq_engine/public_cloud_runner.py

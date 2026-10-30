@@ -517,6 +517,10 @@ def generate_db1_html() -> int:
         <div class="stat-val" id="cntStaging" style="color:#fbbf24;">{stg_cnt}</div>
         <div class="stat-lbl">⏳ Staging Queue (Awaiting AI Check & Explanation)</div>
       </div>
+      <div class="stat-box" onclick="switchDb('')">
+        <div class="stat-val" id="cntPromoted" style="color:#a78bfa;">{counts.get('staging_promoted_count', 0)}</div>
+        <div class="stat-lbl">🤖 12 Cloud Agents · AI-Promoted to Verified</div>
+      </div>
     </div>
     <div class="controls">
       <input type="text" id="qSearch" placeholder="Search question, subject, topic, or exam..." onkeydown="if(event.key==='Enter') loadPage(1)" style="flex:1; min-width:220px;" />
@@ -607,6 +611,8 @@ def generate_db1_html() -> int:
           if (elSP) elSP.innerText = data.counts['shared_passages_count'] || 0;
           const elS = document.getElementById('cntStaging');
           if (elS) elS.innerText = data.counts['staging_pending_count'] || 0;
+          const elPr = document.getElementById('cntPromoted');
+          if (elPr) elPr.innerText = data.counts['staging_promoted_count'] || 0;
         }}
       }} catch (e) {{}}
     }}
