@@ -1,7 +1,7 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-30 10:29:25 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP AGENTS \u00b7 100% CLEAN W3C MATHML)",
-  "last_updated_utc": "2026-10-30 10:29:25 UTC",
+  "timestamp": "2026-10-30 10:30:54 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP AGENTS \u00b7 100% CLEAN W3C MATHML)",
+  "last_updated_utc": "2026-10-30 10:30:54 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "mathml_status": {
@@ -19,29 +19,30 @@
     "telemetry": {
       "active_ai_agents": 8,
       "active_harvester_agents": 4,
-      "total_promoted_session": 6,
+      "total_promoted_session": 15,
       "total_rejected_session": 0,
       "providers_succeeded": {
-        "g4f:keyless": 12
+        "g4f:keyless": 15,
+        "pollinations:openai": 1
       },
       "last_agent_notes": "8 Cloud AI Agents active via g4f:keyless"
     }
   },
   "counts": {
-    "db1_scraped_mcqs.sqlite": 124274,
+    "db1_scraped_mcqs.sqlite": 124277,
     "db2_pyq_mcqs.sqlite": 124316,
     "db3_textbook_chunk_mcqs.sqlite": 0,
-    "mcq_bank.sqlite (Master)": 248590,
+    "mcq_bank.sqlite (Master)": 248593,
     "figure_mcqs_count": 6127,
-    "passage_mcqs_count": 2668,
-    "shared_passages_count": 1721,
-    "staging_pending_count": 61187,
-    "staging_promoted_count": 12
+    "passage_mcqs_count": 2672,
+    "shared_passages_count": 1724,
+    "staging_pending_count": 62983,
+    "staging_promoted_count": 16
   },
   "raw_stats": {
-    "seed_files": 4497,
+    "seed_files": 4505,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83e\udd16 16 NONSTOP CLOUD AGENTS \u00b7 100% CLEAN W3C MATHML]\n[2026-10-30 10:28:46 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1716 (2662 Qs) | Staging=59,393\n[2026-10-30 10:28:49 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1721 (2668 Qs) | Staging=60,287\n[2026-10-30 10:29:25 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1721 (2668 Qs) | Staging=61,187\n[8-AI-AGENT-SWARM] Wave 4: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Agents probing (timeout_1)",
-  "recent_logs": "[2026-10-30 10:28:46 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1716 (2662 Qs) | Staging=59,393\n[2026-10-30 10:28:49 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1721 (2668 Qs) | Staging=60,287\n[2026-10-30 10:29:25 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1721 (2668 Qs) | Staging=61,187\n[8-AI-AGENT-SWARM] Wave 4: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Agents probing (timeout_1)"
+  "log_tail": "[\ud83e\udd16 16 NONSTOP CLOUD AGENTS \u00b7 100% CLEAN W3C MATHML]\n[2026-10-30 10:29:29 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,501/21,109] +4 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[2026-10-30 10:30:23 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1724 (2671 Qs) | Staging=62,083\n[2026-10-30 10:30:24 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,505/21,109] +8 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[8-AI-AGENT-SWARM] Wave 6: +15 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Cloud AI Agents active via g4f:keyless",
+  "recent_logs": "[2026-10-30 10:29:29 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,501/21,109] +4 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[2026-10-30 10:30:23 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1724 (2671 Qs) | Staging=62,083\n[2026-10-30 10:30:24 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,505/21,109] +8 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[8-AI-AGENT-SWARM] Wave 6: +15 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Cloud AI Agents active via g4f:keyless"
 }
