@@ -1,7 +1,7 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-30 13:18:38 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP AGENTS \u00b7 100% CLEAN W3C MATHML)",
-  "last_updated_utc": "2026-10-30 13:18:38 UTC",
+  "timestamp": "2026-10-30 13:20:10 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP AGENTS \u00b7 100% CLEAN W3C MATHML)",
+  "last_updated_utc": "2026-10-30 13:20:10 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "mathml_status": {
@@ -19,27 +19,29 @@
     "telemetry": {
       "active_ai_agents": 8,
       "active_harvester_agents": 4,
-      "total_promoted_session": 0,
+      "total_promoted_session": 6,
       "total_rejected_session": 0,
-      "providers_succeeded": {},
-      "last_agent_notes": "8 Parallel Cloud AI Agents Initialized"
+      "providers_succeeded": {
+        "g4f:keyless": 12
+      },
+      "last_agent_notes": "8 Cloud AI Agents active via g4f:keyless"
     }
   },
   "counts": {
-    "db1_scraped_mcqs.sqlite": 124262,
-    "db2_pyq_mcqs.sqlite": 124316,
+    "db1_scraped_mcqs.sqlite": 124276,
+    "db2_pyq_mcqs.sqlite": 124317,
     "db3_textbook_chunk_mcqs.sqlite": 0,
-    "mcq_bank.sqlite (Master)": 248578,
-    "figure_mcqs_count": 6127,
-    "passage_mcqs_count": 2656,
-    "shared_passages_count": 1712,
-    "staging_pending_count": 25199,
-    "staging_promoted_count": 0
+    "mcq_bank.sqlite (Master)": 248593,
+    "figure_mcqs_count": 6129,
+    "passage_mcqs_count": 2667,
+    "shared_passages_count": 1720,
+    "staging_pending_count": 43187,
+    "staging_promoted_count": 11
   },
   "raw_stats": {
-    "seed_files": 4477,
+    "seed_files": 4485,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83e\udd16 16 NONSTOP CLOUD AGENTS \u00b7 100% CLEAN W3C MATHML]\n[2026-10-30 13:18:33 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=22,499\n[2026-10-30 13:18:35 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=23,399\n[2026-10-30 13:18:37 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=24,299\n[8-AI-AGENT-SWARM] Wave 1: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Parallel Cloud AI Agents Initialized",
-  "recent_logs": "[2026-10-30 13:18:33 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=22,499\n[2026-10-30 13:18:35 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=23,399\n[2026-10-30 13:18:37 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1712 (2656 Qs) | Staging=24,299\n[8-AI-AGENT-SWARM] Wave 1: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Parallel Cloud AI Agents Initialized"
+  "log_tail": "[\ud83e\udd16 16 NONSTOP CLOUD AGENTS \u00b7 100% CLEAN W3C MATHML]\n[2026-10-30 13:20:02 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1720 (2667 Qs) | Staging=41,387\n[2026-10-30 13:20:06 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1720 (2667 Qs) | Staging=42,287\n[2026-10-30 13:20:08 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,485/21,109] +21 web seeds -> +4 Verified (+0 Staged, +2 SVG Figures)\n[8-AI-AGENT-SWARM] Wave 1: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Parallel Cloud AI Agents Initialized",
+  "recent_logs": "[2026-10-30 13:20:02 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1720 (2667 Qs) | Staging=41,387\n[2026-10-30 13:20:06 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1720 (2667 Qs) | Staging=42,287\n[2026-10-30 13:20:08 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,485/21,109] +21 web seeds -> +4 Verified (+0 Staged, +2 SVG Figures)\n[8-AI-AGENT-SWARM] Wave 1: +0 AI-Verified & Promoted this run (Rejected low-quality: 0) | 8 Parallel Cloud AI Agents Initialized"
 }

@@ -195,15 +195,18 @@
 <body>
   <header>
     <h1><span class="live-dot"></span> Live Cloud Dashboard — Verified Sufficient-Explanation MCQs & Staging Queue</h1>
-    <div class="sub-bar">Live Sync: <strong id="liveTs">2026-10-30 13:17:35 · 🟢 LIVE FROM GITHUB CLOUD</strong> <span id="livePollBadge" style="color:#4ade80; font-weight:600;">· 🔄 Live Cloud Link Active (5s Auto-Refresh)</span></div>
-    <div class="log-box" id="liveLogBox">Staging Queue Gate + Shared-Passage Engine + AI Auditor running...</div>
+    <div class="sub-bar">Live Sync: <strong id="liveTs">2026-10-30 13:19:03 · 🟢 LIVE FROM GITHUB CLOUD</strong> <span id="livePollBadge" style="color:#4ade80; font-weight:600;">· 🔄 Live Cloud Link Active (5s Auto-Refresh)</span></div>
+    <div class="log-box" id="liveLogBox">[2026-10-30 13:18:49 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1714 (2659 Qs) | Staging=29,696
+[2026-10-30 13:18:54 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1714 (2659 Qs) | Staging=30,596
+[2026-10-30 13:19:01 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1714 (2659 Qs) | Staging=31,496
+[2026-10-30 13:19:03 UTC] [TURBO-PARQUET+FIGURES] [4-Agent Passage Swarm facebook/belebele:test] Verified Passages=1714 (2659 Qs) | Staging=32,396</div>
     <div class="stats-grid">
       <div class="stat-box" onclick="switchDb('')">
-        <div class="stat-val" id="cntMaster" style="color:#22c55e;">248578</div>
+        <div class="stat-val" id="cntMaster" style="color:#22c55e;">248581</div>
         <div class="stat-lbl">✅ Verified Master MCQs (Full Explanation Only)</div>
       </div>
       <div class="stat-box" onclick="switchDb('DB1_SCRAPED_MODIFIED')">
-        <div class="stat-val" id="cntDb1">124262</div>
+        <div class="stat-val" id="cntDb1">124265</div>
         <div class="stat-lbl">DB 1: Verified Scraped MCQs</div>
       </div>
       <div class="stat-box" onclick="switchDb('DB2_PYQ')">
@@ -215,15 +218,15 @@
         <div class="stat-lbl">🖼️ Verified Figure MCQs & PYQs</div>
       </div>
       <div class="stat-box" onclick="switchDb('PASSAGES')">
-        <div class="stat-val" id="cntPassages" style="color:#34d399;">2656</div>
-        <div class="stat-lbl">📖 Shared-Passage MCQs (<span id="cntSharedPsg">1712</span> Passages)</div>
+        <div class="stat-val" id="cntPassages" style="color:#34d399;">2659</div>
+        <div class="stat-lbl">📖 Shared-Passage MCQs (<span id="cntSharedPsg">1714</span> Passages)</div>
       </div>
       <div class="stat-box" onclick="switchDb('STAGING')">
-        <div class="stat-val" id="cntStaging" style="color:#fbbf24;">0</div>
+        <div class="stat-val" id="cntStaging" style="color:#fbbf24;">31496</div>
         <div class="stat-lbl">⏳ Staging Queue (Awaiting AI Check & Explanation)</div>
       </div>
       <div class="stat-box" onclick="switchDb('')">
-        <div class="stat-val" id="cntPromoted" style="color:#a78bfa;">0</div>
+        <div class="stat-val" id="cntPromoted" style="color:#a78bfa;">3</div>
         <div class="stat-lbl">🤖 16 Nonstop Cloud Agents · AI-Promoted</div>
       </div>
     </div>
@@ -243,13 +246,148 @@
       <button id="btnFirst" onclick="loadPage(1)">« First</button>
       <button id="btnPrev" onclick="loadPage(curPage - 1)">‹ Prev 50</button>
       <span id="pageInfo" style="font-size:0.9rem; color:#cbd5e1; font-weight:600;">
-        Page 1 of 4972 (Showing 50 of 248578 questions)
+        Page 1 of 4972 (Showing 50 of 248581 questions)
       </span>
       <button id="btnNext" onclick="loadPage(curPage + 1)">Next 50 ›</button>
       <button id="btnLast" onclick="loadPage(totalPages)">Last »</button>
     </div>
   </header>
   <main id="cardsContainer">
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248581 · SUBGSGK_Q713964</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          
+          <span class="badge b-psg">📖 Passage PSG_A0780F6CAA64 (Question 1 of 1)</span>
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GS_GK — Multilingual Reading Comprehension &amp; Analytical Verbal Ability</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Multilingual Standardized Reading Comprehension (acm_Arab) (2023-2024)</span><span class="badge b-meta">Body: Open Multilingual Comprehension Benchmark (CC-BY-SA-4.0) · ALL_COUNTRIES</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Comprehension</span> ·
+          <span><strong>Unit:</strong> Shared-Passage Comprehension (acm_Arab)</span> ·
+          <span><strong>Topic:</strong> Multi-Question Reading Comprehension (ACM)</span>
+        </div>
+      </div>
+      
+        <div class="passage-box">
+          <div class="passage-hdr">
+            <span>📖 Shared Comprehension Passage (acm_Arab)</span>
+            <span class="passage-tag">Shared ID: PSG_A0780F6CAA64 · Question 1 of 1</span>
+          </div>
+          <div class="passage-body"><p>"""وصف موقع المحطة الإلكتروني العمل بأنه """"مسرح إذاعي على الطريقة القديمة، بانعطاف غريب الأطوار، جديد وصارخ!"""" بأيامه الأولى، تمت إذاعة البرنامج حصراً على موقع راديو الإنترنت الموجود من فترة طويلة """"توجي نت راديو""""، وهو الموقع اللي  يركز على الراديو الحواري. بأواخر عام 2015، أسست """"توجي نت"""" راديو """"أسترو نت """" كمحطة إذاعية تابعة. عرض البرنامج بالأصل ممثلي صوت الهواة، من محلية إلى شرق تكساس."""</p></div>
+          
+        </div>
+        
+      <div class="q-stem"><p>وين كان المكان الوحيد الذي عُرض بيه العرض قبل عام 2015؟</p></div>
+      
+      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">توجي نت راديو</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">شرق تكساس</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">راديو استرونت</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">محطات الراديو المحلية</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option A)</summary>
+        <div class="expl-body">
+          <p>The passage states that in its early days the program was broadcast exclusively on the Togi Net Radio internet radio website before Togi Net later founded Astro Net in late 2015. Therefore the only pre-2015 venue was Togi Net Radio. East Texas refers to performers, while Astro Net and local stations came later or are not exclusive.</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Belebele CC-BY-SA-4.0 Multilingual Shared-Passage Bank (acm_Arab) · AI_AUDITED_VERIFIED (g4f:keyless)</span>
+            <span><strong>SHA-256:</strong> <code>1df26b53a92b7cc6c977...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248580 · SUBGSGK_Q713963</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          
+          <span class="badge b-psg">📖 Passage PSG_0ACC1607AE9A (Question 2 of 2)</span>
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GS_GK — Multilingual Reading Comprehension &amp; Analytical Verbal Ability</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Multilingual Standardized Reading Comprehension (acm_Arab) (2023-2024)</span><span class="badge b-meta">Body: Open Multilingual Comprehension Benchmark (CC-BY-SA-4.0) · ALL_COUNTRIES</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Comprehension</span> ·
+          <span><strong>Unit:</strong> Shared-Passage Comprehension (acm_Arab)</span> ·
+          <span><strong>Topic:</strong> Multi-Question Reading Comprehension (ACM)</span>
+        </div>
+      </div>
+      
+        <div class="passage-box">
+          <div class="passage-hdr">
+            <span>📖 Shared Comprehension Passage (acm_Arab)</span>
+            <span class="passage-tag">Shared ID: PSG_0ACC1607AE9A · Question 2 of 2</span>
+          </div>
+          <div class="passage-body"><p>"""احتل رئيس مجلس النواب السابق نيوت جينجريتش، وحاكم تكساس ريك بيري، وعضوة الكونغرس ميشيل باكمان المراكز الرابع، والخامس، والسادس على التوالي. بعد ظهور النتائج، أثنى """"جينجريتش"""" على """"سانتوروم""""، لكنه وجه كلمات قوية لـ """"رومني""""، واللي  بثت حملة إعلانية سلبية بولاية """"آيوا"""" ضد """"جينجريتش"""" بالنيابة عنه. صرح بيري وكَال """"راح أرجع لتكساس لتقييم نتائج المؤتمر الحزبي لهذي الليلة، وتحديد ما إذا كان أكو مسار لتقدمي بهذا السباق""""، بس بعدين كَال أنه راح يبقى بالسباق وينافس بانتخابات كارولاينا الجنوبية بـ 21 كانون الثاني. قررت باكمان، اللي فازت باستفتاء آميس سترو بشهر آب، إنهاء حملتها الانتخابية."""</p></div>
+          
+        </div>
+        
+      <div class="q-stem"><p>بحسب الفقرة، منو اللي أشاد بمرشح ثاني بعد نتيجة التجمع الحزبي؟</p></div>
+      
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">باكمان</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">جينجريتش</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">رومني</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">بيري</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option B)</summary>
+        <div class="expl-body">
+          <p>The passage says that after the results, Gingrich praised Santorum, while directing strong words at Romney. Therefore Gingrich is the person who praised another candidate. Bachmann ended her campaign, Perry evaluated his future, and Romney was criticized rather than praised, so A, C, and D are incorrect.</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Belebele CC-BY-SA-4.0 Multilingual Shared-Passage Bank (acm_Arab) · AI_AUDITED_VERIFIED (g4f:keyless)</span>
+            <span><strong>SHA-256:</strong> <code>bd54a4f526e005839dcd...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
+    
+    <article class="q-card">
+      <div class="q-head">
+        <div class="q-badges">
+          <span class="badge b-id">#248579 · SUBGSGK_Q713962</span>
+          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
+          
+          <span class="badge b-psg">📖 Passage PSG_0ACC1607AE9A (Question 1 of 2)</span>
+          
+          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
+          <span class="badge b-subj">SUB_GS_GK — Multilingual Reading Comprehension &amp; Analytical Verbal Ability</span>
+          <span class="badge b-diff medium">Medium</span>
+          <span class="badge b-pyq">PYQ: Multilingual Standardized Reading Comprehension (acm_Arab) (2023-2024)</span><span class="badge b-meta">Body: Open Multilingual Comprehension Benchmark (CC-BY-SA-4.0) · ALL_COUNTRIES</span>
+        </div>
+        <div class="q-meta">
+          <span><strong>Domain:</strong> Aptitude &amp; Comprehension</span> ·
+          <span><strong>Unit:</strong> Shared-Passage Comprehension (acm_Arab)</span> ·
+          <span><strong>Topic:</strong> Multi-Question Reading Comprehension (ACM)</span>
+        </div>
+      </div>
+      
+        <div class="passage-box">
+          <div class="passage-hdr">
+            <span>📖 Shared Comprehension Passage (acm_Arab)</span>
+            <span class="passage-tag">Shared ID: PSG_0ACC1607AE9A · Question 1 of 2</span>
+          </div>
+          <div class="passage-body"><p>"""احتل رئيس مجلس النواب السابق نيوت جينجريتش، وحاكم تكساس ريك بيري، وعضوة الكونغرس ميشيل باكمان المراكز الرابع، والخامس، والسادس على التوالي. بعد ظهور النتائج، أثنى """"جينجريتش"""" على """"سانتوروم""""، لكنه وجه كلمات قوية لـ """"رومني""""، واللي  بثت حملة إعلانية سلبية بولاية """"آيوا"""" ضد """"جينجريتش"""" بالنيابة عنه. صرح بيري وكَال """"راح أرجع لتكساس لتقييم نتائج المؤتمر الحزبي لهذي الليلة، وتحديد ما إذا كان أكو مسار لتقدمي بهذا السباق""""، بس بعدين كَال أنه راح يبقى بالسباق وينافس بانتخابات كارولاينا الجنوبية بـ 21 كانون الثاني. قررت باكمان، اللي فازت باستفتاء آميس سترو بشهر آب، إنهاء حملتها الانتخابية."""</p></div>
+          
+        </div>
+        
+      <div class="q-stem"><p>بحسب الفقرة، منو اللي ما استمر بالترشح بعد نتائج المؤتمر الحزبي؟</p></div>
+      
+      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">جينجريتش</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">باكمان</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">بيري</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">رومني</div></div></div>
+      <details class="expl-box">
+        <summary>View Explanation & Provenance (Answer: Option B)</summary>
+        <div class="expl-body">
+          <p>The passage states that Michelle Bachmann decided to end her election campaign after the caucus results, while Perry remained in the race and Gingrich continued campaigning. Thus the candidate who did not continue is Bachmann. Distractor A is wrong because Gingrich stayed active; C is wrong because Perry later chose to continue; D is wrong because Romney is not described as dropping out.</p>
+          
+          <div class="hash-row">
+            <span><strong>Source/License:</strong> Belebele CC-BY-SA-4.0 Multilingual Shared-Passage Bank (acm_Arab) · AI_AUDITED_VERIFIED (g4f:keyless)</span>
+            <span><strong>SHA-256:</strong> <code>8121e4b42d0fe1d07c69...</code></span>
+          </div>
+        </div>
+      </details>
+    </article>
     
     <article class="q-card">
       <div class="q-head">
@@ -1987,114 +2125,6 @@
           <div class="hash-row">
             <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
             <span><strong>SHA-256:</strong> <code>76936317ea8f88bbd69d...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248531 · SUBGENCORE_Q509018</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_GEN_CORE — Miscellaneous</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Multi-Disciplinary</span> ·
-          <span><strong>Unit:</strong> Miscellaneous (EN Medium)</span> ·
-          <span><strong>Topic:</strong> Miscellaneous</span>
-        </div>
-      </div>
-      
-      <div class="q-stem"><p>Èwo nínú àwọn wọ̀nyí ni ó fa ọgbọ́n yọ jùlọ fún òṣèré tí iṣẹ́ rẹ̀ níílò wípé kí ó lo ohun àmúlò tó léwu kan ní pàtó?</p></div>
-      
-      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">Ṣíṣàwárí ohun àmúlò tí kò léwu láti lò àti ṣíṣe àyípadà ètò ṣíṣe-ọnà gẹ́gẹ́ bí ó ti ṣe kókó</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">Kíka àlẹ̀mọ́ lára ohun àmúlò náà kí á sì tẹ̀síwájú gẹ́gẹ́ bíi ìdarí lára àlẹ̀mọ́ náà</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">Ṣíṣe àrídájú wípé kò sí ọmọdé kankan níbẹ̀ nígbàti a bá ńlo ohun àmúlò náà.</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">Bíbèèrè lọ́wọ́ akọ́ṣẹ́mọṣẹ́ onímọ̀ nípa ewu ṣáájú lílo ohun èèlò náà</div></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option B)</summary>
-        <div class="expl-body">
-          <p>Correct Answer: (B) Kíka àlẹ̀mọ́ lára ohun àmúlò náà kí á sì tẹ̀síwájú gẹ́gẹ́ bíi ìdarí lára àlẹ̀mọ́ náà [Subject: Miscellaneous · Medium: EN].</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
-            <span><strong>SHA-256:</strong> <code>afed44072404a578b59d...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248530 · SUBGENCORE_Q508969</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_GEN_CORE — Logical Fallacies</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Multi-Disciplinary</span> ·
-          <span><strong>Unit:</strong> Logical Fallacies (EN Medium)</span> ·
-          <span><strong>Topic:</strong> Logical Fallacies</span>
-        </div>
-      </div>
-      
-      <div class="q-stem"><p>Fálásì àròkọ ni</p></div>
-      
-      <div class="opts-grid"><div class="opt-item "><span class="opt-letter">A</span><div class="opt-text">ó ńfi okùnfà ìṣẹ̀lẹ̀ sí okùnfà ìrọ̀rùn kan nígbàtí okùnfà náà ti pẹ̀ka</div></div><div class="opt-item correct-opt"><span class="opt-letter">B</span><div class="opt-text">ṣíṣe àríyànjiyàn wípé ohun tó jẹ́ òtítọ́ nípa apá kan ohun kan gbọ́dọ̀ jẹ́ òtítọ́ nípa gbogbo ara nǹkan náà</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">ó parí ọrọ̀ láì ní ẹ̀rí tó péye láti ṣe àtìlẹ́yìn fún ìparí ọ̀rọ̀ náà</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">ó parí ọrọ̀ tó dá lóri ríro èrò àkọlé ìbùwọ́lù nígbàtí kò dìídì ní àjọṣepọ̀ tààrà kankan láàrin ìbùwọ́lù àfẹnujẹ́ àti àkòrí ọrọ̀ ìparí náà</div></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option B)</summary>
-        <div class="expl-body">
-          <p>Correct Answer: (B) ṣíṣe àríyànjiyàn wípé ohun tó jẹ́ òtítọ́ nípa apá kan ohun kan gbọ́dọ̀ jẹ́ òtítọ́ nípa gbogbo ara nǹkan náà [Subject: Logical Fallacies · Medium: EN].</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
-            <span><strong>SHA-256:</strong> <code>274054f89705704a1ed2...</code></span>
-          </div>
-        </div>
-      </details>
-    </article>
-    
-    <article class="q-card">
-      <div class="q-head">
-        <div class="q-badges">
-          <span class="badge b-id">#248529 · SUBGENCORE_Q508967</span>
-          <span class="badge b-db">DB1_SCRAPED_MODIFIED</span>
-          
-          
-          
-          <span class="badge b-loc">UNIVERSAL: ALL_COUNTRIES</span>
-          <span class="badge b-subj">SUB_GEN_CORE — Jurisprudence</span>
-          <span class="badge b-diff medium">Medium</span>
-          <span class="badge b-pyq">PYQ: Global &amp; Regional Medium Assessment (EN) ()</span><span class="badge b-meta">Body: Apache-2.0 Global Academic Bank · India / Global</span>
-        </div>
-        <div class="q-meta">
-          <span><strong>Domain:</strong> Multi-Disciplinary</span> ·
-          <span><strong>Unit:</strong> Jurisprudence (EN Medium)</span> ·
-          <span><strong>Topic:</strong> Jurisprudence</span>
-        </div>
-      </div>
-      
-      <div class="q-stem"><p>Kí ló dé tí ọ̀nà &#x27;agbára&#x27; sí ìdájọ́ òdodo kọ ìlànà Rawls?</p></div>
-      
-      <div class="opts-grid"><div class="opt-item correct-opt"><span class="opt-letter">A</span><div class="opt-text">Nítorí pé ó kùnà láti yanjú agbára gangan tí àwọn ènìyàn ní láti jàfààní láti inú ìmọ̀ ìdájọ́ òdodo rẹ̀.</div><span class="corr-tag">✓ Correct</span></div><div class="opt-item "><span class="opt-letter">B</span><div class="opt-text">Nítorí pé ó fojú fo ojúṣe àwọn ènìyàn.</div></div><div class="opt-item "><span class="opt-letter">C</span><div class="opt-text">Nítorí pé ó kan àwọn àwùjọ ìjọba ìjọba nìkan.</div></div><div class="opt-item "><span class="opt-letter">D</span><div class="opt-text">Nítorí pé ó fojú fo pàtàkì ilé-ẹjọ́.</div></div></div>
-      <details class="expl-box">
-        <summary>View Explanation & Provenance (Answer: Option A)</summary>
-        <div class="expl-body">
-          <p>Correct Answer: (A) Nítorí pé ó kùnà láti yanjú agbára gangan tí àwọn ènìyàn ní láti jàfààní láti inú ìmọ̀ ìdájọ́ òdodo rẹ̀. [Subject: Jurisprudence · Medium: EN].</p>
-          
-          <div class="hash-row">
-            <span><strong>Source/License:</strong> HIGH_CONFIDENCE_SAFE (Apache-2.0 Open Multi-Language License) · CohereLabs/Global-MMLU-Lite</span>
-            <span><strong>SHA-256:</strong> <code>65c37a78798e7109c863...</code></span>
           </div>
         </div>
       </details>
