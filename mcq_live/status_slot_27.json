@@ -1,0 +1,42 @@
+{
+  "status": "RUNNING_LIVE_FROM_LOCAL_ULTRA_ENGINE",
+  "timestamp": "2026-10-30 15:19:22 UTC \u00b7 \ud83d\udfe2 LIVE NONSTOP ENGINE (GOOGLE AI ULTRA + PARQUET + WEB SCRAPER \u00b7 100% CLEAN MATHML)",
+  "last_updated_utc": "2026-10-30 15:19:22 UTC",
+  "worldwide_exams_count": 19060,
+  "countries_covered": 31,
+  "active_cloud_agents": {
+    "ai_staging_agents": 4,
+    "parquet_harvester_agents": 4,
+    "web_subtopic_scraper_agents": 2,
+    "total_parallel_agents": 10,
+    "telemetry": {
+      "active_ai_agents": 8,
+      "active_harvester_agents": 4,
+      "total_promoted_session": 20,
+      "total_rejected_session": 0,
+      "providers_succeeded": {
+        "ultra-agy:gemini-3.8-flash-medium": 4,
+        "ultra-agy:gemini-3.8-flash-low": 8,
+        "ultra-agy:gpt-oss-120b-medium": 8
+      },
+      "last_agent_notes": "8 Agents probing (cooldown)"
+    }
+  },
+  "counts": {
+    "db1_scraped_mcqs.sqlite": 125165,
+    "db2_pyq_mcqs.sqlite": 124316,
+    "db3_textbook_chunk_mcqs.sqlite": 986,
+    "mcq_bank.sqlite (Master)": 249481,
+    "figure_mcqs_count": 6127,
+    "passage_mcqs_count": 2691,
+    "shared_passages_count": 1732,
+    "staging_pending_count": 124734,
+    "staging_promoted_count": 39
+  },
+  "raw_stats": {
+    "seed_files": 4557,
+    "raw_fingerprints": 71413
+  },
+  "log_tail": "[\ud83e\udd16 LIVE NONSTOP ENGINE \u00b7 100% CLEAN W3C MATHML]\n[2026-10-30 15:17:29 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet CohereLabs/Global-MMLU:am:dev] Ingested +14 MCQs (+14 DB1, +0 DB2) | Master Total: 248,619 | Figures: 6,127\n[2026-10-30 15:18:47 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet CohereLabs/Global-MMLU:am:test] Ingested +574 MCQs (+574 DB1, +0 DB2) | Master Total: 249,201 | Figures: 6,127\n[2026-10-30 15:18:53 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet CohereLabs/Global-MMLU:ar:dev] Ingested +11 MCQs (+11 DB1, +0 DB2) | Master Total: 249,212 | Figures: 6,127\n[ULTRA-AI-SWARM] Wave 2: +20 AI-Upgraded this session (Rejected: 0) | 8 Agents probing (cooldown)",
+  "recent_logs": "[2026-10-30 15:17:29 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet CohereLabs/Global-MMLU:am:dev] Ingested +14 MCQs (+14 DB1, +0 DB2) | Master Total: 248,619 | Figures: 6,127\n[2026-10-30 15:18:47 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet CohereLabs/Global-MMLU:am:test] Ingested +574 MCQs (+574 DB1, +0 DB2) | Master Total: 249,201 | Figures: 6,127\n[2026-10-30 15:18:53 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet CohereLabs/Global-MMLU:ar:dev] Ingested +11 MCQs (+11 DB1, +0 DB2) | Master Total: 249,212 | Figures: 6,127\n[ULTRA-AI-SWARM] Wave 2: +20 AI-Upgraded this session (Rejected: 0) | 8 Agents probing (cooldown)"
+}
