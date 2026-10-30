@@ -1,7 +1,7 @@
 {
   "status": "RUNNING_IN_GITHUB_CLOUD",
-  "timestamp": "2026-10-30 06:39:36 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP CLOUD AGENTS: SCRAPERS + AI STAGING)",
-  "last_updated_utc": "2026-10-30 06:39:36 UTC",
+  "timestamp": "2026-10-30 06:40:47 UTC \u00b7 \ud83d\udfe2 LIVE 24x7 CLOUD (16 NONSTOP CLOUD AGENTS: SCRAPERS + AI STAGING)",
+  "last_updated_utc": "2026-10-30 06:40:47 UTC",
   "worldwide_exams_count": 19060,
   "countries_covered": 31,
   "active_cloud_agents": {
@@ -12,30 +12,30 @@
     "telemetry": {
       "active_ai_agents": 8,
       "active_harvester_agents": 4,
-      "total_promoted_session": 28,
-      "total_rejected_session": 12,
+      "total_promoted_session": 57,
+      "total_rejected_session": 31,
       "providers_succeeded": {
-        "g4f:": 83,
+        "g4f:": 89,
         "g4f:gpt-4o-mini": 3
       },
-      "last_agent_notes": "8 Cloud AI Agents active via g4f:"
+      "last_agent_notes": "8 Cloud AI Agents active via g4f:, g4f:gpt-4o-mini"
     }
   },
   "counts": {
     "db1_scraped_mcqs.sqlite": 124298,
-    "db2_pyq_mcqs.sqlite": 124183,
+    "db2_pyq_mcqs.sqlite": 124197,
     "db3_textbook_chunk_mcqs.sqlite": 0,
-    "mcq_bank.sqlite (Master)": 248481,
+    "mcq_bank.sqlite (Master)": 248495,
     "figure_mcqs_count": 6125,
-    "passage_mcqs_count": 2523,
-    "shared_passages_count": 1635,
-    "staging_pending_count": 578663,
-    "staging_promoted_count": 94
+    "passage_mcqs_count": 2537,
+    "shared_passages_count": 1641,
+    "staging_pending_count": 578639,
+    "staging_promoted_count": 108
   },
   "raw_stats": {
     "seed_files": 4453,
     "raw_fingerprints": 71413
   },
-  "log_tail": "[\ud83e\udd16 16 NONSTOP CLOUD AGENTS: 8 AI STAGING + 4 PARQUET + 4 WEB SCRAPERS]\n[2026-10-30 06:13:44 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:veterinary_medicine:val] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,438 | Figures: 6,125\n[2026-10-30 06:13:56 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] haonan-li/cmmlu: 0 Parquet shards queued...\n[2026-10-30 06:26:56 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,453/21,109] +29 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[8-AI-AGENT-SWARM] Wave 1: +28 AI-Verified & Promoted this run (Rejected low-quality: 12) | 8 Cloud AI Agents active via g4f:",
-  "recent_logs": "[2026-10-30 06:13:44 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:veterinary_medicine:val] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,438 | Figures: 6,125\n[2026-10-30 06:13:56 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] haonan-li/cmmlu: 0 Parquet shards queued...\n[2026-10-30 06:26:56 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,453/21,109] +29 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[8-AI-AGENT-SWARM] Wave 1: +28 AI-Verified & Promoted this run (Rejected low-quality: 12) | 8 Cloud AI Agents active via g4f:"
+  "log_tail": "[\ud83e\udd16 16 NONSTOP CLOUD AGENTS: 8 AI STAGING + 4 PARQUET + 4 WEB SCRAPERS]\n[2026-10-30 06:13:44 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:veterinary_medicine:val] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,438 | Figures: 6,125\n[2026-10-30 06:13:56 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] haonan-li/cmmlu: 0 Parquet shards queued...\n[2026-10-30 06:26:56 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,453/21,109] +29 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[8-AI-AGENT-SWARM] Wave 2: +57 AI-Verified & Promoted this run (Rejected low-quality: 31) | 8 Cloud AI Agents active via g4f:, g4f:gpt-4o-mini",
+  "recent_logs": "[2026-10-30 06:13:44 UTC] [TURBO-PARQUET+FIGURES] [Turbo Parquet ceval/ceval-exam:veterinary_medicine:val] Ingested +0 MCQs (+0 DB1, +0 DB2) | Master Total: 248,438 | Figures: 6,125\n[2026-10-30 06:13:56 UTC] [TURBO-PARQUET+FIGURES] [Phase 2 Turbo Parquet] haonan-li/cmmlu: 0 Parquet shards queued...\n[2026-10-30 06:26:56 UTC] [4-AGENT-WEB-SCRAPER] [Pass 1 | Subtopics Scraped: 4,453/21,109] +29 web seeds -> +0 Verified (+0 Staged, +0 SVG Figures)\n[8-AI-AGENT-SWARM] Wave 2: +57 AI-Verified & Promoted this run (Rejected low-quality: 31) | 8 Cloud AI Agents active via g4f:, g4f:gpt-4o-mini"
 }
